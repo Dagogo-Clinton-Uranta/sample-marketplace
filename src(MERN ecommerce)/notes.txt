@@ -1,0 +1,32 @@
+1.) make sure to 'npm install react-router-dom' in the front end folder
+
+2.) make sure to install  npm install 'react-bootstrap' in the frontend folder --
+
+3.)  install 'react-router-bootstrap' as well--THIS ONE IS FOR THE LINKS IN NAVBARS AND BUTTONS AND STUFF THAT THE ORDINARY REACT ROUTER LINK CANT GET TO. IT ALSO ALLOWS FOR NO REFRESHING OF THE PAGE, AS OPPOSED TO HREFS THAT LOAD AND DETRACT FROM USER EXPERIENCE.
+
+4.) /*DONT FORGET TO USE THE CDN OF FONT-AWESOME IN INDEX.HTML
+FROM CDN JS.COM ,JUST TYPE FONT AWESOME AND COPY IT*/
+
+5.) /*dont forget to npm install axios*/ for the front end
+
+6.) You gotta put a proxy like so
+in package.json for front end, right under name, you put
+"proxy":"http//127.0.0.1:5000" 127.0.0.1 is
+ your loopback address/localhost, then you want port 5000
+
+7.) remember to install nodemon and concurrently as
+ dev dependencies in the backend's package.json
+
+ 8.) remember to "npm install dotenv"
+ 9.) once you put your application up, then you gotta change the mongoDB
+ IP address permissions from 'allow access from anywhere' to allow
+ only this computer or sth
+10.) remember to npm install mongoose in your root , not in frontend
+11.) remember to install bcryptjs not brcypt o! on the backend File
+brcypt js , cuz it works better straight out of the box(less dependencies)
+12.) try npm install colors in the server, it may
+ make your debugging easier
+
+ 13.) remeber to install express-async-handler so you can handle
+  errors without try catching everything--which me, personally
+  i do not mind
