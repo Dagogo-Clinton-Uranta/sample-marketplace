@@ -24,7 +24,8 @@ router.get('/',asyncHandler(async(req,res) =>{
 router.get('/:id',asynHandler(async(req,res) =>{
   const product = await Product.findOne({_id:req.params.id})
   if(product){res.json(product)}
-   else{ res.status(404).json({message:'Product not found'})}
+   else{ res.status(404) /*with the async error hadler, if you dont put a res.status, it'll be 500 by default */
+   throw new Error('Product not found')}
 }))
 
 
