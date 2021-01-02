@@ -64,7 +64,7 @@ if (process.argv[2]==2){
    destroyData()
 }
 else{importData()}
-
+ //yes and no
 /*to call this seeder file we go node backend/seeder(-d).
  d flag to call delete. First of all, wtf is seeder and why
  are they using it */
