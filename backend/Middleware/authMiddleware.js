@@ -18,7 +18,7 @@ const protect = asyncHandler(async(req,res,next) => {
 
       req.user = await User.findById(decoded.id).select('-password') /*select '-password' is choosing to remove password from the things we return from Users.findById*/
    /*we will now have access to request.user in all of our protected routes*/
-   /*how do we use mongoose commands when we havent imported mongoose to this file ?, does it come with the model or sth*/
+   /*how do we use mongoose commands when we havent imported mongoose to this file ?, does it come with the model or sth - YES IT DOES*/
     next()
     }
      catch(error){

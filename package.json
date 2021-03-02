@@ -1,7 +1,7 @@
 {
-  "name": "proshop-backend",
+  "name": "bridgeway-marketplace",
   "version": "1.0.0",
-  "description": "This is a MERN shopping cart app",
+  "description": "This is a marketplace for customers and clients",
   "main": "server.js",
   "type": "module",
   "scripts": {

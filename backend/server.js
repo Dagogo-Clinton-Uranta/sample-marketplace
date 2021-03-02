@@ -44,9 +44,7 @@ if(process.env.NODE_ENV === 'development'){app.use(morgan('dev'))} //brad prefer
 
  app.use(express.json())  //this is the new bodyParser tha is in express and allows us to read json from req.body
 
-app.get('/', (req,res) =>{
-  res.send('API is running...')
-})
+
 
 
 app.use('/api/products',productRoutes)
@@ -59,8 +57,21 @@ app.get('/api/config/paypal',(req,res)=>{
 }) //this is a CONFIG route to access the paypal client id
 
 const __dirname =path.resolve() //OKAY BRAD DID THIS TO MIMIC PATH.JOIN(__DIRNAME) , BECAUSE IT IS ONLY ACCESSIBLE IN COMMON JS AND NOT ES6 SYNTAX
-
 app.use('/uploads', express.static(path.join(__dirname,'/uploads')))
+
+if(process.NODE_ENV === 'production'){
+
+  app.use(express.static(path.join(__dirname,'/frontend/build')))
+
+  app.get('*', (req,res) =>{ 
+    res.sendFile(path.resolve(__dirname,'frontend','build','index.html'))
+  })
+
+}else{
+  app.get('/', (req,res) => {
+    res.send('API is running...')
+  })
+}
 
 app.use(notFound)
 
