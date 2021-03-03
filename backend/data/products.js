@@ -1,65 +1,66 @@
 const products = [
   {
     
-    name: 'Airpods Wireless Bluetooth Headphones',
-    image: '/images/airpods.jpg',
+    name: 'Golden Penny Spaghetti',
+    image: '/images/golden-penny-spag.jpg',
     description:
-      'Bluetooth technology lets you connect it with compatible devices wirelessly High-quality AAC audio offers immersive listening experience Built-in microphone allows you to take calls while working',
-    brand: 'Apple',
-    category: 'Electronics',
-    price: 89.99,
-    countInStock: 10,
+      'Enjoy an easy to cook, easy to eat meal with golden penny pasta that does not stick. This pack serves 3',
+    brand: 'Golden Penny',
+    category: 'Food & Drink',
+    price: 9.99,
+    countInStock: 100, //will it be count in stock per vendor, i think it will be, it makes sense, so that you can go pick another vendor when your stock is over.
     rating: 4.5,
     numReviews: 12
+    //vendor:okoli-magnus
   },
   {
 
-    name: 'iPhone 11 Pro 256GB Memory',
-    image: '/images/phone.jpg',
+    name: 'Kings Vegetable Oil',
+    image: '/images/kings-oil.jpg',
     description:
-      'Introducing the iPhone 11 Pro. A transformative triple-camera system that adds tons of capability without complexity. An unprecedented leap in battery life',
-    brand: 'Apple',
-    category: 'Electronics',
-    price: 599.99,
-    countInStock: 7,
+      'Kings pure vegetable oil for your cooking needs. Now with lower calories and lower trans-fats than before!',
+    brand: 'Kings',
+    category: 'Food & Drink',
+    price: 12.99,
+    countInStock: 17,
     rating: 4.0,
     numReviews: 8
   },
   {
 
-    name: 'Cannon EOS 80D DSLR Camera',
-    image: '/images/camera.jpg',
+    name: 'Peak Milk Sachet.',
+    image: '/images/peak-milk-sachet.jpeg',
     description:
-      'Characterized by versatile imaging specs, the Canon EOS 80D further clarifies itself using a pair of robust focusing systems and an intuitive design',
-    brand: 'Cannon',
-    category: 'Electronics',
-    price: 929.99,
+      'Powdered milk from peak. two for one offer coming soon',
+    brand: 'peak',
+    category: 'Food & Drink',
+    price: 1.99,
     countInStock: 5,
     rating: 3,
     numReviews: 12
   },
   {
 
-    name: 'Sony Playstation 4 Pro White Version',
-    image: '/images/playstation.jpg',
+    name: 'Royal Stallion Rice',
+    image: '/images/rice-bag.jpeg',
     description:
-      'The ultimate home entertainment center starts with PlayStation. Whether you are into gaming, HD movies, television, music',
-    brand: 'Sony',
-    category: 'Electronics',
-    price: 399.99,
+      'stallion rice is the way to go if you want delicious rice all the time! With less preservatives than before, you can ensure you are eating healthier with the same great taste',
+    brand: 'Royal Stallion',
+    category: 'Food & Drink',
+    price: 39.99,
     countInStock: 11,
     rating: 5,
     numReviews: 12
   },
   {
 
-    name: 'Logitech G-Series Gaming Mouse',
-    image: '/images/mouse.jpg',
+    name: 'Titus Sardines',
+    image: '/images/Titus-Sardine.jpg',
     description:
-      'Get a better handle on your games with this Logitech LIGHTSYNC gaming mouse. The six programmable buttons allow customization for a smooth playing experience',
-    brand: 'Logitech',
-    category: 'Electronics',
-    price: 49.99,
+      'The long serving brand titus never dissapoints! try titus with bread or eat it on your own. Now with reduced salt.',
+    brand: 'Titus',
+    category: 'Food & Drink',
+    price: 3.99,
     countInStock: 7,
     rating: 3.5,
     numReviews: 10
