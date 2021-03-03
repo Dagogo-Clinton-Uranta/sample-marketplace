@@ -47,7 +47,7 @@ const CartScreen = ({match, location, history}) => {
        </Col>
 
        <Col md={2}>
-        ${item.price}
+        ₦ {item.price}
        </Col>
 
        <Col md={2}>
@@ -90,7 +90,7 @@ const CartScreen = ({match, location, history}) => {
      }
       ) items</h2>
 
-      ${cartItems.reduce((acc,item)=>
+      ₦ {cartItems.reduce((acc,item)=>
         (acc + item.qty*item.price),0
   ).toFixed(2)
    }

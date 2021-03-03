@@ -22,12 +22,12 @@ const ProductComponent = ({product}) => {
 
 
     <Card.Text as='div'>
-      <Rating value={product.rating} text={`${product.numReviews}reviews`} color='#f8e825'/>
-     {/*theres gonna be a rating component eventually*/}
+      <Rating value={product.rating} text={`${product.numReviews} reviews`} color='#f8e825'/>
+     {/*theres gonna be a rating component eventually, and its there now*/}
     </Card.Text>
 
     <Card.Text as='h3'>
-     ${product.price}
+     ₦ {product.price}
      </Card.Text>
   </Card.Body>
 </Card>

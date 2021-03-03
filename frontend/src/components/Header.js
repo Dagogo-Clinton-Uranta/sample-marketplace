@@ -22,7 +22,7 @@ const Header = () => {
   <Container>
   <LinkContainer to="/">
   {/*why cant we wrap this in a link tag?*/}
-  <Navbar.Brand >ProShop</Navbar.Brand>
+  <Navbar.Brand >BridgeWay Marketplace</Navbar.Brand>
   </LinkContainer>
 
   <Navbar.Toggle aria-controls="basic-navbar-nav" />
