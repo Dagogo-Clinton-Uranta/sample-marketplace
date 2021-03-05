@@ -5,6 +5,7 @@ import {LinkContainer} from 'react-router-bootstrap'
 import {Container,Nav,Navbar,NavDropdown} from 'react-bootstrap'
 import {logout} from '../actions/userActions.js'
 import SearchBox from './SearchBox.js'
+import bridgeway from './bridgeway-logo.jpg' 
 
 const Header = () => {
 
@@ -22,7 +23,7 @@ const Header = () => {
   <Container>
   <LinkContainer to="/">
   {/*why cant we wrap this in a link tag?*/}
-  <Navbar.Brand >BridgeWay Marketplace</Navbar.Brand>
+  <Navbar.Brand ><img src={bridgeway} /></Navbar.Brand>
   </LinkContainer>
 
   <Navbar.Toggle aria-controls="basic-navbar-nav" />

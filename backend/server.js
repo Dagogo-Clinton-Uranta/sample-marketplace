@@ -59,22 +59,20 @@ app.get('/api/config/paypal',(req,res)=>{
 const __dirname =path.resolve() //OKAY BRAD DID THIS TO MIMIC PATH.JOIN(__DIRNAME) , BECAUSE IT IS ONLY ACCESSIBLE IN COMMON JS AND NOT ES6 SYNTAX
 app.use('/uploads', express.static(path.join(__dirname,'/uploads')))
 
-app.use(express.static(path.join(__dirname,'/frontend/build')))
+
+
+if(process.NODE_ENV === 'production'){
+
+  app.use(express.static(path.join(__dirname,'/frontend/build')))
 
   app.get('*', (req,res) =>{ 
     res.sendFile(path.resolve(__dirname,'frontend','build','index.html'))
   })
-
-/*if(process.NODE_ENV === 'production'){
-
-  THE TWO LINES ABOVE, ABOUT RENDERING STATIC FILES ARE 
-  SUPPOSED TO BE IN HERE, I TOOK THEM OUT TO TEST SOMETHING
-
 }else{
   app.get('/', (req,res) => {
     res.send('API is running...')
   })
-}*/
+}
 
 app.use(notFound)
 

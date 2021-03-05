@@ -97,6 +97,14 @@ const submitHandler =(e) =>{
             <Col md={3}>
              <Card>
               <ListGroup variant='flush'>
+              <ListGroup.Item>
+                 <Row>
+                   <Col>Vendor:</Col>
+                   <Col>
+                    <strong> {product.brand}</strong>
+                   </Col>
+                 </Row>
+               </ListGroup.Item>
 
                <ListGroup.Item>
                  <Row>

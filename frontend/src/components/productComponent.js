@@ -29,6 +29,11 @@ const ProductComponent = ({product}) => {
     <Card.Text as='h3'>
      ₦ {product.price}
      </Card.Text>
+     
+      <Card.Text as='h6'>
+      Vendor: {product.brand}
+  </Card.Text> 
+
   </Card.Body>
 </Card>
 
