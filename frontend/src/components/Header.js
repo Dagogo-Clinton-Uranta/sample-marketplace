@@ -8,7 +8,8 @@ import SearchBox from './SearchBox.js'
 import bridgeway from './bridgeway-logo.jpg' 
 
 const Header = () => {
-
+   
+  const seller = '-Seller'
   const dispatch = useDispatch()
   const userLogin = useSelector(state => state.userLogin)
   const {userInfo} = userLogin
@@ -23,7 +24,7 @@ const Header = () => {
   <Container>
   <LinkContainer to="/">
   {/*why cant we wrap this in a link tag?*/}
-  <Navbar.Brand ><img src={bridgeway} /></Navbar.Brand>
+  <Navbar.Brand ><img src={bridgeway} alt={'the logo of bridgeway bank'} /></Navbar.Brand>
   </LinkContainer>
 
   <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -52,6 +53,23 @@ const Header = () => {
      </LinkContainer>
    )}
 
+
+{userInfo && userInfo.isMerchant && (
+     <NavDropdown title ={userInfo.name + seller} id='username'>
+
+
+{/*1*/}      <LinkContainer to='/admin/productlist'>
+            <NavDropdown.Item >Products</NavDropdown.Item>
+           </LinkContainer>
+
+{/*2*/}      <LinkContainer to='/admin/orderlist'>
+            <NavDropdown.Item >Orders</NavDropdown.Item>
+           </LinkContainer>
+
+     </NavDropdown>
+   )}
+
+
    {userInfo && userInfo.isAdmin && (
      <NavDropdown title ='Admin' id='adminmenu'>
 
@@ -59,16 +77,18 @@ const Header = () => {
             <NavDropdown.Item >Users</NavDropdown.Item>
           </LinkContainer>
 
-{/*1*/}      <LinkContainer to='/admin/productlist'>
-            <NavDropdown.Item >Product</NavDropdown.Item>
+{/*2*/}      <LinkContainer to='/admin/productlist'>
+            <NavDropdown.Item >Products</NavDropdown.Item>
            </LinkContainer>
 
-{/*1*/}      <LinkContainer to='/admin/orderlist'>
+{/*3*/}      <LinkContainer to='/admin/orderlist'>
             <NavDropdown.Item >Orders</NavDropdown.Item>
            </LinkContainer>
 
      </NavDropdown>
    )}
+
+
 
 
    </Nav>

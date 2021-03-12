@@ -31,7 +31,7 @@ const ProductComponent = ({product}) => {
      </Card.Text>
      
       <Card.Text as='h6'>
-      Vendor: {product.brand}
+      Vendor: {product.vendor}
   </Card.Text> 
 
   </Card.Body>

@@ -22,6 +22,7 @@ const authUser = asyncHandler(async (req,res)=>{
       name:user.name,
       email:user.email, 
       isAdmin:user.isAdmin,
+      isMerchant:user.isMerchant,
       token:generateToken(user._id)
 
 
@@ -62,6 +63,7 @@ const registerUser = asyncHandler(async (req,res)=>{
        name:user.name,
        email:user.email,
        isAdmin:user.isAdmin,
+       isMerchant:user.isMerchant,
        token:generateToken(user._id)
      })
    }else{
@@ -85,7 +87,8 @@ const user = await User.findById(req.user._id)
         _id:user._id,
         name:user.name,
         email:user.email,
-        isAdmin:user.isAdmin
+        isAdmin:user.isAdmin,
+        isMerchant:user.isMerchant
       })
     }
     else{
@@ -118,6 +121,7 @@ const user = await User.findById(req.user._id)
         name:updatedUser.name,
         email:updatedUser.email,
         isAdmin:updatedUser.isAdmin,
+        isMerchant:updatedUser.isMerchant,
         token:generateToken(updatedUser._id)
       })
     }
@@ -190,6 +194,7 @@ const user = await User.findById(req.params.id)
         name:updatedUser.name,
         email:updatedUser.email,
         isAdmin:updatedUser.isAdmin,
+        isMerchant:updatedUser.isMerchant
 
       })
     }

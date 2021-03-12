@@ -13,7 +13,7 @@ const productSchema =  mongoose.Schema({
         user:{type:mongoose.Schema.Types.ObjectId,required:true, ref:'User'},
         name:{type: String ,required:true},
         image:{type: String ,required:true},
-        brand:{type: String ,required:true},
+        vendor:{type: String ,required:true},
         category:{type:String ,required:true},
         description:{type:String ,required:true},
         reviews:[reviewSchema],
@@ -29,7 +29,7 @@ const Product = mongoose.model('Product',productSchema)
 
 /*the this Product you export, you set a new instance
  of it anytime you want to save it to database
- N.B MongoDB uses mongoose ORM unlinke SQL databases cuz
+ N.B MongoDB uses mongoose ORM/ODM unlinke SQL databases cuz
  sql databases come with a structure that you put in through a GUI*/
 
 //exports.Product = Product

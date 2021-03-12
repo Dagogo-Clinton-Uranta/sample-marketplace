@@ -9,21 +9,25 @@ const users = [
     name:'Admin User',
     email:'admin@emaple.com',
     password: hash,
-    isAdmin:true
+    isAdmin:true,
+    isMerchant:false
+
   },
 
   {
     name:'John Doe',
-    email:'admin@examapple.com',
+    email:'john@yahoo.com',
     password: hash,
-    isAdmin:false //it is false by default ,jst leaving it here for future
+    isAdmin:false, //it is false by default ,you're keeping it here because you said it's required
+    isMerchant:false
   },
 
   {
-    name:'Jane Doe',
-    email:'admin@maple.com',
+    name:'OKOLI LTD',
+    email:'okoli@yahoo.com',
     password: hash,
-    isAdmin:false
+    isAdmin:false,
+    isMerchant:true
   }
 ]
 

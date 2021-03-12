@@ -101,7 +101,7 @@ const submitHandler =(e) =>{
                  <Row>
                    <Col>Vendor:</Col>
                    <Col>
-                    <strong> {product.brand}</strong>
+                    <strong> {product.vendor}</strong>
                    </Col>
                  </Row>
                </ListGroup.Item>
