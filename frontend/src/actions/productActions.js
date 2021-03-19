@@ -1,6 +1,9 @@
 import {PRODUCT_LIST_REQUEST,
         PRODUCT_LIST_SUCCESS,
         PRODUCT_LIST_FAILURE,
+       // PRODUCT_LIST_BY_MERCHANT_REQUEST,
+       // PRODUCT_LIST_BY_MERCHANT_SUCCESS,
+       // PRODUCT_LIST_BY_MERCHANT_FAILURE,
         PRODUCT_DETAILS_REQUEST,
         PRODUCT_DETAILS_SUCCESS,
         PRODUCT_DETAILS_FAILURE,
@@ -26,13 +29,13 @@ import {PRODUCT_LIST_REQUEST,
 import axios from 'axios'
 
 
-export const listProducts =(keyword='',pageNumber='') =>async(dispatch) => { /*this is an action creator, the object that is created is the action */
-  /*redux-thunk middleware allows me to have a function withina function, as below*/
+export const listProducts =(keyword='',pageNumber='', vendorName={}) =>async(dispatch) => { /*this is an action creator, the object that is created is the action */
+  /*redux-thunk middleware allows me to have a function within a function, as below*/
       
         try{
-          dispatch({type:PRODUCT_LIST_REQUEST}/*THIS IS THE ACTION NOW*/)
+          dispatch({type:PRODUCT_LIST_REQUEST}/*try changing the route based on whether the user is merchant or is admin*/)
 
-           const {data} = await axios.get(`/api/products?keyword=${keyword}&pageNumber=${pageNumber}`)
+           const {data} = await axios.get(`/api/products?keyword=${keyword}&pageNumber=${pageNumber}&vendorName=${vendorName}`)
 
            dispatch({type:PRODUCT_LIST_SUCCESS,
                      payload:data
@@ -49,21 +52,21 @@ export const listProducts =(keyword='',pageNumber='') =>async(dispatch) => { /*t
 
 /*
 EXPERIMENTAL NEW ACTION FOR  FETCHING PRODUCTS ACCORDING TO VENDOR
-export const listProducts =(keyword='',pageNumber='') =>async(dispatch) => { 
+export const listProductsByMerchant =(keyword='',pageNumber='') =>async(dispatch) => { 
 
       
   try{
-    dispatch({type:PRODUCT_LIST_REQUEST})
-
+    dispatch({type:PRODUCT_LIST_BY_MERCHANT_REQUEST})
+                                      THE ROUTE BELOW SHOULD CHANGE
      const {data} = await axios.get(`/api/products?keyword=${keyword}&pageNumber=${pageNumber}`)
 
-     dispatch({type:PRODUCT_LIST_SUCCESS,
+     dispatch({type:PRODUCT_LIST_BY_MERCHANT_SUCCESS,
                payload:data
              })
 
   }
   catch(error){
-      dispatch({type:PRODUCT_LIST_FAILURE,
+      dispatch({type:PRODUCT_LIST_BY_MERCHANT_FAILURE,
                 payload: error.response && error.response.data.message?
                  error.response.data.message:error.message })
   }

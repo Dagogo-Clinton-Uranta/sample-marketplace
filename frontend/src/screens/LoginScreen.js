@@ -7,7 +7,15 @@ import Loader from '../components/Message.js'
 import {login} from '../actions/userActions.js'
 import FormContainer from '../components/FormContainer.js'
 
+/*
+import ... from '...'
 
+const LoginScreen = ()=> {
+
+  return()
+}
+
+*/
 
 
 
@@ -61,10 +69,10 @@ const LoginScreen = ({location, history}) => { //he is taking location & history
         </Form>
 
         <Row className='py-3'>
-         <Col>
+         <Col>                       var john ='to my page'
            New Customer?<Link to={redirect?`$register/redirect=${redirect}`:'/register'}> Register</Link>
-         </Col>
-        </Row>
+         </Col>                       
+        </Row>              
 
        </FormContainer>
 

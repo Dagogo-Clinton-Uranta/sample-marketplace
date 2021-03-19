@@ -11,16 +11,25 @@ const getProducts = asyncHandler(async (req,res)=>{
      const pageSize = 3 //i recommend 6 per page
      const page = Number(req.query.pageNumber) || 1
 
- 
+ const vendorName = req.query.vendorName  //if your vendorName logic is messing up, come and change it to resemble that of keyword, with the empty object
+let count;
+let products;
+
   const keyword = req.query.keyword ? {
    name: {
      $regex: req.query.keyword,
-     $options:'i' //what is this ?? it means case insensitive 
+     $options:'i' // it means case insensitive 
    }
  
  }:{}
-   const count = await Product.countDocuments({...keyword})
-  const products = await Product.find({...keyword}).limit(pageSize).skip(pageSize *(page-1))
+ 
+ // I am instructing my getProducts controller to tune it's search, based on if there's a vendor name or not 
+ vendorName !==''?(
+   count = await Product.countDocuments({...keyword, vendor:vendorName}), 
+  products = await Product.find({...keyword, vendor:vendorName}).limit(pageSize).skip(pageSize *(page-1))) :
+(count = await Product.countDocuments({...keyword}),
+products = await Product.find({...keyword}).limit(pageSize).skip(pageSize *(page-1)))
+
 
   res.json({products,page,pages:Math.ceil(count/pageSize)})
 })
@@ -29,11 +38,11 @@ const getProducts = asyncHandler(async (req,res)=>{
 
 //@desc  Fetch single product
 //@route GET /api/products/:id
-//@access Public
+//@access Publiccount
 const getProductById = asyncHandler(async (req,res)=>{
   const product = await Product.findOne({_id:req.params.id})
   if(product){res.json(product)}
-   else{ res.status(404) /*with the custom error hadler, if you dont put a res.status, it'll be 500 by default, and you don't have to res.json anymore, it'll just be handled, if yo throw a new error ? please study error handlers */
+   else{ res.status(404) /*with the custom error handler, if you dont put a res.status, it'll be 500 by default, and you don't have to res.json anymore, it'll just be handled, if yo throw a new error ? please study error handlers */
    throw new Error('Product not found')}
 })
 
@@ -47,7 +56,7 @@ const deleteProduct = asyncHandler(async (req,res)=>{
     await product.remove()
     res.json({message:'Product removed'})
                                     }
-   else{ res.status(404) /*with the custom error hadler, if you dont put a res.status, it'll be 500 by default, and you don't have to res.json anymore, it'll just be handled, if yo throw a new error ? please study error handlers */
+   else{ res.status(404) /*with the custom error handler, if you dont put a res.status, it'll be 500 by default, and you don't have to res.json anymore, it'll just be handled, if yo throw a new error ? please study error handlers */
    throw new Error('Product not found')}
 })
 

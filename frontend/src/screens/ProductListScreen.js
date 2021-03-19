@@ -29,6 +29,7 @@ const ProductListScreen =({history, match}) => { //he is taking location & histo
 
   /* const keyword = ''just in case you need an empty string in listProducts */
 
+  const vendorName = userInfo.isMerchant ? userInfo.name :'' 
 
 
 
@@ -38,7 +39,7 @@ const ProductListScreen =({history, match}) => { //he is taking location & histo
 
   useEffect( () => {
     dispatch({type: PRODUCT_CREATE_RESET })
-  if(!userInfo.isAdmin ){
+  if(userInfo.isAdmin === false  && userInfo.isMerchant === false){
   history.push('/login')
 
   }
@@ -46,12 +47,12 @@ const ProductListScreen =({history, match}) => { //he is taking location & histo
   if(successCreate){
    history.push(`/admin/product/${createdProduct._id}/edit`)
  }else{
-   dispatch(listProducts(' ',pageNumber))
+   dispatch(listProducts(' ',pageNumber,vendorName))
  }
 
 
     }
-  ,[dispatch,history,userInfo, successDelete,successCreate,createdProduct,pageNumber]) //successDelete was passed into useEffect because youu want the list of users to reload, showing the effective delete
+  ,[dispatch,history,userInfo, successDelete,successCreate,createdProduct,pageNumber,vendorName]) //successDelete was passed into useEffect because youu want the list of users to reload, showing the effective delete
 
 
 

@@ -17,6 +17,7 @@ router.route('/').get(getProducts).post(protect,admin,createProduct)
 router.route('/:id/reviews').post(protect,createProductReview)
 router.get('/top',getTopProducts)
 
+
 //@Fetch single product
 //@GET api/products/:id
 //@@Public access

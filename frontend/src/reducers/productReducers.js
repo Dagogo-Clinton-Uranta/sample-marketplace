@@ -1,6 +1,9 @@
  import {PRODUCT_LIST_REQUEST,
          PRODUCT_LIST_SUCCESS,
          PRODUCT_LIST_FAILURE,
+         PRODUCT_LIST_BY_MERCHANT_REQUEST,
+         PRODUCT_LIST_BY_MERCHANT_SUCCESS,
+         PRODUCT_LIST_BY_MERCHANT_FAILURE,
          PRODUCT_DETAILS_REQUEST,
          PRODUCT_DETAILS_SUCCESS,
          PRODUCT_DETAILS_FAILURE,
@@ -37,6 +40,17 @@ export const  productListReducer = (state={products:[]},action) => {
   }
 }
 
+ export const productListByMerchantReducer = (state = {products:[]},action) => {
+   
+   switch(action.type){
+      case PRODUCT_LIST_BY_MERCHANT_REQUEST:return { loading: true , products:[]}
+      case PRODUCT_LIST_BY_MERCHANT_SUCCESS:return {loading:false , products: action.payload.products, pages:action.payload.pages, page:action.payload.page}
+      case PRODUCT_LIST_BY_MERCHANT_FAILURE:return {loading:false, error:action.payload}
+
+      default: return state
+   }
+
+} 
 
 export const  productDeleteReducer = (state={ },action) => {
   switch(action.type){

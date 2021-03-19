@@ -17,6 +17,7 @@ const UserEditScreen = ({match, history}) => { //he is taking location & history
   const [name,setName] = useState('')
   const [email,setEmail] = useState('')  //component level state right here, not application level state
   const [isAdmin,setIsAdmin] = useState(false)
+  const [isMerchant, setIsMerchant] = useState(false)
 
 
   const dispatch = useDispatch() //dont forget that real dispatches only take place in action creators, you are only calling useDispatch here
@@ -42,6 +43,7 @@ const UserEditScreen = ({match, history}) => { //he is taking location & history
       setName(user.name)
       setEmail(user.email)
       setIsAdmin(user.isAdmin)
+      setIsMerchant(user.isMerchant)
     }
 
   }
@@ -52,7 +54,7 @@ const UserEditScreen = ({match, history}) => { //he is taking location & history
 
   const submitHandler = (e) => {
           e.preventDefault()
-  dispatch(updateUser({_id:userId ,name , email, isAdmin}))
+  dispatch(updateUser({_id:userId ,name , email, isAdmin, /* isMerchant*/}))
 
   }
 
@@ -87,6 +89,12 @@ const UserEditScreen = ({match, history}) => { //he is taking location & history
 
        </Form.Group>
 
+{/*4*/}      <Form.Group controlId='ismerchant'>
+
+
+<Form.Check type='checkbox' label="Is Merchant" checked={isMerchant} onChange={(e)=>setIsMerchant(e.target.checked)}></Form.Check>
+
+</Form.Group>
 
 
         <Button type='submit' variant='primary'>Update</Button>

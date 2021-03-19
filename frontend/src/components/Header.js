@@ -9,7 +9,7 @@ import bridgeway from './bridgeway-logo.jpg'
 
 const Header = () => {
    
-  const seller = '-Seller'
+  const seller = '(Seller)'
   const dispatch = useDispatch()
   const userLogin = useSelector(state => state.userLogin)
   const {userInfo} = userLogin
