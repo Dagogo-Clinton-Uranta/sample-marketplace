@@ -15,6 +15,7 @@ import PaymentScreen from './screens/PaymentScreen.js'
 import PlaceOrderScreen from './screens/PlaceOrderScreen.js'
 import OrderScreen from './screens/OrderScreen.js'
 import OrderListScreen from './screens/OrderListScreen.js'
+import CommunicationScreen from './screens/CommunicationScreen.js'
 import UserListScreen from './screens/UserListScreen.js'
 import UserEditScreen from './screens/UserEditScreen.js'
 import ProductListScreen from './screens/ProductListScreen.js'
@@ -35,20 +36,21 @@ const App = () => {
        < Route path='/placeorder' component={PlaceOrderScreen}/>
        < Route path='/login' component={LoginScreen}/>
        < Route path='/register' component={RegisterScreen}/>
-        < Route path='/profile' component={ProfileScreen}/>
+       < Route path='/profile' component={ProfileScreen}/>
+       < Route path= '/communications' component={CommunicationScreen} />
        
-       < Route path='/product/:id' component={ProductScreen}/> 
-       < Route path='/cart/:id?' component={CartScreen}/>
+        < Route path='/product/:id' component={ProductScreen}/> 
+        < Route path='/cart/:id?' component={CartScreen}/>
         < Route path='/admin/userlist' component={UserListScreen}/>
         < Route path='/admin/user/:id/edit' component={UserEditScreen}/>
         < Route path='/admin/productlist'  exact component={ProductListScreen}/>
         < Route path='/admin/productlist/:pageNumber'  exact component={ProductListScreen}/>
         < Route path='/admin/product/:id/edit' component={ProductEditScreen}/>
-          < Route path='/admin/orderlist' component={OrderListScreen}/>
-       < Route path='/search/:keyword' component={HomeScreen} exact/>
-       < Route path='/page/:pageNumber'exact component={HomeScreen}/>
+        < Route path='/admin/orderlist' component={OrderListScreen}/>
+        < Route path='/search/:keyword' component={HomeScreen} exact/>
+        < Route path='/page/:pageNumber'exact component={HomeScreen}/>
         < Route path='/search/:keyword/page/:pageNumber'  exact component={HomeScreen}/>
-       < Route path='/'exact component={HomeScreen}/>
+        < Route path='/'exact component={HomeScreen}/>
 
        
        </Container>

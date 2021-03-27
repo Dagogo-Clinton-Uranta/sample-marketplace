@@ -7,15 +7,7 @@ import Loader from '../components/Message.js'
 import {login} from '../actions/userActions.js'
 import FormContainer from '../components/FormContainer.js'
 
-/*
-import ... from '...'
 
-const LoginScreen = ()=> {
-
-  return()
-}
-
-*/
 
 
 
@@ -25,6 +17,7 @@ const LoginScreen = ({location, history}) => { //he is taking location & history
   const dispatch = useDispatch() //dont forget that real dispatches only take place in action creators, you are only calling useDispatch here
   const userLogin = useSelector(state => state.userLogin);
   const {loading, error,userInfo } = userLogin
+  
 
   const redirect = location.search ? location.search.split('=')[1]:'/'
 //location .search has the url query string, study it a bit
@@ -69,7 +62,7 @@ const LoginScreen = ({location, history}) => { //he is taking location & history
         </Form>
 
         <Row className='py-3'>
-         <Col>                       var john ='to my page'
+         <Col>                       
            New Customer?<Link to={redirect?`$register/redirect=${redirect}`:'/register'}> Register</Link>
          </Col>                       
         </Row>              
