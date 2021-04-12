@@ -17,7 +17,7 @@ const Meta = ({title, description,keywords}) => {
 
 }
   Meta.defaultProps ={
-    title:'Welcome to Proshop',
+    title:'Bridgeway-Marketplace',
     description:'We sell the best products for cheap',
     keywords:'electronics, tech,apple, cheap gadgets'
   }

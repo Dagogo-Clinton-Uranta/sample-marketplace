@@ -10,8 +10,9 @@ const users = [
     email:'admin@emaple.com',
     password: hash,
     isAdmin:true,
-    isMerchant:false
-
+    isMerchant:false,
+    userMessage:'',
+    adminMessage:''
   },
 
   {
@@ -19,7 +20,9 @@ const users = [
     email:'john@yahoo.com',
     password: hash,
     isAdmin:false, //it is false by default ,you're keeping it here because you said it's required
-    isMerchant:false
+    isMerchant:false,
+    userMessage:'',
+    adminMessage:''
   },
 
   {
@@ -27,7 +30,9 @@ const users = [
     email:'okoli@yahoo.com',
     password: hash,
     isAdmin:false,
-    isMerchant:true
+    isMerchant:true,
+    userMessage:'',
+    adminMessage:''
   }
 ]
 

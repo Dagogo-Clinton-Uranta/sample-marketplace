@@ -2,6 +2,12 @@ import {USER_LOGIN_REQUEST,
         USER_LOGIN_SUCCESS,
         USER_LOGIN_FAILURE,
         USER_LOGOUT,
+        USER_SEND_REQUEST,
+        USER_SEND_SUCCESS,
+        USER_SEND_FAILURE,
+        ADMIN_SEND_REQUEST,
+        ADMIN_SEND_SUCCESS,
+        ADMIN_SEND_FAILURE,
         USER_REGISTER_REQUEST,
         USER_REGISTER_SUCCESS,
         USER_REGISTER_FAILURE,
@@ -39,6 +45,33 @@ export const  userLoginReducer = (state={},action) => {
     default: return state
 
   }
+}
+
+//i am here , trying to create a reducer that'll handle when a user SENDS a message
+export const userSendReducer = (state={},action)=> {
+   switch(action.type){
+     case USER_SEND_REQUEST: return { loading:true } 
+
+     case USER_SEND_SUCCESS: return { loading:false, userMessage:action.payload }
+       /*this user message, we never call it sef , we are just following convention */
+     case USER_SEND_FAILURE: return { loading:false, error:action.payload }
+     
+    default: return state
+   }
+
+}
+
+export const adminSendReducer = (state={},action)=> {
+  switch(action.type){
+    case ADMIN_SEND_REQUEST: return { loading:true } 
+
+    case ADMIN_SEND_SUCCESS: return { loading:false, adminMessage:action.payload }
+     /*this admin message, we never call it sef , we are just following convention */
+    case ADMIN_SEND_FAILURE: return { loading:false, error:action.payload }
+    
+   default: return state
+  }
+
 }
 
 

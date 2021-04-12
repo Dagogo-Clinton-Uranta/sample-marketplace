@@ -4,6 +4,12 @@
          USER_LOGIN_SUCCESS,
          USER_LOGIN_FAILURE,
          USER_LOGOUT,
+         USER_SEND_REQUEST,
+         USER_SEND_SUCCESS,
+         USER_SEND_FAILURE,
+         ADMIN_SEND_REQUEST,
+         ADMIN_SEND_SUCCESS,
+         ADMIN_SEND_FAILURE,
          USER_REGISTER_REQUEST,
          USER_REGISTER_SUCCESS,
          USER_REGISTER_FAILURE,
@@ -34,14 +40,14 @@ export const login = (email,password) => async(dispatch) =>{
   try {
     dispatch({type: USER_LOGIN_REQUEST})
 
-    //we do config cus we wanna send he headers a content type of application/json
+    //we do config cus we wanna send the headers a content type of application/json
     const config = {
       headers:{ 
         'Content-Type':'application/json'
       }
     }
     const {data} = await axios.post('/api/users/login/',{email,password},config)
-    //i'm gonna take a stab here and say that the third argument for axios is for setting header property
+    /*does axios return more than one variable, this one that we're destructuring, and takin data?*/
 
     dispatch({
               type: USER_LOGIN_SUCCESS,
@@ -55,6 +61,52 @@ export const login = (email,password) => async(dispatch) =>{
                payload: error.response && error.response.data.message?
                 error.response.data.message:error.message })
    }
+}
+
+export const clientSaid = (clientMessage, clientId,clientName) => async(dispatch) => {
+    try{
+      dispatch({type: USER_SEND_REQUEST})
+      
+      const config = {
+        headers:{
+          'Content-Type':'application/json'
+        }
+      }
+
+      const {data} = await axios.patch('api/users/clientMessage',{clientMessage,clientId,clientName},config)
+      
+      dispatch({type:USER_SEND_SUCCESS,
+      payload:data})
+
+    }
+   catch(error){
+      dispatch({type:USER_SEND_FAILURE,
+       payload:error.response && error.response.data.message?
+      error.response.data.message:error.message})
+   }
+}
+
+export const adminSaid = (bossMessage, clientId,clientEmail,clientName) => async(dispatch) => {
+  try{
+    dispatch({type: ADMIN_SEND_REQUEST}) /* WHY DO WE EVEN HAVE this reducer, when we dont call it from store */
+    
+    const config = {
+      headers:{
+        'Content-Type':'application/json'
+      }
+    }
+
+    const {data} = await axios.patch('api/users/adminMessage',{bossMessage, clientId,clientEmail,clientName},config)
+    
+    dispatch({type:ADMIN_SEND_SUCCESS,
+    payload:data})
+
+  }
+ catch(error){
+    dispatch({type:ADMIN_SEND_FAILURE,
+     payload:error.response && error.response.data.message?
+    error.response.data.message:error.message})
+ }
 }
 
 export const logout = () => (dispatch) => {
@@ -71,7 +123,7 @@ export const register = (name,email,password) => async(dispatch)=> {
   try {
     dispatch({type: USER_REGISTER_REQUEST})
 
-    //we do config cus we wanna send he headers a content type of application/json
+    //we do config cus we wanna send the headers a content type of application/json
     const config = {
       headers:{
         'Content-Type':'application/json'
@@ -100,7 +152,7 @@ export const register = (name,email,password) => async(dispatch)=> {
 }
 
 export const getUserDetails = (id) => async (dispatch,getState) => {
-   //redux thunk was used just now in the form of async (dispatch) above
+   
   try {
     dispatch({type: USER_DETAILS_REQUEST})
 

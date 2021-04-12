@@ -25,12 +25,13 @@ const UserEditScreen = ({match, history}) => { //he is taking location & history
   const userDetails = useSelector((state) => state.userDetails);
   const {loading, error,user } = userDetails
      console.log(userDetails)
-  const userUpdate = useSelector((state) => state.userUpdate);
+  
+     const userUpdate = useSelector((state) => state.userUpdate);
   const {loading:loadingUpdate, error:errorUpdate, success:successUpdate } = userUpdate
 
 
 
-//because we dont want to able to come into the login screen ONCE WE ARE ALREADY LOGGED IN, effect this in the useEffect below
+
 
   useEffect( () => {
     if(successUpdate){
@@ -101,13 +102,7 @@ const UserEditScreen = ({match, history}) => { //he is taking location & history
       </Form>
     )}
 
-     {/*{message && <Message variant='danger'>{danger}</Message>}
-     {error && <Message variant='danger'>{error}</Message>}
-    {loading && <Loader/>}*/}
-
-
-
-
+     
     </FormContainer>
         </>
 

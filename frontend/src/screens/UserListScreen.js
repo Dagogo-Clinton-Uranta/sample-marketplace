@@ -16,7 +16,7 @@ const UserListScreen = ({history}) => { //he is taking location & history out of
   const [password,setPassword] = useState('')
   const [confirmpassword,setConfirmPassword] = useState('')
   const [message,setMessage] = useState(null)*/
-  const dispatch = useDispatch() //dont forget that real dispatches only take place in action creators, you are only calling useDispatch here
+  const dispatch = useDispatch() 
 
   const userList = useSelector(state => state.userList);
   const {loading, error,users } = userList
@@ -33,7 +33,6 @@ const UserListScreen = ({history}) => { //he is taking location & history out of
  
 //location .search has the url query string, study it a bit
 
-//because we dont want to able to come into the login screen ONCE WE ARE ALREADY LOGGED IN, effect this in the useEffect below
 
   useEffect( () => {
   if(userInfo && userInfo.isAdmin ){
@@ -44,12 +43,12 @@ const UserListScreen = ({history}) => { //he is taking location & history out of
 
 
     }
-  ,[dispatch,history,successDelete,userInfo]) //successDelete was passed into useEffect because youu want the list of users to reload, showing the effective delete
+  ,[dispatch,history,successDelete,userInfo]) 
 
 
 
  const deleteHandler = (id) => {
-if(window.confirm('Are you sure you want to delete this item ?')){ //window.confirm is good practice for if you want to delete items
+if(window.confirm('Are you sure you want to delete this item ?')){ 
   dispatch(deleteUser(id))
 }
 
@@ -87,10 +86,19 @@ if(window.confirm('Are you sure you want to delete this item ?')){ //window.conf
                    <i className='fas fa-edit'></i>
                 </Button>
                </LinkContainer>
+
+               <LinkContainer to={`/admin/user/${user._id}/communications`}>
+                <Button variant='light' className='btn-sm'>
+                   <i className='fas fa-paper-plane'></i>
+                </Button>
+               </LinkContainer>
+
                <Button variant='danger' className='btn-sm' onClick={()=>deleteHandler(user._id)}>
                  <i className='fas fa-trash'></i>
                </Button>
              </td>
+
+             
             </tr>
           ))}
          </tbody>

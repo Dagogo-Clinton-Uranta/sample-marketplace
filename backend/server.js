@@ -42,7 +42,7 @@ connectDB()
  const app = express()
 if(process.env.NODE_ENV === 'development'){app.use(morgan('dev'))} //brad prefers to use morgan in development and not in production
 
- app.use(express.json())  //this is the new bodyParser tha is in express and allows us to read json from req.body
+ app.use(express.json())  //this is the new bodyParser that is in express and allows us to read json from req.body
 
 
 
@@ -56,7 +56,7 @@ app.get('/api/config/paypal',(req,res)=>{
   res.send(process.env.PAYPAL_CLIENT_ID)
 }) //this is a CONFIG route to access the paypal client id
 
-const __dirname =path.resolve() //OKAY BRAD DID THIS TO MIMIC PATH.JOIN(__DIRNAME) , BECAUSE IT IS ONLY ACCESSIBLE IN COMMON JS AND NOT ES6 SYNTAX
+const __dirname =path.resolve() //OKAY BRAD DID THIS TO MIMIC PATH.JOIN(__DIRNAME) , BECAUSE THE OG __dirname IS ONLY ACCESSIBLE IN COMMON JS AND NOT ES6 SYNTAX
 app.use('/uploads', express.static(path.join(__dirname,'/uploads')))
 
 

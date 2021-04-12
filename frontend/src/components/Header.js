@@ -7,15 +7,15 @@ import {logout} from '../actions/userActions.js'
 import SearchBox from './SearchBox.js'
 import bridgeway from './bridgeway-logo.jpg' 
 
-const Header = () => {
+const Header = ({history}) => {
    
-  const seller = '(Seller)'
+  const seller = '(Merchant)'
   const dispatch = useDispatch()
   const userLogin = useSelector(state => state.userLogin)
   const {userInfo} = userLogin
   const logoutHandler = () => {
    dispatch(logout())
-
+   history.push('/')
   }
     return(
 <header>
