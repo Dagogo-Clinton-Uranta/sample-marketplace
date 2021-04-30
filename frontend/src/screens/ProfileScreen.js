@@ -1,6 +1,6 @@
 import React, {useState ,useEffect} from 'react'
 import {LinkContainer} from 'react-router-bootstrap'
-import {Table,Form, Button, Row, Col} from 'react-bootstrap'
+import {Table,Form, Button, Row, Col, ListGroup} from 'react-bootstrap'
 import {useDispatch, useSelector} from 'react-redux'
 import Message from '../components/Message.js'
 import Loader from '../components/Message.js'
@@ -40,7 +40,7 @@ const ProfileScreen = ({location, history}) => { //he is taking location & histo
     if(!userInfo){ //cuz user info exists only when you're logged in
        history.push('/login')
     }else{
-      if(!user.name){
+      if(!user.name){ /*i changed user.name to userInfo.name,to test */
         dispatch(getUserDetails('profile')/*profile serves as the ID here, so that in the get userDetails route, it hits  /api/users/profile route, and not an actual id*/)
           dispatch(listMyOrders())
       }else{
@@ -101,6 +101,29 @@ const ProfileScreen = ({location, history}) => { //he is taking location & histo
 
         <Button type='submit' variant='primary'> Update </Button>
       </Form>
+       
+       
+       <br/>
+       <br/>
+       <br/>
+
+       <ListGroup>
+         <ListGroup.Item>
+       <Row>
+        Want to make an enquiry/complaint ? click chat below
+        </Row>
+        </ListGroup.Item>
+        
+        <br/>
+        <ListGroup.Item>
+        <Row>
+      <LinkContainer to='/communications'>
+      <Button type='submit' variant='primary'> Chat </Button>
+      </LinkContainer>
+        </Row>
+        </ListGroup.Item>
+        </ListGroup>
+
       </Col>
 
       <Col md={9}>

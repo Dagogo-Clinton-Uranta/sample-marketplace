@@ -2,7 +2,7 @@ import React from 'react'
 import {Nav, NavLink,NavItem} from 'react-bootstrap'
 import {LinkContainer} from 'react-router-bootstrap'
 
-const CheckoutSteps = ({step1,step2 ,step3, step4}) => {
+const CheckoutSteps = ({step1,step2 ,step3 /*, step4*/}) => {
 
      return (
        <>
@@ -28,18 +28,18 @@ const CheckoutSteps = ({step1,step2 ,step3, step4}) => {
      
 
 
-{/*3*/}       <NavItem>
+{/*3       <NavItem>
         {step3 ? (
            
           <LinkContainer to='/payment'> 
-           <NavLink>{/*<i class="fa fa-arrow-right" aria-hidden="true"></i>*/} Payment</NavLink>
+           <NavLink>Payment</NavLink>
           </LinkContainer>
         
         ):  <NavLink disabled> Payment</NavLink>}
-            </NavItem>
+            </NavItem> */}
 
-  {/*4*/}       <NavItem>
-           {step4 ? (
+  {/*3*/}       <NavItem>
+           {step3 ? (
             
             <LinkContainer to='/placeorder'>
             <NavLink>{/*<i class="fa fa-arrow-right" aria-hidden="true"></i>*/} Place Order</NavLink>

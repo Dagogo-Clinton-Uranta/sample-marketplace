@@ -25,6 +25,10 @@ const ProductScreen = ({history,match}) => {
   const productCreateReview = useSelector(state => state.productCreateReview)
   const {success:successProductReview, error:errorProductReview} = productCreateReview
   
+
+  const userLogin = useSelector(state => state.userLogin)
+  const {userInfo} = userLogin
+  
  useEffect(()=>{
   dispatch(listProductDetails(match.params.id))
   
@@ -38,14 +42,20 @@ const ProductScreen = ({history,match}) => {
    
  },[dispatch,match,successProductReview])
 
+
 const addToCartHandler = () => {
-    history.push(`/cart/${match.params.id}?qty=${qty}`) //there was a blank set of brackets here, you just put quantity in 
+  if(!userInfo){
+    window.alert('Please sign in to purchase')
+  }
+  else if(userInfo && (userInfo.isAdmin||userInfo.isMerchant)){
+    window.alert('Only customers may make purchases, please register as a customer')
+  }
+    else{history.push(`/cart/${match.params.id}?qty=${qty}`)} //there was a blank set of curly braces here, you just put quantity in 
 }
   
 
 
-  const userLogin = useSelector(state => state.userLogin)
-  const {userInfo} = userLogin
+ 
 
   console.log(productDetails)
 

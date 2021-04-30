@@ -20,15 +20,21 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
 
   const orderList = useSelector(state => state.orderList);
   const {loading, error,orders } = orderList
-
+  console.log(orders)
 
   const userLogin = useSelector(state => state.userLogin);
   const {userInfo } = userLogin
+   
+  const vendorName = userInfo.isMerchant ? userInfo.name : ''
 
+  //THE LOGIC FOR CALCULATING THE TOTAL PRICE OF ITEMS THAT IS SPECIFIC TO EACH VENDOR
+  /*const addDecimals = (num) => { return(Math.round(num*100)/100).toFixed(2) }
+      
+    cart.itemsPrice = addDecimals(cart.cartItems.reduce((acc, item)=>acc +item.price*item.qty,0))*/
 
   useEffect( () => {
-  if(userInfo && userInfo.isAdmin ){
-  dispatch(listOrders())
+  if(userInfo && (userInfo.isAdmin ||userInfo.isMerchant )){
+  dispatch(listOrders(vendorName))
   }else{
    history.push('/login')
   }
@@ -47,7 +53,7 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
            <th>ID</th>
            <th>USER</th>
            <th>DATE</th>
-           <th>TOTAL</th> {/*AS PER TOTAL PRICE*/}
+           {userInfo.isAdmin ?(<th>TOTAL</th>):(<th>EXPECTED PAYMENT</th> )}{/*AS PER TOTAL PRICE*/}
            <th>PAID</th>
            <th>DELIVERED</th>
            <th></th>
@@ -59,7 +65,7 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
               <td>{order._id}</td>
               <td>{order.user && order.user.name}</td>
               <td>{order.createdAt.substring(0,10)}</td>
-              <td>₦ {order.totalPrice}</td>
+              <td>₦ {userInfo.isAdmin ? (order.totalPrice) : ((order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.qty),0)).toFixed(2))}</td>
 
               <td>{order.isPaid ? (order.paidAt.substring(0,10)): /*there used to be curly braces around order.paidAt */
                 (<i className='fas fa-times' style={{color:'red'}}></i>)}

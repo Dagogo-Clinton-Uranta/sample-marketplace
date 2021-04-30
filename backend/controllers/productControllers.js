@@ -2,6 +2,8 @@ import Product from '../models/productModel.js'
 import asyncHandler from 'express-async-handler'
 //const Product = require('../models/productModel.js')
 //const asyncHandler = require('express-async-handler')
+import mongoose from 'mongoose'
+
 
 //@desc  Fetch all products
 //@route GET /api/products
@@ -40,7 +42,8 @@ products = await Product.find({...keyword}).limit(pageSize).skip(pageSize *(page
 //@route GET /api/products/:id
 //@access Publiccount
 const getProductById = asyncHandler(async (req,res)=>{
-  const product = await Product.findOne({_id:req.params.id})
+  const objectId = new mongoose.Types.ObjectId(req.params.id)
+  const product = await Product.findById(objectId)
   if(product){res.json(product)}
    else{ res.status(404) /*with the custom error handler, if you dont put a res.status, it'll be 500 by default, and you don't have to res.json anymore, it'll just be handled, if yo throw a new error ? please study error handlers */
    throw new Error('Product not found')}
@@ -51,7 +54,8 @@ const getProductById = asyncHandler(async (req,res)=>{
 //@route DELETE /api/products/:id
 //@access Private/Admin
 const deleteProduct = asyncHandler(async (req,res)=>{
-  const product = await Product.findById(req.params.id)
+  const objectId = new mongoose.Types.ObjectId(req.params.id)
+  const product = await Product.findById(objectId)
   if(product){
     await product.remove()
     res.json({message:'Product removed'})
@@ -73,7 +77,7 @@ const createProduct = asyncHandler(async (req,res)=>{
      brand:"Sample brand",
      category:'Sample category',
      countInStock:0,
-     numReviews:0,
+     numReviews:0, /*is it reviews or num reviews  */
      description:'Sample Description' 
    })
 
@@ -90,7 +94,8 @@ const updateProduct = asyncHandler(async (req,res)=>{
 
   const {name,price,description,image,category,countInStock} = req.body
 
-  const product= await Product.findById(req.params.id)
+  const objectId = new mongoose.Types.ObjectId(req.params.id)
+  const product= await Product.findById(objectId)
 
    if(product){
       product.name = name
@@ -119,8 +124,8 @@ const updateProduct = asyncHandler(async (req,res)=>{
 const createProductReview = asyncHandler(async (req,res)=>{
 
   const {rating,comment} = req.body
-
-  const product= await Product.findById(req.params.id)
+  const objectId = new mongoose.Types.ObjectId(req.params.id)
+  const product= await Product.findById(objectId)
 
    if(product){
       const alreadyReviewed = product.reviews.find(r => r.user.toString() === req.user._id.toString())

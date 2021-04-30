@@ -37,8 +37,11 @@ const UserListScreen = ({history}) => { //he is taking location & history out of
   useEffect( () => {
   if(userInfo && userInfo.isAdmin ){
   dispatch(listUsers())
-  }else{
-   history.push('/login')
+  }else if(userInfo && userInfo.isMerchant){
+   history.push('/')
+  }
+  else{
+    history.push('login')
   }
 
 
@@ -72,7 +75,7 @@ if(window.confirm('Are you sure you want to delete this item ?')){
          </thead>
          <tbody>
           {users.map(user => (
-            <tr key={user._id}>
+            <tr key={user._id}  style={{color:/*!userInfo.messageChange && */'green'}}>
               <td>{user._id}</td>
               <td>{user.name}</td>
               <td><a href={`mailto:${user.email}`}>{user.email}</a></td>

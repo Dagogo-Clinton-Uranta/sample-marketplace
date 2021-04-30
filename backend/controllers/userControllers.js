@@ -9,13 +9,16 @@ import generateToken from '../utils/generateToken.js'
 
 /*import xoauth2 from 'xoauth2'*/
 
-import oAuth75Client from '../utils/oAuth.js'
+import {google} from 'googleapis';
 
 import nodemailer from 'nodemailer'
 //const nodemailer = require('nodemailer')
 
 import dotenv from 'dotenv'
 
+import mongoose from 'mongoose'
+
+//I'm using this bit of code to  convert my strings to object Id
 
 
 dotenv.config()
@@ -23,27 +26,27 @@ dotenv.config()
 //@desc  Auth user & get a token
 //@route POST /api/users/login
 //@access Public
-const authUser = asyncHandler(async (req,res)=>{
+const authUser = asyncHandler(async (req, res) => {
 
-  const{email,password} = req.body
-   //req.body will give us the object thats sent in the body of our front end/POSTMAN JSON, take note
+  const { email, password } = req.body
+  //req.body will give us the object thats sent in the body of our front end/POSTMAN JSON, take note
   //res.send accepts an object i think and not just variables, take note...hese are part of the things that you have to research on yor own
 
-  const user = await User.findOne({email:email})
-  if(user && (await user.matchPassword(password))){
+  const user = await User.findOne({ email: email })
+  if (user && (await user.matchPassword(password))) {
     res.json({
-      _id:user._id,
-      name:user.name,
-      email:user.email, 
-      userMessage:user.userMessage,
-      adminMessage:user.adminMessage,
-      isAdmin:user.isAdmin,
-      isMerchant:user.isMerchant,
-      token:generateToken(user._id)
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      userMessage: user.userMessage,
+      adminMessage: user.adminMessage,
+      isAdmin: user.isAdmin,
+      isMerchant: user.isMerchant,
+      token: generateToken(user._id)
 
 
     })
-  }else{
+  } else {
     res.status(401) //this means unauthorized
     throw new Error('invalid email or password')
   }
@@ -54,219 +57,299 @@ const authUser = asyncHandler(async (req,res)=>{
 //@desc Set the message that the user wants to convey to the admin
 //@route PATCH /api/users/clientMessage
 //@access Public
-const presentClientMessage = asyncHandler(async (req,res)=>{
-const {clientMessage, clientId, clientName} = req.body 
-console.log(req.body)
-    // i need to reset a particular users message so i have to delete by the id i just recieved, HENCE I NEED ID
-   const user = await User.findByIdAndUpdate(clientId, {userMessage:clientMessage},{useFindAndModify:false})
-    /*clientMessage has been changed to string before being passed into the database cuz of app.use(express.json)*/
-      
+const presentClientMessage = asyncHandler(async (req, res) => {
+  const { clientMessage, clientId, clientName } =  await req.body
+  console.log(req.body)
+  const objectId = new mongoose.Types.ObjectId(clientId)
+  // i need to reset a particular users message so i have to delete by the id i just recieved, HENCE I NEED ID
+  const user = await User.findByIdAndUpdate(objectId, { userMessage: clientMessage , messageChange:true}, { useFindAndModify: false })
+  /*clientMessage has been changed to string before being passed into the database cuz of app.use(express.json)*/
 
-    //what we will use to generate a dynamic access toke
-    try{ 
-      oAuth75Client.setCredentials({refresh_token:process.env.REFRESH_TOKEN});
-      const accessToken = await oAuth75Client.getAccessToken()
+
+  //what we will use to generate a dynamic access token
+  const oAuth75Client = new google.auth.OAuth2( process.env.GOOGLE_CLIENT_ID,  process.env.GOOGLE_CLIENT_SECRET, process.env.REDIRECT_URI)
+  
+  oAuth75Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
+  const accessToken = oAuth75Client.getAccessToken().catch(console.error)
+     console.log(oAuth75Client)
+  try{
     
-    //setup of email for nodemailer
-    let transporter = nodemailer.createTransport({
-      host:'smtp.gmail.com',
-      port:465,
-      service:'gmail',
-      secure:true,
-      debug:false,
-      logger:true,
-      auth: {
-        type:'OAuth2',
-        user:process.env.EMAIL,
-        clientId:'316000292851-oqq60q7lvft4ha5gnrql7pfkv02n04u4.apps.googleusercontent.com',
-        clientSecret:process.env.GOOGLE_CLIENT_SECRET,
-        refreshToken:process.env.REFRESH_TOKEN,
-        accessToken:accessToken/*process.env.ACCESS_TOKEN*/ 
-        
 
-      
+    //setup of email for nodemailer
+    let transporter =   nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      service: 'gmail',
+      secure: true,
+      debug: false,
+      logger: true,
+      auth: {
+        type: 'OAuth2',
+        user: process.env.EMAIL,
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        refreshToken: process.env.REFRESH_TOKEN,
+        accessToken: accessToken.token
       }
     })
-      //what i actually want to send to the user/client 
-     let mailOptions = {
-       from: process.env.EMAIL,
-       to:'dagogouranta@gmail.com'/*NB: i need the client's email address, when sending from the admin side of things */,
-       subject:`Message from client ${clientName} -ID: ${clientId}`, /*consider sending if theyre a merchant or a client */
-       text:`${clientMessage}` /*again, is there any conversion from JSON */
+    //what i actually want to send to the user/client 
+    let mailOptions = {
+      from: process.env.EMAIL,
+      to: 'smartsoft_mikeo@yahoo.com',
+      subject: `Message from client: ${clientName}, --ID: ${clientId}`, 
+      text: `${clientMessage}` 
+    }
+
+    //actually sending the mail
+      transporter.sendMail(mailOptions , function (err, data) {
+      if (err) {
+        console.log('Error Occured:', err);
+      } else {
+        console.log('Email sent!');
       }
 
-      //actually sending the mail
-      transporter.sendMail(mailOptions,function(err,data){
-         if (err){
-           console.log('Error Occured:' , err);
-         }else {
-            console.log ('Email sent!');
-         }
-
-      }) }
-      catch(err){
-        console.log(err)
-      }
-      res.status(201) 
-  })
+    })
+  }
+   catch(error){
+    console.log(error)
+  }
+  res.status(201)
+})
 
 
-  //@desc Set the message that the user wants to convey to the admin
+//@desc Set the message that the user wants to convey to the admin
 //@route PATCH /api/users/adminMessage
 //@access Private Admin
-const presentAdminMessage = asyncHandler(async (req,res)=>{
-  const {bossMessage, clientId,clientEmail,clientName} = req.body 
+const presentAdminMessage = asyncHandler(async (req, res) => {
+  const { bossMessage, clientId, clientEmail, clientName } = req.body
   console.log(req.body)
-      // i need to reset a particular users message so i have to delete by the id i just recieved, HENCE I NEED ID
-     const user = await User.findByIdAndUpdate(clientId, {adminMessage:bossMessage},{useFindAndModify:false})
-      /*clientMessage has been changed to string before being passed into the database cuz of app.use(express.json)*/
-        
+  const objectId = new mongoose.Types.ObjectId(clientId)
+  // i need to reset a particular users message so i have to delete by the id i just recieved, HENCE I NEED ID
+  const user = await User.findByIdAndUpdate(objectId, { adminMessage: bossMessage, messageChange:false}, { useFindAndModify: false })
+  /*clientMessage has been changed to string before being passed into the database cuz of app.use(express.json)*/
 
-        //what we will use to generate a dynamic access token
-        //I did this above earlier, am i covered by function scope-yes
-        oAuth75Client.setCredentials({refresh_token:process.env.REFRESH_TOKEN})     
-        const accessToken = await oAuth2Client.getAccessToken()
-          
-      //setup of email for nodemailer
-      let transporter = nodemailer.createTransport({
-        host:'smtp.gmail.com',
-        port:465,
-        service:'gmail',
-        secure:true,
-        debug:false,
-        logger:true,
-        auth: {
-          type:'OAuth2',
-          user:process.env.EMAIL,
-          clientId:process.env.GOOGLE_CLIENT_ID,
-          clientSecret:process.env.GOOGLE_CLIENT_SECRET,
-          refreshToken:process.env.REFRESH_TOKEN,
-          accessToken:accessToken
-        
-        }
-      })
-        //what i actually want to send to the user/client 
-       let mailOptions = {
-         from: process.env.EMAIL,
-         to:clientEmail /*NB: i need the client's email address, when sending from the admin side of things */,
-         cc:'dagogouranta@gmail.com',
-         subject:`Message from bridgeway customer service to ${clientName}`, /*consider sending if theyre a merchant or a client */
-         text:` Dear ${clientName}, ${bossMessage}` /*again, is there any conversion from JSON */
-        }
-  
-        //actually sending the mail
-        transporter.sendMail(mailOptions,function(err,data){
-           if (err){
-             console.log('Error Occurs:' , err);
-           }else {
-              console.log ('Email sent!');
-           }
-  
-        })
 
-        res.status(201)
-    })
+  //what we will use to generate a dynamic access token
+  //I did this above earlier, am i covered by function scope-yes
+  oAuth75Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN })
+  const accessToken = await oAuth75Client.getAccessToken().token
+
+  //setup of email for nodemailer
+  let transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    service: 'gmail',
+    secure: true,
+    debug: false,
+    logger: true,
+    auth: {
+      type: 'OAuth2',
+      user: process.env.EMAIL,
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      refreshToken: process.env.REFRESH_TOKEN,
+      accessToken: accessToken
+
+    }
+  })
+  //what i actually want to send to the user/client 
+  let mailOptions = {
+    from: process.env.EMAIL,
+    to: clientEmail /*NB: i need the client's email address, when sending from the admin side of things */,
+    cc: 'dagogouranta@gmail.com',
+    subject: `Message from bridgeway customer service to ${clientName}`, /*consider sending if theyre a merchant or a client */
+    text: ` Dear ${clientName}, ${bossMessage}` /*again, is there any conversion from JSON */
+  }
+
+  //actually sending the mail
+  transporter.sendMail(mailOptions, function (err, data) {
+    if (err) {
+      console.log('Error Occurs:', err);
+    } else {
+      console.log('Email sent!');
+    }
+
+  })
+
+  res.status(201)
+})
+
+ //@desc  Verify a user before payment
+//@route POST /api/users/verify
+//@access Public
+
+
+const verifyUser = asyncHandler(async (req, res) => {
+
+  const {clientId ,personalIdQuery, personalIdAnswer } = req.body
+  const objectId = new mongoose.Types.ObjectId(clientId)
+  const user = await User.findById(objectId)  
+   
+  /*console.log(user)*/
+    
+  switch(personalIdQuery){
+  case 'momFirstName': 
+  if(user && user.momFirstName === personalIdAnswer){
+    return res.send({confirmedState:'true'})
+  }
+   else{
+    return res.send({confirmedState:'false'})
+   }
+
+  case 'shoeSize':
+  if(user && user.shoeSize === personalIdAnswer){
+    return res.send({confirmedState:'true'})
+  }
+   else{
+    return res.send({confirmedState:'false'})
+   }
+
+  case 'closestFriend':
+   if(user && user.closestFriend === personalIdAnswer){
+    return res.send({confirmedState:'true'})
+    
+   }
+    else{
+      return res.send({confirmedState:'false'})
+    
+   }
+    
+  case 'childhoodStreet':
+  if(user && user.childhoodStreet === personalIdAnswer){
+    return res.send({confirmedState:'true'})
+    
+  }
+   else{
+    return res.send({confirmedState:'false'})
+    
+   }
+  case  'firstEmployment':
+  if(user && user.firstEmployment === personalIdAnswer){
+    return res.send({confirmedState:'true'})
+    
+  }
+   else{
+    return res.send({confirmedState:'false'})
+    
+   }
+      
+  default: return res.send({confirmedState:'false'})
+  
+}
+  
+})
+
+
 
 //@desc Register a new user
-//@route POST /api/users
+// route GET api/users/register
 //@access Public
-const registerUser = asyncHandler(async (req,res)=>{
+const registerUser = asyncHandler(async (req, res) => {
 
-  const{name, email, password} = req.body
-   //req.body will give us the object thats sent in the body of our front end/POSTMAN JSON, take note
+  const { name, email, password ,mumFirstName,shoeSize,closestFriend,childhoodStreet, firstEmployment } = req.body
+  //req.body will give us the object thats sent in the body of our front end/POSTMAN JSON, take note
   /* res.send({email,  this res,send was just done for example btw
      password}) */ //res.send accepts an object i think and not just variables, take note...hese are part of the things that you have to research on yor own
 
-  const userExists = await User.findOne({email:email})
-  if(userExists){
+  const userExists = await User.findOne({ email: email })
+  if (userExists) {
     res.status(400)
     throw new Error('user already exists!')
   }
 
   const user = User.create({ //apparently create is syntactic sugar for the save mehod, since creating entails saving i guess
-     name:name,
-     email:email,
-     password:password
+    name: name,
+    email: email,
+    password: password,
+    mumFirstName:mumFirstName,
+    shoeSize:shoeSize,
+    closestFriend:closestFriend,
+    childhoodStreet:childhoodStreet,
+    firstEmployment:firstEmployment
+
   })
 
-   if(user){
-     res.status(201).json({
-       _id:user._id,
-       name:user.name,
-       email:user.email,
-       userMessage:user.userMessage,
-       adminMessage:user.adminMessage,
-       isAdmin:user.isAdmin,
-       isMerchant:user.isMerchant,
-       token:generateToken(user._id)
-     })
-   }else{
-     res.status(400)
-     throw new Error('Invalid user data')
-   }
+  if (user) {
+    res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      userMessage: user.userMessage,
+      adminMessage: user.adminMessage,
+      isAdmin: user.isAdmin,
+      isMerchant: user.isMerchant,
+      token: generateToken(user._id)
+    })
+  } else {
+    res.status(400)
+    throw new Error('Invalid user data')
+  }
 })
 //@desc  GET user profile
 //@route GET /api/users/profile
 //@access Private
-const getUserProfile = asyncHandler(async (req,res)=>{
+const getUserProfile = asyncHandler(async (req, res) => {
 
-   //req.body will give us the object thats sent in the body of our front end/POSTMAN JSON, take note
+  //req.body will give us the object thats sent in the body of our front end/POSTMAN JSON, take note
   /* res.send({email,  this res,send was just done for example btw
      password}) */ //res.send accepts an object i think and not just variables, take note...hese are part of the things that you have to research on yor own
-
-const user = await User.findById(req.user._id)
-/*the way he names every variable user, he is aware of function scope and he uses it well*/
-    if(user){
-      res.json({
-        _id:user._id,
-        name:user.name,
-        email:user.email,
-        userMessage:user.userMessage,
-        adminMessage:user.adminMessage,
-        isAdmin:user.isAdmin,
-        isMerchant:user.isMerchant
-      })
-    }
-    else{
-      res.status(404)
-      throw new Error('User not found')
-    }
+     console.log(req.user._id)
+     const objectId = new mongoose.Types.ObjectId(req.user._id)
+  const user = await User.findById(objectId)
+  
+  /*I am using function scope to  name all my return objects user, and it works, cuz of scope*/
+  if (user) {
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      userMessage: user.userMessage,
+      adminMessage: user.adminMessage,
+      isAdmin: user.isAdmin,
+      isMerchant: user.isMerchant
+    })
+  }
+  else {
+    res.status(404)
+    throw new Error('User not found')
+  }
 })
 
 //@desc  update user profile
 //@route PUT /api/users/profile
 //@access Private
-const updateUserProfile = asyncHandler(async (req,res)=>{
+const updateUserProfile = asyncHandler(async (req, res) => {
 
-   //req.body will give us the object thats sent in the body of our front end/POSTMAN JSON, take note
+  //req.body will give us the object thats sent in the body of our front end/POSTMAN JSON, take note
   /* res.send({email,  this res,send was just done for example btw
      password}) */ //res.send accepts an object i think and not just variables, take note...hese are part of the things that you have to research on yor own
+     const objectId = new mongoose.Types.ObjectId(req.user._id)
+  
+     const user = await User.findById(objectId)
 
-const user = await User.findById(req.user._id)
+  if (user) {
+    user.name = req.body.name || user.name
+    user.email = req.body.email || user.email
 
-    if(user){
-      user.name = req.body.name || user.name
-      user.email = req.body.email || user.email
-
-    if(req.body.password){
+    if (req.body.password) {
       user.password = req.body.password
-      }
-      const updatedUser = await user.save()
-      res.json({
-        _id:updatedUser._id,
-        name:updatedUser.name,
-        email:updatedUser.email,
-        userMessage:updatedUser.userMessage,
-        adminMessage:updatedUser.adminMessage,
-        isAdmin:updatedUser.isAdmin,
-        isMerchant:updatedUser.isMerchant,
-        token:generateToken(updatedUser._id)
-      })
     }
-    else{
-      res.status(404)
-      throw new Error('User not found')
-    }
+    const updatedUser = await user.save()
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      userMessage: updatedUser.userMessage,
+      adminMessage: updatedUser.adminMessage,
+      isAdmin: updatedUser.isAdmin,
+      isMerchant: updatedUser.isMerchant,
+      token: generateToken(updatedUser._id)
+    })
+  }
+  else {
+    res.status(404)
+    throw new Error('User not found')
+  }
 })
 
 
@@ -274,42 +357,43 @@ const user = await User.findById(req.user._id)
 //@desc  GET all users
 //@route GET /api/users
 //@access Private/Admin
-const getUsers= asyncHandler(async (req,res)=>{
+const getUsers = asyncHandler(async (req, res) => {
 
-const users = await User.find({})
-/*the way he names every variable user, he is aware of function scope and he uses it well*/
- res.json(users)
+  const users = await User.find({})
+  /*the way he names every variable user, he is aware of function scope and he uses it well*/
+  res.json(users)
 })
 
 //@desc  delete a user
 //@route DELETE /api/users/:id
 //@access Private/Admin
-const deleteUser= asyncHandler(async (req,res)=>{
-
-const user = await User.findById(req.params.id)
-/*the way he names every variable user, he is aware of function scope and he uses it well*/
- if(user){
-  await user.remove()
-  res.json({message:'User removed'})
- }else{
- res.status(404) //404 is not found
-  throw new Error('User not found')
- }
+const deleteUser = asyncHandler(async (req, res) => {
+  const objectId = new mongoose.Types.ObjectId(req.params._id)
+  const user = await User.findById(objectId)
+  /*the way he names every variable user, he is aware of function scope and he uses it well*/
+  if (user) {
+    await user.remove()
+    res.json({ message: 'User removed' })
+  } else {
+    res.status(404) //404 is not found
+    throw new Error('User not found')
+  }
 
 })
 
 //@desc  GET user by id
 //@route GET /api/users/:id
 //@access Private/Admin
-const getUserById= asyncHandler(async (req,res)=>{
-  console.log(req.params)
-const user = await User.findById(req.params.id).select('-password') //gotta research on this select method, is it mongoose?
-if(user){
-   res.json(user)
-}else{
-  res.status(404) //404 is not found
-   throw new Error('User not found')
-}
+const getUserById = asyncHandler(async (req, res) => {
+  console.log(req.params.id)
+  const objectId = new mongoose.Types.ObjectId(req.params.id)
+  const user = await User.findById(objectId).select('-password') //gotta research on this select method, is it mongoose?
+  if (user) {
+    res.json(user)
+  } else {
+    res.status(404) //404 is not found
+    throw new Error('User not found')
+  }
 
 })
 
@@ -317,36 +401,39 @@ if(user){
 //@desc  update user
 //@route PUT /api/users/:id
 //@access Private/Admin
-const updateUser = asyncHandler(async (req,res)=>{
+const updateUser = asyncHandler(async (req, res) => {
+  const objectId = new mongoose.Types.ObjectId(req.params.id)
+  
+  const user = await User.findById(objectId)
+  /*the way he names every variable user, he is aware of function scope and he uses it well*/
+  if (user) {
+    user.name = req.body.name || user.name
+    user.email = req.body.email || user.email
+    user.isAdmin = req.body.isAdmin
 
-const user = await User.findById(req.params.id)
-/*the way he names every variable user, he is aware of function scope and he uses it well*/
-    if(user){
-      user.name = req.body.name || user.name
-      user.email = req.body.email || user.email
-      user.isAdmin = req.body.isAdmin
+    const updatedUser = await user.save()
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      userMessage: updatedUser.userMessage,
+      adminMessage: updatedUser.adminMessage,
+      isAdmin: updatedUser.isAdmin,
+      isMerchant: updatedUser.isMerchant
 
-      const updatedUser = await user.save()
-      res.json({
-        _id:updatedUser._id,
-        name:updatedUser.name,
-        email:updatedUser.email,
-        userMessage:updatedUser.userMessage,
-        adminMessage:updatedUser.adminMessage,
-        isAdmin:updatedUser.isAdmin,
-        isMerchant:updatedUser.isMerchant
-
-      })
-    }
-    else{
-      res.status(404)
-      throw new Error('User not found')
-    }
+    })
+  }
+  else {
+    res.status(404)
+    throw new Error('User not found')
+  }
 })
 
 
-export {authUser,presentClientMessage,presentAdminMessage, getUserProfile, registerUser, 
-  updateUserProfile,getUsers,deleteUser, getUserById,updateUser }
+export {
+  authUser, presentClientMessage, presentAdminMessage, getUserProfile, registerUser,
+  updateUserProfile, getUsers, deleteUser, getUserById, updateUser,verifyUser
+}
 
 //exports.authUser =authUser
 //exports.getUserProfile =getUserProfile

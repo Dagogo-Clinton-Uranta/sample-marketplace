@@ -12,8 +12,15 @@ const userSchema =  mongoose.Schema({
         password:{type: String ,required:true},
         isAdmin:{type: Boolean ,required:true, default:false},
         isMerchant:{type: Boolean ,required:true, default:false},
-        userMessage:{type:String},
-        adminMessage:{type:String}
+        momFirstName:{type: String ,required:true},
+        shoeSize:{type: String ,required:true},
+        closestFriend:{type: String ,required:true},
+        childhoodStreet:{type: String ,required:true},
+        firstEmployment:{type: String ,required:true},
+        userMessage:{type: String ,required:true},
+        adminMessage:{type: String ,required:true},
+        messageChange:{type:Boolean , default:false}
+        
 },{timestamps:true /*you want a createdAt? you add timestamps:true*/})
 
 userSchema.methods.matchPassword = async function(enteredPassword){

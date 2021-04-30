@@ -14,6 +14,20 @@ const CartScreen = ({match, location, history}) => {
 
     const {cartItems} = cart
     console.log(cart)
+    
+    const userLogin = useSelector(state => state.userLogin)
+  const {loading,error,userInfo} = userLogin
+
+  useEffect(()=>{  
+    if(!userInfo){
+    history.push(`/login`)
+    }
+    else if(userInfo.isMerchant||userInfo.isAdmin){
+     history.push(`/`)
+    }
+  })
+
+
     useEffect(()=>{
      if(productId){
        dispatch(addToCart(productId ,qty))
@@ -22,7 +36,7 @@ const CartScreen = ({match, location, history}) => {
    },[dispatch,productId,qty])
 
    const removeFromCartHandler =(id) => {dispatch(removeFromCart(id))}
-   const checkoutHandler = () => {history.push('/login?redirect=shipping')} //learn how to use queryparams
+   const checkoutHandler = () => {history.push('/login?redirect=shipping')} //learn how redirect works properly
 
    return (
 

@@ -11,8 +11,13 @@ const users = [
     password: hash,
     isAdmin:true,
     isMerchant:false,
-    userMessage:'',
-    adminMessage:''
+    userMessage:'hi',
+    adminMessage:'hi',
+    momFirstName:'Amelia',
+    shoeSize:'44',
+    closestFriend:'Jamil',
+    childhoodStreet:'Eti-Osa Way',
+    firstEmployment:'Niger Insurance'
   },
 
   {
@@ -21,8 +26,13 @@ const users = [
     password: hash,
     isAdmin:false, //it is false by default ,you're keeping it here because you said it's required
     isMerchant:false,
-    userMessage:'',
-    adminMessage:''
+    userMessage:'hi',
+    adminMessage:'hi',
+    momFirstName:'Amelia',
+    shoeSize:'44',
+    closestFriend:'Jamil',
+    childhoodStreet:'Eti-Osa Way',
+    firstEmployment:'Niger Insurance'
   },
 
   {
@@ -31,8 +41,13 @@ const users = [
     password: hash,
     isAdmin:false,
     isMerchant:true,
-    userMessage:'',
-    adminMessage:''
+    userMessage:'hi',
+    adminMessage:'hi',
+    momFirstName:'Amelia',
+    shoeSize:'44',
+    closestFriend:'Jamil',
+    childhoodStreet:'Eti-Osa Way',
+    firstEmployment:'Niger Insurance'
   }
 ]
 

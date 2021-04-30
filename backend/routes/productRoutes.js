@@ -17,11 +17,12 @@ router.route('/').get(getProducts).post(protect,admin,createProduct)
 router.route('/:id/reviews').post(protect,createProductReview)
 router.get('/top',getTopProducts)
 
+//TEMPORARILY DISABLING ALL ADMIN TOKENS
 
 //@Fetch single product
 //@GET api/products/:id
 //@@Public access
-//THIS ASYNC HANDLER AND RES.STATUS, YOU NEED TO KNOW WHAT THEY ARE
+
 router.route('/:id').get(getProductById).delete(protect,admin,deleteProduct).put(protect,admin,updateProduct)
 
 

@@ -4,19 +4,19 @@ import Order from '../models/orderModel.js'
 import asyncHandler from 'express-async-handler'
 
 //const colors  = require('colors')
-
+import mongoose from 'mongoose'
 
 //@desc  create new order
 //@route POST /api/orders
 //@access Private
 
 const addOrderItems = asyncHandler(async (req,res)=>{
-  const {orderItems,shippingAddress,paymentMethod, itemsPrice, taxPrice, shippingPrice, totalPrice} = req.body
+  const {orderItems,shippingAddress,paymentMethod, itemsPrice, taxPrice, deliveryCost, totalPrice} = req.body
 
  if(orderItems && orderItems.length === 0 ){
    res.status(400)
    throw new Error('No order items')
-   return
+    return
  } else {
    const order = new Order({
      orderItems,
@@ -25,10 +25,15 @@ const addOrderItems = asyncHandler(async (req,res)=>{
      paymentMethod,
      itemsPrice,
      taxPrice,
-     shippingPrice,
+     deliveryCost,
      totalPrice
    })
-    const createdOrder = await order.save()
+
+   
+   const createdOrder = await Order.create(order)
+    
+   console.log(createdOrder)
+     
     res.status(201).json(createdOrder)
  }
 })
@@ -39,8 +44,10 @@ const addOrderItems = asyncHandler(async (req,res)=>{
 //@access Private
 
 const getOrderById = asyncHandler(async (req,res)=>{
-  const order = await Order.findById(req.params.id).populate('user', 'name email')
+  const objectId = new mongoose.Types.ObjectId(req.params.id)
+  const order = await Order.findById(objectId).populate('user', 'name email') /*name and email in the same quotation */
   if(order){
+    console.log(order)
     res.json(order)
   }
   else{
@@ -54,7 +61,8 @@ const getOrderById = asyncHandler(async (req,res)=>{
 //@route GET /api/orders/:id/pay
 //@access Private
 const updateOrderToPaid = asyncHandler(async (req,res)=>{
-  const order = await Order.findById(req.params.id)
+  const objectId = new mongoose.Types.ObjectId(req.params.id)
+  const order = await Order.findById(objectId)
   if(order){
      order.isPaid = true
      order.paidAt = Date.now()
@@ -78,7 +86,8 @@ const updateOrderToPaid = asyncHandler(async (req,res)=>{
 //@route GET /api/orders/:id/deliver
 //@access Private/Admin
 const updateOrderToDelivered = asyncHandler(async (req,res)=>{
-  const order = await Order.findById(req.params.id)
+  const objectId = new mongoose.Types.ObjectId(req.params.id)
+  const order = await Order.findById(objectId)
   if(order){
      order.isDelivered = true,
      order.deliveredAt = Date.now()
@@ -108,7 +117,8 @@ const getMyOrders = asyncHandler(async (req,res)=>{
 //@route GET /api/orders
 //@access Private.Admin
 const getOrders = asyncHandler(async (req,res)=>{
-  const orders = await Order.find({}).populate('user','id name')
+   const vendorName = req.query.vendorName
+  const orders = await Order.find({'orderItems.vendor':vendorName}).populate('user','id name')
   res.json(orders)
 })
 

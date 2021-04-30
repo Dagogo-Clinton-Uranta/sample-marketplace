@@ -19,7 +19,7 @@ const LoginScreen = ({location, history}) => { //he is taking location & history
   const {loading, error,userInfo } = userLogin
   
 
-  const redirect = location.search ? location.search.split('=')[1]:'/'
+  const redirect = location.search?location.search.split('=')[1]:'/'
 //location .search has the url query string, study it a bit
 
 //because we dont want to able to come into the login screen ONCE WE ARE ALREADY LOGGED IN, effect this in the useEffect below
@@ -62,8 +62,8 @@ const LoginScreen = ({location, history}) => { //he is taking location & history
         </Form>
 
         <Row className='py-3'>
-         <Col>                       
-           New Customer?<Link to={redirect?`$register/redirect=${redirect}`:'/register'}> Register</Link>
+         <Col>                       {/*youre cheating hera, youre supposed to uncomment whats below */}
+           New Customer?<Link to={/*redirect?`$register/redirect=${redirect}`:*/'/register'}> Register</Link>
          </Col>                       
         </Row>              
 

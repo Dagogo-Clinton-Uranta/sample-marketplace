@@ -1,52 +1,188 @@
-import React, {useEffect} from 'react'
+import React, {useEffect,useState} from 'react'
 import {Link} from 'react-router-dom'
-import { Button, Row ,Col , ListGroup, Image, Card} from 'react-bootstrap'
+import { Button, Row ,Col, Form , ListGroup, Image, Card, FormControl} from 'react-bootstrap'
+//you may need to import form container, seeing as you have used a form
 import {useDispatch, useSelector} from 'react-redux'
 import Message from '../components/Message.js'
-//import {getUserDetails, updateUserProfile} from '../actions/userActions.js'
+
 import {createOrder} from '../actions/orderActions.js'
+import {answerVerify} from '../actions/userActions.js'
 import CheckoutSteps from '../components/CheckoutSteps.js'
 
 
 
 const PlaceOrderScreen =  ({history}) => {
    const dispatch = useDispatch()
-  const cart = useSelector(state => state.cart)
+   const cart = useSelector(state => state.cart)
+   const userLogin = useSelector(state => state.userLogin)
+   const {loading,error:error2,userInfo} = userLogin
+   
+  console.log(cart)
 
-    //CALCULATING THE PRICES
+   const clientId = userInfo._id
+   const userVerify = useSelector(state => state.userVerify)
+   const {loading:loading1 , confirmedState} = userVerify
+
+   const orderCreate = useSelector(state => state.orderCreate )
+  const {order,success,error} = orderCreate /*come change this back to error later */
+  
+// confirmedStates.confirmedStates is initially empty and that breaks the whole thing -confirmedState that you just extracted, is an object mind you, so its confirmedState.confirmedState
+
+  //STATE REGARDING USER CONFIRMATION
+  const [consentQuestion, setConsentQuestion] =useState('hidden') 
+  const [confirmQuestion ,setConfirmQuestion]=useState('')
+  const [confirmedStates,setConfirmedStates] = useState('')
+  const [personalIdAnswer, setpersonalIdAnswer] = useState('')
+  const [confirmedMessage, setConfirmedMessage] = useState('')
+  const [presentQuestion, setPresentQuestion] = useState('')
+  const [personalIdQuery, setPersonalIdQuery] = useState('')
+
+  /*THE FACE OF THE BUTTON UNDER THE CONFIRM SECTION 
+  i have put this in the use effect, lets see if it works well*/
+
+  let buttonLabel = 'Send'
+  if(confirmedStates === 'true'){
+   buttonLabel = 'CONTINUE'
+  }else if(confirmedStates === 'false'){
+     buttonLabel = 'TRY AGAIN'
+  }else{buttonLabel='Send'}
+    
+  //CALCULATING THE PRICES
   const addDecimals = (num) => { return(Math.round(num*100)/100).toFixed(2) }
 
     cart.itemsPrice = addDecimals(cart.cartItems.reduce((acc, item)=>acc +item.price*item.qty,0))
 
-    cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 10)
+    cart.deliveryCost = addDecimals(cart.itemsPrice > 10000 ? 0 : 500)
 
-    cart.taxPrice = addDecimals(Number((0.10*cart.itemsPrice).toFixed(2)))
+    /*cart.taxPrice = addDecimals(Number((0.10*cart.itemsPrice).toFixed(2)))*/
 
-    cart.totalPrice = (Number(cart.itemsPrice) + Number(cart.shippingPrice)+ Number(cart.taxPrice)).toFixed(2)
+    cart.totalPrice = (Number(cart.itemsPrice) + Number(cart.deliveryCost) /*+ Number(cart.taxPrice)*/).toFixed(2)
    //if your total price is looking funny, just unwrap addDecimals and wrap in .toFixed(2)
 
-  const orderCreate = useSelector(state => state.orderCreate )
-  const {order,success,error} = orderCreate
-    console.log(order)
+  
+    
   useEffect(()=>{  
-    if(success){
-    history.push(`/order/${order._id}`)
-    //eslint-disable-next-line
+    if(!userInfo){
+    history.push(`/login`)
     }
-  },[history,success/*,order._id*/])
+
+    if( confirmedState && confirmedState.confirmedState === 'true'){ 
+    dispatch(createOrder({
+      orderItems:cart.cartItems,
+      shippingAddress:cart.shippingAddress,
+       /* i removed paymentMethod:cart.paymentMethod */
+      itemsPrice:cart.itemsPrice,
+      deliveryCost:cart.deliveryCost,
+      taxPrice:cart.taxPrice,
+      totalPrice:cart.totalPrice
+      
+    }))
+ 
+    setConfirmedStates('true')
+    setConfirmedMessage('green banner')
+    }
+    else if( confirmedState && confirmedState.confirmedState === 'false'){
+      setConfirmedStates('false')
+      setConfirmedMessage('red banner')
+    }
+   
+  
+   
+
+    /*console.log(confirmedState)*/
+    /*console.log(confirmedStates)*/
+
+  },[confirmedState,confirmedStates,cart,dispatch,userInfo/*history,success,order._id*/])
+
+  useEffect(()=>{
+    if(order){
+      console.log(order)
+    }
+    else{
+      console.log("ORDER IS STILL EMPTY!!")
+    }
+
+   },[order])
+
+const showConsentHandler = () => {
+  setConsentQuestion('visible')
+}
+
+const hideConsentHandler = () => {
+  setConsentQuestion('hidden')
+  setConfirmQuestion('hidden')
+}
+
+const confirmHandler = () => {
+  setConfirmQuestion('visible')
+  
+  //RANDOM QUESTION CODE
+  const randomNumber = Math.floor((Math.random()*5))
+  const questionsArray = ['What is your mother\'s first name ?','What is your shoe size?','What is the name of your closest friend ?','What is the name of the street you lived on as a child ?','What is the name of the first place you worked at (employment) ?']
+   const propertyArray = ['momFirstName','shoeSize','closestFriend','childhoodStreet','firstEmployment'] 
+   
+   const presentQuestion = questionsArray[randomNumber] 
+   setPresentQuestion(presentQuestion) /*i did a little function scope here */
+
+   const personalIdQuery = propertyArray[randomNumber]
+   setPersonalIdQuery(personalIdQuery) /*i did a little function scope here (same principle)*/
+}
 
 
+   
+   
+   
+/*maybe place this bit of code in a better position 
+ if(confirmedState === 'true'){
+  setConfirmedMessage('green banner')
 
-  const placeOrderHandler = () => {dispatch(createOrder({
-     orderItems:cart.cartItems,
-     shippingAddress:cart.shippingAddress,
-     paymentMethod:cart.paymentMethod,
-     itemsPrice:cart.itemsPrice,
-     shippingPrice:cart.shippingPrice,
-     taxPrice:cart.taxPrice,
-     totalPrice:cart.totalPrice
+dispatch(createOrder({
+  orderItems:cart.cartItems,
+  shippingAddress:cart.shippingAddress,
+  paymentMethod:cart.paymentMethod,
+  itemsPrice:cart.itemsPrice,
+  shippingPrice:cart.shippingPrice,
+  taxPrice:cart.taxPrice,
+  totalPrice:cart.totalPrice
 
-  }))}
+}))
+}
+else if(confirmedState === 'false'){
+setConfirmedMessage('red banner')
+}
+ */
+
+const submitHandler = (e) => {
+  e.preventDefault()
+
+  /*I WANT THIS BUTTON TO SERVE MULTIPLE FUNCTIONS, FIRST OF WHICH IS TO CHECK IF THE PERSONS ANSWER MATCHES UP, VIA THE DISPATCH BELOW */
+  if(confirmedStates === ''){dispatch(answerVerify(clientId,personalIdQuery, personalIdAnswer))
+  
+  }else if(confirmedStates === 'true'){
+   
+      history.push(`/order/${order._id}`)
+ 
+   }
+  else if(confirmedStates === 'false'){
+   
+     /*buttonLabel ='SEND'*/
+    const randomNumber = Math.floor((Math.random()*5))
+  const questionsArray = ['What is your mother\'s first name ?','What is your shoe size?','What is the name of your closest friend ?','What is the name of the street you lived on as a child ?','What is the name of the first place you worked at (employment) ?']
+   const propertyArray = ['momFirstName','shoeSize','closestFriend','childhoodStreet','firstEmployment'] 
+   
+   const presentQuestion = questionsArray[randomNumber] 
+   setPresentQuestion(presentQuestion) 
+
+   const personalIdQuery = propertyArray[randomNumber]
+   setPersonalIdQuery(personalIdQuery) 
+
+   confirmedState.confirmedState = ''
+  setConfirmedMessage('')
+  setConfirmedStates('')
+  }
+  
+}
+ 
 
         return(
          <>
@@ -56,7 +192,7 @@ const PlaceOrderScreen =  ({history}) => {
 
           <ListGroup variant="flush">
            <ListGroup.Item>
-             <h2>Shipping</h2>
+             <h2>Delivery</h2>
              <p>
              <strong>Address:</strong>
              {cart.shippingAddress.address},{cart.shippingAddress.city}{' '},
@@ -64,11 +200,11 @@ const PlaceOrderScreen =  ({history}) => {
              </p>
             </ListGroup.Item>
 
-              <ListGroup.Item>
+             {/* <ListGroup.Item>
                <h2>Payment Method</h2>
                 <strong>Method:</strong>
-                {cart.paymentMethod}
-             </ListGroup.Item>
+                {cart.paymentMethod /*this item doesnt exist anymore }
+             </ListGroup.Item> */}
 
              <ListGroup.Item>
               <h2>Order Items</h2>
@@ -81,7 +217,7 @@ const PlaceOrderScreen =  ({history}) => {
                     <Row>
                      <Col md={1}>
                       <Image src={item.image} alt={item.name} fluid rounded/>
-                      <Link to={`product/${item.product}`/*remeber product property is the id in the cart*/}>
+                      <Link to={`product/${item.product}`/*remember product property is the id in the cart*/}>
                        {item.name}
                       </Link>
                       </Col>
@@ -119,20 +255,20 @@ const PlaceOrderScreen =  ({history}) => {
                <ListGroup.Item>
                 <Row>
 
-                 <Col>Shipping </Col>
-                 <Col>₦ {cart.shippingPrice} </Col>
+                 <Col>Delivery Cost </Col>
+                 <Col>₦ {cart.deliveryCost} </Col>
 
                 </Row>
                </ListGroup.Item>
 
-               <ListGroup.Item>
+               {/*<ListGroup.Item>
                 <Row>
 
                  <Col>Tax </Col>
                  <Col>₦ {cart.taxPrice} </Col>
 
                 </Row>
-               </ListGroup.Item>
+               </ListGroup.Item> */}
 
                <ListGroup.Item>
                 <Row>
@@ -147,14 +283,87 @@ const PlaceOrderScreen =  ({history}) => {
                  {error&&<Message variant='danger'>{error} </Message>}
                 </ListGroup.Item>
 
-               <ListGroup.Item> <Button type='button' className='btn-block' disabled={cart.cartItems ===0} onClick={placeOrderHandler}>
+               <ListGroup.Item> <Button type='button' className='btn-block' disabled={cart.cartItems ===0} onClick={showConsentHandler}>
                Place Order
                </Button>
                </ListGroup.Item>
 
              </ListGroup>
            </Card>
+         
+           {/*okay so I want this card to be activated when the place order button has been clicked*/
+           /*there should be a consent radio button, that confirms for the user's permission, or hides*/
+           /*the card if the user says no */}  
+             { consentQuestion === 'visible' &&
+               <>
+             <Card>
+               <ListGroup>
+             <ListGroup.Item>
+                <Row>
 
+                 <Col>Do you agree to having ₦ {cart.totalPrice} taken from your account ?</Col>
+                </Row>
+          
+               </ListGroup.Item>
+
+               <ListGroup.Item>
+                <Row>
+                  <Col></Col>
+                Yes{' '}
+                  <Col>
+                  <input type="radio"  id="yes" value="yes" onChange={confirmHandler}/>
+                  </Col>
+                 
+                  No{' '}
+                  <Col>
+                  <input type="radio" id="no" value="no"  onChange={hideConsentHandler} />
+                  </Col>
+                  
+                </Row>
+          
+               </ListGroup.Item>
+               </ListGroup>
+             </Card>
+             </>}
+             { confirmQuestion === 'visible' &&
+               <>
+             <Card>
+               <ListGroup>
+             <ListGroup.Item>
+                <Row>
+
+                 {/*<Col>{presentQuestion}</Col>*/}
+                </Row>
+        <Form onSubmit={submitHandler}>
+          <Form.Group controlId='reply-message'>
+
+           <Form.Label>{presentQuestion} </Form.Label>
+            {
+           confirmedMessage=== 'green banner'?
+            (<Message variant='success'>Order Placed!</Message>):
+            (confirmedMessage === 'red banner'?
+            <Message variant='danger'>Not verified. </Message>:
+   (<Form.Control as ="textarea" variant='danger' rows={1} plaintext value = {personalIdAnswer} onChange ={(e)=>{setpersonalIdAnswer(e.target.value)}}></Form.Control>))
+            }
+              
+              
+               {/*i hope to change the text-area to a message component,
+                regardless of what comes back, if it's positive, it should close the whole
+                thing, just like the no option does, but this time
+                , disabling the place order button. if its negative, consider a fail message 
+                saying "payment confirmation failed" where the payment confirmed would have been,
+                maybe also close the whole thing */}
+           <br/>
+          <Button type='submit' variant='primary'>{buttonLabel}</Button>
+         </Form.Group>
+      </Form>
+                <Row>
+                  
+                </Row>
+               </ListGroup.Item>
+               </ListGroup>
+             </Card>
+             </> }
          </Col>
         </Row>
          </>

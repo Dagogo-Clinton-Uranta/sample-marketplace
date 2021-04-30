@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState,useEffect} from 'react'
 
 import {Form, Button} from 'react-bootstrap'
 import {useDispatch, useSelector} from 'react-redux'
@@ -27,8 +27,18 @@ const ShippingScreen = ({history}) => {
     e.preventDefault()
 
     dispatch(saveShippingAddress({address, city, postalCode, country}))
-    history.push('/payment')  //once again , this is to redirect the url to the next page
+    history.push('/placeorder')  //once again , this is to redirect the url to the next page
   }
+
+  const userLogin = useSelector(state => state.userLogin)
+  const {loading,error,userInfo} = userLogin
+
+  useEffect(()=>{  
+    if(!userInfo){
+    history.push(`/login`)
+    }
+  })
+
 
       return(
         <FormContainer>

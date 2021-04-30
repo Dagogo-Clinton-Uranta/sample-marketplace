@@ -10,6 +10,9 @@
          ADMIN_SEND_REQUEST,
          ADMIN_SEND_SUCCESS,
          ADMIN_SEND_FAILURE,
+         USER_VERIFY_REQUEST,
+         USER_VERIFY_SUCCESS,
+         USER_VERIFY_FAILURE,
          USER_REGISTER_REQUEST,
          USER_REGISTER_SUCCESS,
          USER_REGISTER_FAILURE,
@@ -109,6 +112,36 @@ export const adminSaid = (bossMessage, clientId,clientEmail,clientName) => async
  }
 }
 
+export const answerVerify = (clientId, personalIdQuery,personalIdAnswer) => async(dispatch) => {
+  try{
+    dispatch({type: USER_VERIFY_REQUEST})
+    
+    const config = {
+      headers:{
+        'Content-Type':'application/json'
+      }
+    }
+
+    const {data} = await axios.post('api/users/verify',{clientId,personalIdQuery,personalIdAnswer},config)
+      
+    /*can you send stuff in the second argument of your get request? - no, thats not the agreed upon convention */
+    dispatch({type:USER_VERIFY_SUCCESS,
+    payload:data})
+
+  }
+ catch(error){
+    dispatch({type:USER_VERIFY_FAILURE,
+     payload:error.response && error.response.data.message?
+    error.response.data.message:error.message})
+ }
+}
+
+
+
+
+
+
+
 export const logout = () => (dispatch) => {
     localStorage.removeItem('userInfo')
     dispatch({type:USER_LOGOUT})
@@ -118,7 +151,7 @@ export const logout = () => (dispatch) => {
 }
  
 
-export const register = (name,email,password) => async(dispatch)=> {
+export const register = (name,email,password,mumFirstName,shoeSize,closestFriend,childhoodStreet, firstEmployment) => async(dispatch)=> {
    //redux thunk was used just now in the form of async (dispatch) above
   try {
     dispatch({type: USER_REGISTER_REQUEST})
@@ -129,7 +162,7 @@ export const register = (name,email,password) => async(dispatch)=> {
         'Content-Type':'application/json'
       }
     }
-    const {data} = await axios.post('/api/users',{name,email,password},config)
+    const {data} = await axios.post('/api/users',{name,email,password,mumFirstName,shoeSize,closestFriend,childhoodStreet, firstEmployment},config)
     //i'm gonna take a stab here and say that the third argument for axios is for setting header property
 
     dispatch({

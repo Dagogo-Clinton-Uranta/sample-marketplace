@@ -5,6 +5,9 @@ import {USER_LOGIN_REQUEST,
         USER_SEND_REQUEST,
         USER_SEND_SUCCESS,
         USER_SEND_FAILURE,
+        USER_VERIFY_REQUEST,
+        USER_VERIFY_SUCCESS,
+        USER_VERIFY_FAILURE,
         ADMIN_SEND_REQUEST,
         ADMIN_SEND_SUCCESS,
         ADMIN_SEND_FAILURE,
@@ -53,7 +56,9 @@ export const userSendReducer = (state={},action)=> {
      case USER_SEND_REQUEST: return { loading:true } 
 
      case USER_SEND_SUCCESS: return { loading:false, userMessage:action.payload }
-       /*this user message, we never call it sef , we are just following convention */
+       /*this admin message, we never call it, cuz this reducers job was merely to update
+     what was in the database for that user, we are just following convention,
+     consider changing userMessage to success:true */
      case USER_SEND_FAILURE: return { loading:false, error:action.payload }
      
     default: return state
@@ -66,12 +71,23 @@ export const adminSendReducer = (state={},action)=> {
     case ADMIN_SEND_REQUEST: return { loading:true } 
 
     case ADMIN_SEND_SUCCESS: return { loading:false, adminMessage:action.payload }
-     /*this admin message, we never call it sef , we are just following convention */
+     /*this admin message, we never call it, cuz this reducers job was merely to update
+     what was in the database for that user, we are just following convention 
+     consider changing admin message to success:true*/
     case ADMIN_SEND_FAILURE: return { loading:false, error:action.payload }
     
    default: return state
   }
 
+}
+
+export const userVerifyReducer = (state ={}, action) => {
+   switch(action.type){
+     case USER_VERIFY_REQUEST: return {loading:true, confirmedState:''}
+     case USER_VERIFY_SUCCESS: return { loading:false, confirmedState:action.payload}
+     case USER_VERIFY_FAILURE: return {loading:false, error:action.payload}
+     default:return state
+   }
 }
 
 
@@ -89,7 +105,7 @@ export const  userRegisterReducer = (state={},action) => {
   }
 }
 
-export const  userDetailsReducer = (state={},action) => {
+export const  userDetailsReducer = (state={ user :{}},action) => {
   switch(action.type){
     case USER_DETAILS_REQUEST : return {...state, loading:true}
 

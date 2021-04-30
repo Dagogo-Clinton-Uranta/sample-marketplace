@@ -1,5 +1,6 @@
 import React from 'react'
 import {Route} from 'react-router-dom'
+import  {useState,useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {LinkContainer} from 'react-router-bootstrap'
 import {Container,Nav,Navbar,NavDropdown} from 'react-bootstrap'
@@ -11,12 +12,24 @@ const Header = ({history}) => {
    
   const seller = '(Merchant)'
   const dispatch = useDispatch()
+  const [cartVisibility, setCartVisibility] = useState(true)
+
   const userLogin = useSelector(state => state.userLogin)
   const {userInfo} = userLogin
+  
+  useEffect(() => {if(userInfo && (userInfo.isMerchant||userInfo.isAdmin)){
+     setCartVisibility(false)}
+     else{setCartVisibility(true)}
+  })
+  
+
   const logoutHandler = () => {
-   dispatch(logout())
-   history.push('/')
+    window.location.reload()
+    dispatch(logout())
+    history.push('/login')
+    
   }
+  
     return(
 <header>
 
@@ -34,10 +47,10 @@ const Header = ({history}) => {
 
     {/*DONT FORGET TO USE THE CDN OF FONT-AWESOME IN INDEX.HTML
     FROM CDN JS.COM ,JUST TYPE FONT AWESOME AND COPY IT*/}
-
+{cartVisibility &&
 <LinkContainer to='/cart'>
      <Nav.Link ><i className='fas fa-shopping-cart'></i>Cart</Nav.Link>
-</LinkContainer>
+</LinkContainer> }
 
    {userInfo?(
      <NavDropdown title ={userInfo.name} id='username'>
@@ -55,12 +68,12 @@ const Header = ({history}) => {
 
 
 {userInfo && userInfo.isMerchant && (
-     <NavDropdown title ={userInfo.name + seller} id='username'>
+     <NavDropdown title ={'Merchant Functions'} id='username'>
 
-
+{/*i need to make a merchant token, so that merchants have access to a productlist distinct of admins*/}
 {/*1*/}      <LinkContainer to='/admin/productlist'>
             <NavDropdown.Item >Products</NavDropdown.Item>
-           </LinkContainer>
+           </LinkContainer> 
 
 {/*2*/}      <LinkContainer to='/admin/orderlist'>
             <NavDropdown.Item >Orders</NavDropdown.Item>
@@ -71,7 +84,7 @@ const Header = ({history}) => {
 
 
    {userInfo && userInfo.isAdmin && (
-     <NavDropdown title ='Admin' id='adminmenu'>
+     <NavDropdown title ='Admin Functions' id='adminmenu'>
 
 {/*1*/}     <LinkContainer to='/admin/userlist'>
             <NavDropdown.Item >Users</NavDropdown.Item>

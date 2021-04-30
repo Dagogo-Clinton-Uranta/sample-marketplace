@@ -16,6 +16,11 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
   const [email,setEmail] = useState('')  //component level state right here, not application level state
   const [password,setPassword] = useState('')
   const [confirmPassword,setConfirmPassword] = useState('')
+  const [mumFirstName,setMumFirstName] = useState('')
+  const [shoeSize,setShoeSize] = useState('')
+  const [closestFriend,setClosestFriend] = useState('')
+  const [childhoodStreet,setChildhoodStreet] = useState('')
+  const [firstEmployment,setFirstEmployment] = useState('')
   const [message,setMessage] = useState(null)
   const dispatch = useDispatch() //dont forget that real dispatches only take place in action creators, you are only calling useDispatch here
   const userRegister = useSelector(state => state.userRegister);
@@ -38,9 +43,12 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
           e.preventDefault()
        if(password !== confirmPassword){
          setMessage('Passwords do not Match')
-       }else{
+       }else if(!mumFirstName || !shoeSize || !closestFriend || !childhoodStreet || !firstEmployment){
+        setMessage('Please Make sure to fill in all entries!')
+       }
+       else{
          //this is where we want to to call our action to dispatch login
-       dispatch(register(name,email,password))
+       dispatch(register(name,email,password, mumFirstName,shoeSize,closestFriend,childhoodStreet, firstEmployment)) /* follow the trail of this register dispatch to see where it leads  */
        }
 
   }
@@ -79,6 +87,46 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
                  <Form.Control type='password' placeholder="confirm password" value={confirmPassword} onChange={(e)=>setConfirmPassword(e.target.value)}></Form.Control>
 
                 </Form.Group>
+
+            { password === confirmPassword && 
+            <>
+          <Form.Group controlId='mumFirstName'>
+        
+         <Form.Label> What is your mother's first name ?   </Form.Label>
+          <Form.Control type='input' placeholder="please make sure to spell your answers correctly" value={mumFirstName} onChange={(e)=>setMumFirstName(e.target.value)}></Form.Control>
+
+         </Form.Group>
+
+         <Form.Group controlId='shoeSize'>
+        
+        <Form.Label> What is your shoe size?   </Form.Label>
+        <Form.Control type='input' placeholder="please make sure to spell your answers correctly" value={shoeSize} onChange={(e)=>setShoeSize(e.target.value)}></Form.Control>
+
+        </Form.Group>
+
+        <Form.Group controlId='closestFriend'>
+        
+        <Form.Label> What is the name of your closest friend ?   </Form.Label>
+        <Form.Control type='input' placeholder="please make sure to spell your answers correctly" value={closestFriend} onChange={(e)=>setClosestFriend(e.target.value)}></Form.Control>
+
+        </Form.Group>
+
+        <Form.Group controlId='childhoodStreet'>
+        
+       <Form.Label> What is the name of the street you lived on as a child ?   </Form.Label>
+        <Form.Control type='input' placeholder="please make sure to spell your answers correctly" value={childhoodStreet} onChange={(e)=>setChildhoodStreet(e.target.value)}></Form.Control>
+
+        </Form.Group>
+
+
+        <Form.Group controlId='firstEmployment'>
+        
+         <Form.Label> What is the name of the first place you worked at (employment) ?   </Form.Label>
+        <Form.Control type='input' placeholder="please make sure to spell your answers correctly" value={firstEmployment} onChange={(e)=>setFirstEmployment(e.target.value)}></Form.Control>
+
+        </Form.Group>
+        </>
+       }
 
           <Button type='submit' variant='primary'>Register</Button>
         </Form>

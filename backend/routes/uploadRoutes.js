@@ -43,4 +43,4 @@ router.post('/',upload.single('image'),(req,res)=>{
 
 //exports.router =router
 export default router
-//MEHN YOU HAVE TO RESEARCH THIS FILE, IT IS SOME OF THE WEIRDEST JAVASCRIPT I HAVE EVER TYPED
+//MEHN YOU HAVE TO RESEARCH THIS MULTER, IT IS SOME OF THE WEIRDEST JAVASCRIPT I HAVE EVER TYPED

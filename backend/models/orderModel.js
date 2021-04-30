@@ -7,15 +7,16 @@ const orderSchema =  mongoose.Schema({
 
         user:{type: mongoose.Schema.Types.ObjectId,required:true ,ref:'User'},
         orderItems:[
-             {name:{type: String ,required:true}},
-             {qty:{type: Number,required:true}},
-             {image:{type: String ,required:true}},
-             {price:{type: Number ,required:true}},
-             {product:{
+             {name:{type: String ,required:true},
+             qty:{type: Number,required:true},
+             image:{type: String ,required:true},
+             price:{type: Number ,required:true},
+             vendor:{type: String , required:true},
+             product:{
 
                type: mongoose.Schema.Types.ObjectId,
                required:true,
-               ref:'product'
+               ref:'Product'
 
              }}
         ],
@@ -27,24 +28,24 @@ const orderSchema =  mongoose.Schema({
         country:{type: String ,required:true},
       },
 
-        paymentMethod:{
+       /* paymentMethod:{
           type: String,
-          required:true  },
+          required:false  },*/
 
-        paymentResult:{
-          /*these results are to come from paypal*/
+        /*paymentResult:{
+          /*these results are to come from paypal
           id:{type:String},
           status:{type:String},
           update_time:{type:String},
-          email_address:{type:String} },
+          email_address:{type:String} },*/
 
-        taxPrice:{
+        /*taxPrice:{
           type: Number,
           required:true,
-          default:0.0 },
+          default:0.0 },*/
 
-        shippingPrice:{
-          type: Number,
+        deliveryCost:{
+          type: String,
           required:true,
           default:0.0 },
 
@@ -53,12 +54,12 @@ const orderSchema =  mongoose.Schema({
           required:true,
           default:0.0 },
 
-        isPaid:{
+        /*isPaid:{
           type: Boolean,
            },
            paidAt:{
              type: Date,
-              },
+              },*/
 
           isDelivered:{
           type: Boolean,

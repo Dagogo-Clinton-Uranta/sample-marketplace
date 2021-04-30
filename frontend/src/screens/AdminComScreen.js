@@ -11,21 +11,22 @@ import FormContainer from '../components/FormContainer.js'
 
 
 
-const AdminComScreen = ({location, match}) => { //he is taking location & history out of the props, normally it is props.location
+const AdminComScreen = ({location, match,history}) => { //he is taking location & history out of the props, normally it is props.location
   const userId = match.params.id
   const [bossMessage,setBossMessage] = useState('')  
   
   const dispatch = useDispatch() 
   const userLogin = useSelector(state => state.userLogin);
-  
+  const {loading,error,userInfo} = userLogin /*if youre having problems reaching this  screen, come and delete this line, and the userInfo useEffect */
+
   /*the genius thing i'm going to do here is collect
    information for a particular user,not using userlogin i guess,
    but where to collect userInfo of a particular user that was clicked,
     i need to create a new global state for this cuz i need to fetch info
-  from backend based on the user id i will send  - BRAD ALREADY DID THIS - userDetails*/
+  from backend based on the user id i will send  - FIND THIS IN USER DETAILS- userDetails*/
   
   const userDetails = useSelector((state) => state.userDetails);
-  const {loading, error,user } = userDetails
+  const {loading:loadingDetails, error:errorDetails,user } = userDetails
      console.log(userDetails)
 
       /*consider renaming these from clientId, clientEmail,clientName , cuz youre updating adminMessage even though it's in the client's data */
@@ -41,15 +42,24 @@ const AdminComScreen = ({location, match}) => { //he is taking location & histor
 
 //because we dont want to able to come into the login screen ONCE WE ARE ALREADY LOGGED IN, effect this in the useEffect below
 
+
+
+  useEffect(()=>{  
+    if(!userInfo){
+    history.push(`/login`)
+    }
+  })
+
+
   useEffect( () => {
-    
+      
     dispatch(getUserDetails(clientId))
    
     /*if(userInfo){ 
        history.push(redirect)
     } I WANT TO PUT IN THE CUSTOMER SERVICE MESSAGE HERE,SO IT CAN REFRESH UPON CUSTOMER SENDING A MESSAGE*/
       
-  },[clientId, clientEmail, clientName])
+  },[clientId, clientEmail, clientName]) /*why client id an client name */
 
 
 
@@ -67,8 +77,8 @@ const AdminComScreen = ({location, match}) => { //he is taking location & histor
     return (
        <FormContainer>
         <h1>Send A Message  ...</h1>
-        {error && <Message variant='danger'>{error}</Message>}
-        {loading && <Loader/>}
+        {errorDetails && <Message variant='danger'>{errorDetails}</Message>}
+        {loadingDetails && <Loader/>}
         
          <Form onSubmit={submitHandler}>
 
@@ -98,7 +108,7 @@ const AdminComScreen = ({location, match}) => { //he is taking location & histor
          <Form.Group controlId='reply-message'>
 
           <Form.Label> Client/Merchant Message: </Form.Label>
-          <Form.Control as ="textarea" rows={6} plaintext readOnly defaultValue={user.userMessage}></Form.Control>
+          <Form.Control as ="textarea" rows={6} plaintext readOnly value={user.userMessage} defaultValue={`No message from client ${user.name} , ID - ${user._id}`}></Form.Control>
 
          </Form.Group>
          
