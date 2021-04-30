@@ -40,7 +40,7 @@ dotenv.config()
 connectDB()
 
  const app = express()
-if(process.env.NODE_ENV === 'development'){app.use(morgan('dev'))} //brad prefers to use morgan in development and not in production
+if(process.env.NODE_ENV === 'development'){app.use(morgan('dev'))} //I prefer to use morgan in development and not in production
 
  app.use(express.json())  //this is the new bodyParser that is in express and allows us to read json from req.body
 
