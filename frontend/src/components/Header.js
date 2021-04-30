@@ -20,7 +20,7 @@ const Header = ({history}) => {
   useEffect(() => {if(userInfo && (userInfo.isMerchant||userInfo.isAdmin)){
      setCartVisibility(false)}
      else{setCartVisibility(true)}
-  })
+  },[cartVisibilty,setCartVisibility])
   
 
   const logoutHandler = () => {
