@@ -53,7 +53,10 @@ const addToCartHandler = () => {
     else{history.push(`/cart/${match.params.id}?qty=${qty}`)} //there was a blank set of curly braces here, you just put quantity in 
 }
   
-
+const previousPageHandler = () => {
+  
+  window.history.back()
+}
 
  
 
@@ -73,7 +76,7 @@ const submitHandler =(e) =>{
 
       return(
         <>
-        <Link className='btn btn-light my-3' to={window.history.back}>GO BACK</Link>
+        <Button className='btn btn-light my-3' onClick={previousPageHandler}>GO BACK</Button>
         {loading ? <Loader/>:error ?<Message variant='danger'>{error}</Message>:(
           <>
           <Meta title={product.name}/>
