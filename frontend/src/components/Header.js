@@ -8,8 +8,13 @@ import {logout} from '../actions/userActions.js'
 import SearchBox from './SearchBox.js'
 import bridgeway from './bridgeway-logo.jpg' 
 
-const Header = ({history}) => {
+
+
+  
+
+const Header = () => {
    
+  
   const seller = '(Merchant)'
   const dispatch = useDispatch()
   const [cartVisibility, setCartVisibility] = useState(true)
@@ -24,9 +29,10 @@ const Header = ({history}) => {
   
 
   const logoutHandler = () => {
-    window.location.reload()
+    
     dispatch(logout())
-    history.push('/login')
+    window.location.assign('/')
+     
     
   }
   

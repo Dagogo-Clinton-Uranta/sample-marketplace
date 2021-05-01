@@ -29,7 +29,7 @@ const ProductListScreen =({history, match}) => { //he is taking location & histo
 
   /* const keyword = ''just in case you need an empty string in listProducts */
 
-  const vendorName = userInfo.isMerchant ? userInfo.name :'' 
+  let vendorName 
 
 
 
@@ -37,9 +37,34 @@ const ProductListScreen =({history, match}) => { //he is taking location & histo
 
 //because we dont want to able to come into the login screen ONCE WE ARE ALREADY LOGGED IN, effect this in the useEffect below
 
+useEffect(()=> {
+  if(!userInfo){
+    window.location.reload()
+    history.push('/login')
+    
+  }
+ 
+  },[vendorName, userInfo,history,dispatch,successCreate])
+
+
+
+  useEffect(()=> {
+    if(userInfo.isMerchant){
+      vendorName = userInfo.name
+    }
+    else if(userInfo.isAdmin){
+      
+      vendorName = /(.*)/g
+    }
+
+    },[userInfo])
+
+
+
+
   useEffect( () => {
     dispatch({type: PRODUCT_CREATE_RESET })
-  if(userInfo.isAdmin === false  && userInfo.isMerchant === false){
+  if(userInfo.isAdmin === false && userInfo.isMerchant === false){
   history.push('/login')
 
   }
@@ -52,7 +77,7 @@ const ProductListScreen =({history, match}) => { //he is taking location & histo
 
 
     }
-  ,[dispatch,history,userInfo, successDelete,successCreate,createdProduct,pageNumber,vendorName]) //successDelete was passed into useEffect because youu want the list of users to reload, showing the effective delete
+  ,[dispatch,history,userInfo, successDelete,successCreate,createdProduct,pageNumber]) //successDelete was passed into useEffect because youu want the list of users to reload, showing the effective delete
 
 
 
@@ -74,9 +99,9 @@ if(window.confirm('Are you sure you want to delete this item ?')){ //window.conf
           <h1>Products</h1>
          </Col>
          <Col className="text-right">
-          <Button className='my-3' onClick={createProductHandler}>
+          {userInfo.isMerchant  && (<Button className='my-3' onClick={createProductHandler}>
             <i className='fas fa-plus'></i> Create Product
-          </Button>
+          </Button>)}
          </Col>
         </Row>
         {loadingDelete && <Loader/> }
@@ -94,7 +119,7 @@ if(window.confirm('Are you sure you want to delete this item ?')){ //window.conf
            <th>NAME</th>
            <th>PRICE</th>
            <th>CATEGORY</th>
-           <th>BRAND</th>
+           {userInfo.isAdmin && <th>VENDOR</th>}
            <th></th>
          </tr>
          </thead>
@@ -105,8 +130,8 @@ if(window.confirm('Are you sure you want to delete this item ?')){ //window.conf
               <td>{product.name}</td>
               <td>₦ {product.price}</td>
               <td>{product.category}</td>
-              <td>{product.brand}</td>
-              <td>
+              {userInfo.isAdmin && <td>{product.vendor}</td>}
+              {userInfo.isMerchant && (<td>
                <LinkContainer to={`/admin/product/${product._id}/edit`}>
                 <Button variant='light' className='btn-sm'>
                    <i className='fas fa-edit'></i> Edit
@@ -115,7 +140,7 @@ if(window.confirm('Are you sure you want to delete this item ?')){ //window.conf
                <Button variant='danger' className='btn-sm' onClick={()=>deleteHandler(product._id)}>
                  <i className='fas fa-trash'></i> Delete
                </Button>
-              </td>
+              </td>)}
             </tr>
           ))}
          </tbody>

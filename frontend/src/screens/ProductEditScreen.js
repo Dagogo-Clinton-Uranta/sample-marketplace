@@ -34,6 +34,13 @@ const ProductEditScreen= ({match, history}) => { //he is taking location & histo
   const productUpdate = useSelector(state => state.productUpdate);
   const {loading:loadingUpdate, error:errorUpdate,success:successUpdate } = productUpdate
 
+  const userLogin = useSelector(state => state.userLogin);
+  const {userInfo } = userLogin
+
+  useEffect(()=> { 
+    if(!userInfo){
+      history.push('/login')}
+    },[userInfo])
 
   useEffect( () => {
     if(successUpdate){

@@ -1,6 +1,6 @@
 import React, {useState ,useEffect} from 'react'
 import {Link} from 'react-router-dom'
-import {Form, Button, Row, Col} from 'react-bootstrap'
+import {Form, Button, Row, Col, ListGroup} from 'react-bootstrap'
 import {useDispatch, useSelector} from 'react-redux'
 import Message from '../components/Message.js'
 import Loader from '../components/Message.js'
@@ -35,7 +35,14 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
     if(userInfo){ //cuz user info exists only when you're logged in
        history.push(redirect)
     }
-  },[redirect,history,userInfo])
+
+    if(password !=='' && (password === confirmPassword)){
+      setMessage(null)
+    }
+    /*else{
+      setMessage("yes")
+    }*/
+  },[redirect,history,userInfo,password,confirmPassword])
 
 
 
@@ -56,8 +63,7 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
     return (
        <FormContainer>
         <h1>Sign up</h1>
-        {message && <Message variant='danger'>{message}</Message>}
-        {error && <Message variant='danger'>{error}</Message>}
+        
         {loading && <Loader/>}
         <Form onSubmit={submitHandler}>
   {/*1*/}      <Form.Group controlId='name'>
@@ -88,26 +94,45 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
 
                 </Form.Group>
 
-            { password === confirmPassword && 
+             
+             <br/>
+             <br/>
+             {password !=='' && (password === confirmPassword) && <Message variant='success'>Passwords are a match! please fill in the section below.</Message> } 
+             {message && <Message variant='danger'>{message}</Message>}
+            {error && <Message variant='danger'>{error}</Message>}
+              
+             {password !=='' && (password === confirmPassword) && 
+            <> <h1>Personal Identifier Questions</h1>
+               <p>We use this data to confirm it's you, upon purchase</p>
+            </>}
+       
+             <br/>
+             <br/>
+
+            { password !=='' && (password === confirmPassword) && 
+             
             <>
+          <ListGroup>
+            <ListGroup.Item className="my-3">
+
           <Form.Group controlId='mumFirstName'>
         
          <Form.Label> What is your mother's first name ?   </Form.Label>
-          <Form.Control type='input' placeholder="please make sure to spell your answers correctly" value={mumFirstName} onChange={(e)=>setMumFirstName(e.target.value)}></Form.Control>
+          <Form.Control type='input'  value={mumFirstName} onChange={(e)=>setMumFirstName(e.target.value)}></Form.Control>
 
          </Form.Group>
 
          <Form.Group controlId='shoeSize'>
         
         <Form.Label> What is your shoe size?   </Form.Label>
-        <Form.Control type='input' placeholder="please make sure to spell your answers correctly" value={shoeSize} onChange={(e)=>setShoeSize(e.target.value)}></Form.Control>
+        <Form.Control type='input'  value={shoeSize} onChange={(e)=>setShoeSize(e.target.value)}></Form.Control>
 
         </Form.Group>
 
         <Form.Group controlId='closestFriend'>
         
         <Form.Label> What is the name of your closest friend ?   </Form.Label>
-        <Form.Control type='input' placeholder="please make sure to spell your answers correctly" value={closestFriend} onChange={(e)=>setClosestFriend(e.target.value)}></Form.Control>
+        <Form.Control type='input' value={closestFriend} onChange={(e)=>setClosestFriend(e.target.value)}></Form.Control>
 
         </Form.Group>
 
@@ -122,18 +147,21 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
         <Form.Group controlId='firstEmployment'>
         
          <Form.Label> What is the name of the first place you worked at (employment) ?   </Form.Label>
-        <Form.Control type='input' placeholder="please make sure to spell your answers correctly" value={firstEmployment} onChange={(e)=>setFirstEmployment(e.target.value)}></Form.Control>
+        <Form.Control type='input' value={firstEmployment} onChange={(e)=>setFirstEmployment(e.target.value)}></Form.Control>
 
         </Form.Group>
+
+        </ListGroup.Item>
+          </ListGroup>
         </>
        }
-
+        <br/>
           <Button type='submit' variant='primary'>Register</Button>
         </Form>
 
         <Row className='py-3'>
          <Col>
-           Have an account?<Link to={redirect?`$login/redirect=${redirect}`:'/login'}> Login</Link>
+           Have an account?<Link to={/*redirect?`$login/redirect=${redirect}`:*/'/login'}> Login</Link>
          </Col>
         </Row>
 

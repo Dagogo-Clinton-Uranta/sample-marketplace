@@ -25,12 +25,23 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
   const userLogin = useSelector(state => state.userLogin);
   const {userInfo } = userLogin
    
-  const vendorName = userInfo.isMerchant ? userInfo.name : ''
+  let vendorName /*= userInfo.isMerchant ? userInfo.name : ''*/
 
   //THE LOGIC FOR CALCULATING THE TOTAL PRICE OF ITEMS THAT IS SPECIFIC TO EACH VENDOR
   /*const addDecimals = (num) => { return(Math.round(num*100)/100).toFixed(2) }
       
     cart.itemsPrice = addDecimals(cart.cartItems.reduce((acc, item)=>acc +item.price*item.qty,0))*/
+
+    useEffect(()=> {
+      if(userInfo.isMerchant){
+        vendorName = userInfo.name
+      }
+      else if(userInfo.isAdmin){
+        
+        vendorName = /(.*)/g
+      }
+  
+      },[userInfo])
 
   useEffect( () => {
   if(userInfo && (userInfo.isAdmin ||userInfo.isMerchant )){

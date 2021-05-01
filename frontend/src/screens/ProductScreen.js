@@ -73,7 +73,7 @@ const submitHandler =(e) =>{
 
       return(
         <>
-        <Link className='btn btn-light my-3' to='/'>GO BACK</Link>
+        <Link className='btn btn-light my-3' to={window.history.back()}>GO BACK</Link>
         {loading ? <Loader/>:error ?<Message variant='danger'>{error}</Message>:(
           <>
           <Meta title={product.name}/>
@@ -180,7 +180,7 @@ const submitHandler =(e) =>{
                 <h2>Write a Customer Review</h2>
                 {errorProductReview && <Message variant='danger'>{errorProductReview} </Message>}
 
-                {userInfo?(<Form onSubmit={submitHandler}>
+                {userInfo && (!userInfo.isAdmin || !userInfo.isMerchant)?(<Form onSubmit={submitHandler}>
                 <Form.Group controlId='rating'>
                 <Form.Label>Rating</Form.Label>
                  <Form.Control as='select' value={rating} onChange={(e)=>setRating(e.target.value)}>
