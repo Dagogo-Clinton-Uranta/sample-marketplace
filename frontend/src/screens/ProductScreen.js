@@ -73,7 +73,7 @@ const submitHandler =(e) =>{
 
       return(
         <>
-        <Link className='btn btn-light my-3' to={window.history.back()}>GO BACK</Link>
+        <Link className='btn btn-light my-3' to={window.history.back}>GO BACK</Link>
         {loading ? <Loader/>:error ?<Message variant='danger'>{error}</Message>:(
           <>
           <Meta title={product.name}/>
