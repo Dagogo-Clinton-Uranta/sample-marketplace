@@ -10,17 +10,19 @@ const userSchema =  mongoose.Schema({
         name:{type: String ,required:true},
         email:{type: String ,required:true, unique:true},
         password:{type: String ,required:true},
-        isAdmin:{type: Boolean ,required:true, default:false},
+        isAdmin:{type: Boolean ,required:false, default:false},
         isMerchant:{type: Boolean ,required:true, default:false},
         momFirstName:{type: String ,required:true},
         shoeSize:{type: String ,required:true},
         closestFriend:{type: String ,required:true},
         childhoodStreet:{type: String ,required:true},
         firstEmployment:{type: String ,required:true},
-        userMessage:{type: String ,required:true},
-        adminMessage:{type: String ,required:true},
+        userMessage:{type: String ,required:false},
+        adminMessage:{type: String ,required:false},
         messageChange:{type:Boolean , default:false}
-        
+        /* maybe an address entry for merchants ? */
+        /*maybe an account number entry, so we can verify that you have an account at bridgeway */
+
 },{timestamps:true /*you want a createdAt? you add timestamps:true*/})
 
 userSchema.methods.matchPassword = async function(enteredPassword){

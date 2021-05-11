@@ -61,7 +61,7 @@ const CommunicationScreen = ({location, history}) => { //he is taking location &
          <Form.Group controlId='reply-message'>
 
           <Form.Label> Customer Service: </Form.Label>
-          <Form.Control as ="textarea" rows={6} plaintext readOnly /*value={userInfo.adminMessage}*/ defaultValue={`Good day user ${userInfo.name},how may we help you?`}></Form.Control>
+          <Form.Control as ="textarea" rows={6} plaintext readOnly value={userInfo.adminMessage} defaultValue={`Good day user ${userInfo.name},how may we help you?`}></Form.Control>
 
          </Form.Group>
          

@@ -65,7 +65,8 @@ const PlaceOrderScreen =  ({history}) => {
     if(!userInfo){
     history.push(`/login`)
     }
-
+      
+     
     if( confirmedState && confirmedState.confirmedState === 'true'){ 
     dispatch(createOrder({
       orderItems:cart.cartItems,
@@ -87,12 +88,8 @@ const PlaceOrderScreen =  ({history}) => {
     }
    
   
-   
 
-    /*console.log(confirmedState)*/
-    /*console.log(confirmedStates)*/
-
-  },[confirmedState,confirmedStates,cart,dispatch,userInfo/*history,success,order._id*/])
+  },[confirmedState,confirmedStates,userInfo,dispatch,cart/*history,success,order._id*/])
 
   useEffect(()=>{
     if(order){
@@ -101,7 +98,8 @@ const PlaceOrderScreen =  ({history}) => {
     else{
       console.log("ORDER IS STILL EMPTY!!")
     }
-
+      
+    window.history.pushState(null,'','/')
    },[order])
 
 const showConsentHandler = () => {
@@ -159,9 +157,8 @@ const submitHandler = (e) => {
   if(confirmedStates === ''){dispatch(answerVerify(clientId,personalIdQuery, personalIdAnswer))
   
   }else if(confirmedStates === 'true'){
-   
+    
       history.push(`/order/${order._id}`)
- 
    }
   else if(confirmedStates === 'false'){
    
@@ -176,7 +173,7 @@ const submitHandler = (e) => {
    const personalIdQuery = propertyArray[randomNumber]
    setPersonalIdQuery(personalIdQuery) 
 
-   confirmedState.confirmedState = ''
+   confirmedState.confirmedState = '' /*you gotta dispatch something here that'll make confirmedState.confirmedState === 'false' */
   setConfirmedMessage('')
   setConfirmedStates('')
   }
@@ -283,7 +280,7 @@ const submitHandler = (e) => {
                  {error&&<Message variant='danger'>{error} </Message>}
                 </ListGroup.Item>
 
-               <ListGroup.Item> <Button type='button' className='btn-block' disabled={cart.cartItems ===0} onClick={showConsentHandler}>
+               <ListGroup.Item> <Button type='button' className='btn-block' disabled={cart.cartItems.length === 0 || confirmedStates === 'true'} onClick={showConsentHandler}>
                Place Order
                </Button>
                </ListGroup.Item>
@@ -328,6 +325,17 @@ const submitHandler = (e) => {
              { confirmQuestion === 'visible' &&
                <>
              <Card>
+
+             <ListGroup>
+             <ListGroup.Item>
+                <Row>
+
+                 <Col><strong>Just so we know it's you:</strong></Col>
+                </Row>
+                {/*<br/>*/}
+               </ListGroup.Item>
+               </ListGroup>
+
                <ListGroup>
              <ListGroup.Item>
                 <Row>

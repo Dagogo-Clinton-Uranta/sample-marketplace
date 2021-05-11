@@ -40,7 +40,7 @@ const ProductEditScreen= ({match, history}) => { //he is taking location & histo
   useEffect(()=> { 
     if(!userInfo){
       history.push('/login')}
-    },[userInfo])
+    },[userInfo,history])
 
   useEffect( () => {
     if(successUpdate){

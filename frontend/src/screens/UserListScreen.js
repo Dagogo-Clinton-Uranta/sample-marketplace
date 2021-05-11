@@ -61,8 +61,13 @@ if(window.confirm('Are you sure you want to delete this item ?')){
     return (
        <>
         <h1>Users</h1>
+        <p> NOTE: The rows in green mean that users have sent new messages. </p>
+         <br/>
+         
         {loading ? <Loader/>:error ? <Message variant='danger'>{error}</Message>:(
-
+        
+        
+         
         <Table striped bordered hover responsive className ='table-sm'>
          <thead>
           <tr>
@@ -75,7 +80,7 @@ if(window.confirm('Are you sure you want to delete this item ?')){
          </thead>
          <tbody>
           {users.map(user => (
-            <tr key={user._id}  style={{color:/*!userInfo.messageChange && */'green'}}>
+            <tr key={user._id}  style={{backgroundColor: user.messageChange && 'rgba(0, 255, 0, 0.2)'}}>
               <td>{user._id}</td>
               <td>{user.name}</td>
               <td><a href={`mailto:${user.email}`}>{user.email}</a></td>

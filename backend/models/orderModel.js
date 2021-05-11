@@ -12,6 +12,8 @@ const orderSchema =  mongoose.Schema({
              image:{type: String ,required:true},
              price:{type: Number ,required:true},
              vendor:{type: String , required:true},
+             promisedQty:{type: Number, required:false, default:0},
+             merchantPromise:{type:Boolean,required:false, default:false},
              product:{
 
                type: mongoose.Schema.Types.ObjectId,

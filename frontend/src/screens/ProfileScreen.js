@@ -115,13 +115,13 @@ const ProfileScreen = ({location, history}) => { //he is taking location & histo
         </ListGroup.Item>
         
         <br/>
-        <ListGroup.Item>
+       {/* <ListGroup.Item>*/}
         <Row>
       <LinkContainer to='/communications'>
       <Button type='submit' variant='primary'> Chat </Button>
       </LinkContainer>
         </Row>
-        </ListGroup.Item>
+        {/*</ListGroup.Item>*/}
         </ListGroup>
 
       </Col>

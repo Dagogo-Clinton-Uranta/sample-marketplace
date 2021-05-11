@@ -30,7 +30,7 @@ const AdminComScreen = ({location, match,history}) => { //he is taking location 
      console.log(userDetails)
 
       /*consider renaming these from clientId, clientEmail,clientName , cuz youre updating adminMessage even though it's in the client's data */
-     const clientId = user._id
+     const clientId = userId
      const clientEmail = user.email
      const clientName = user.name
 
@@ -53,23 +53,24 @@ const AdminComScreen = ({location, match,history}) => { //he is taking location 
 
   useEffect( () => {
       
-    dispatch(getUserDetails(clientId))
+    dispatch(getUserDetails(userId))
    
     /*if(userInfo){ 
        history.push(redirect)
     } I WANT TO PUT IN THE CUSTOMER SERVICE MESSAGE HERE,SO IT CAN REFRESH UPON CUSTOMER SENDING A MESSAGE*/
       
-  },[clientId, clientEmail, clientName]) /*why client id an client name */
+  },[dispatch, userId /*, clientEmail, clientName*/]) /*why client id an client name */
 
 
 
   const submitHandler = (e) => {
           e.preventDefault()
           //this is where we want to to call our action to dispatch login
-          window.alert('Message Sent!')
+          dispatch(adminSaid(bossMessage, clientId,clientEmail,clientName)) 
+          window.alert('Message Sent!') 
           setBossMessage('')
         
-         dispatch(adminSaid(bossMessage, clientId,clientEmail,clientName))  
+         
          /*yes we still need clientId 
          cuz that's how we'll know who we're going to update in the database*/
   }
@@ -129,12 +130,15 @@ const AdminComScreen = ({location, match,history}) => { //he is taking location 
         </Form>
        
         
-        <br/>
+        
         <br/>
         <Row className='py-3'>
          <Col>                       
            You can also message Clients/Merchants using: customerservice@bridgeway.com 
          </Col>  
+         </Row>
+
+         <Row className='py-3'>
          <Col>                       
            Remember to copy and send the Client/Merchant Message into the email body, and use an appropriate subject, for easy follow up from clients
          </Col>                     

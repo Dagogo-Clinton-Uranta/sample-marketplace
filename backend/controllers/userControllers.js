@@ -58,11 +58,11 @@ const authUser = asyncHandler(async (req, res) => {
 //@route PATCH /api/users/clientMessage
 //@access Public
 const presentClientMessage = asyncHandler(async (req, res) => {
-  const { clientMessage, clientId, clientName } =  await req.body
+  const { clientId, clientMessage, clientName } =  await req.body
   console.log(req.body)
   const objectId = new mongoose.Types.ObjectId(clientId)
   // i need to reset a particular users message so i have to delete by the id i just recieved, HENCE I NEED ID
-  const user = await User.findByIdAndUpdate(objectId, { userMessage: clientMessage , messageChange:true}, { useFindAndModify: false })
+  await User.findByIdAndUpdate({_id:objectId}, { userMessage: clientMessage , messageChange:true}, { useFindAndModify: false })
   /*clientMessage has been changed to string before being passed into the database cuz of app.use(express.json)*/
 
 
@@ -125,8 +125,8 @@ const presentAdminMessage = asyncHandler(async (req, res) => {
   console.log(req.body)
   const objectId = new mongoose.Types.ObjectId(clientId)
   // i need to reset a particular users message so i have to delete by the id i just recieved, HENCE I NEED ID
-  const user = await User.findByIdAndUpdate(objectId, { adminMessage: bossMessage, messageChange:false}, { useFindAndModify: false })
-  /*clientMessage has been changed to string before being passed into the database cuz of app.use(express.json)*/
+   await User.findByIdAndUpdate({_id:objectId}, { adminMessage:bossMessage, messageChange:false}, { useFindAndModify: false })
+ 
 
 
   //what we will use to generate a dynamic access token
@@ -261,13 +261,15 @@ const registerUser = asyncHandler(async (req, res) => {
     name: name,
     email: email,
     password: password,
-    mumFirstName:mumFirstName,
+    momFirstName:momFirstName,
     shoeSize:shoeSize,
     closestFriend:closestFriend,
     childhoodStreet:childhoodStreet,
     firstEmployment:firstEmployment
 
   })
+
+  console.log(user)
 
   if (user) {
     res.status(201).json({
@@ -385,9 +387,9 @@ const deleteUser = asyncHandler(async (req, res) => {
 //@route GET /api/users/:id
 //@access Private/Admin
 const getUserById = asyncHandler(async (req, res) => {
-  console.log(req.params.id)
+  /*console.log(req.params)*/
   const objectId = new mongoose.Types.ObjectId(req.params.id)
-  const user = await User.findById(objectId).select('-password') //gotta research on this select method, is it mongoose?
+  const user = await User.findById(objectId).select('-password') //gotta research select
   if (user) {
     res.json(user)
   } else {

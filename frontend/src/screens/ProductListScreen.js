@@ -29,7 +29,7 @@ const ProductListScreen =({history, match}) => { //he is taking location & histo
 
   /* const keyword = ''just in case you need an empty string in listProducts */
 
-  let vendorName 
+  let vendorName = userInfo.isMerchant ? userInfo.name :/(.*)/g
 
 
 
@@ -39,25 +39,25 @@ const ProductListScreen =({history, match}) => { //he is taking location & histo
 
 useEffect(()=> {
   if(!userInfo){
-    window.location.reload()
+    
     history.push('/login')
     
   }
  
-  },[vendorName, userInfo,history,dispatch,successCreate])
+  },[ userInfo,history,dispatch,successCreate])
 
 
 
-  useEffect(()=> {
+  /*useEffect(()=> {
     if(userInfo.isMerchant){
       vendorName = userInfo.name
     }
     else if(userInfo.isAdmin){
       
-      vendorName = /(.*)/g
+      vendorName = /(.*)/
     }
 
-    },[userInfo])
+    },[userInfo])*/
 
 
 

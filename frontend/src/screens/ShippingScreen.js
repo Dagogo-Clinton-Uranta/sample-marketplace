@@ -26,6 +26,7 @@ const ShippingScreen = ({history}) => {
   const submitHandler = (e) => {
     e.preventDefault()
 
+    window.history.pushState(null,'','/')
     dispatch(saveShippingAddress({address, city, postalCode, country}))
     history.push('/placeorder')  //once again , this is to redirect the url to the next page
   }
@@ -37,6 +38,8 @@ const ShippingScreen = ({history}) => {
     if(!userInfo){
     history.push(`/login`)
     }
+
+    
   })
 
 

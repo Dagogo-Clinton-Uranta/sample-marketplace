@@ -56,7 +56,7 @@ export const userSendReducer = (state={},action)=> {
      case USER_SEND_REQUEST: return { loading:true } 
 
      case USER_SEND_SUCCESS: return { loading:false, userMessage:action.payload }
-       /*this admin message, we never call it, cuz this reducers job was merely to update
+       /*this user message, we never call it, cuz this reducers job was merely to update
      what was in the database for that user, we are just following convention,
      consider changing userMessage to success:true */
      case USER_SEND_FAILURE: return { loading:false, error:action.payload }

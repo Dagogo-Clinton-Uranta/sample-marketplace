@@ -7,6 +7,9 @@ import {ORDER_CREATE_REQUEST,
         ORDER_PAY_REQUEST,
         ORDER_PAY_SUCCESS,
         ORDER_PAY_FAILURE,
+        ORDER_APPROVE_REQUEST,
+        ORDER_APPROVE_SUCCESS,
+        ORDER_APPROVE_FAILURE,
         //ORDER_PAY_RESET,
         ORDER_LIST_MY_REQUEST,
         ORDER_LIST_MY_SUCCESS,
@@ -56,7 +59,7 @@ export const getOrderDetails  = (id) => async (dispatch,getState)=> {
     dispatch({type: ORDER_DETAILS_REQUEST})
 
      const {userLogin:{userInfo}} = getState()
-    //we do config cus we wanna send he headers a content type of application/json
+    //we do config cus we wanna send the headers a content type of application/json
     const config = {
       headers:{
         //'Content-Type':'application/json' |you dont really need content type in GET requests for some reason
@@ -177,7 +180,7 @@ export const listMyOrders  = () => async (dispatch,getState)=> {
 }
 
 
-export const listOrders  = (vendorName={}) => async (dispatch,getState)=> {
+export const listOrders  = (vendorName={}/*try a reg ex of all allowable characters, not just an empty object */) => async (dispatch,getState)=> {
 //form of async (dispatch) above
   try {
     dispatch({type: ORDER_LIST_REQUEST})
@@ -206,4 +209,62 @@ export const listOrders  = (vendorName={}) => async (dispatch,getState)=> {
                payload: error.response && error.response.data.message?
                 error.response.data.message:error.message })
    }
+}
+
+
+export const merchantApproveOrder  = (orderId,productId,updatedQty) => async (dispatch,getState)=> {
+  //redux thunk was used just now in the form of async (dispatch) above
+ try {
+   dispatch({type: ORDER_APPROVE_REQUEST})
+
+    const {userLogin:{userInfo}} = getState()
+   //we do config cus we wanna send he headers a content type of application/json
+   const config = {
+     headers:{
+       'Content-Type':'application/json',
+       Authorization:`Bearer ${userInfo.token}`
+     }
+   }
+   const {data} = await axios.put(`/api/orders`,{orderId,productId,updatedQty},config)
+   //i'm gonna take a stab here and say that the third argument for axios is for setting header property
+
+   dispatch({
+             type: ORDER_APPROVE_SUCCESS,
+             payload:data })
+
+ }
+  catch(error){
+    dispatch({type:ORDER_APPROVE_FAILURE,
+              payload: error.response && error.response.data.message?
+               error.response.data.message:error.message })
+  }
+}
+
+
+export const merchantLockOrder  = (order) => async (dispatch,getState)=> {
+  //redux thunk was used just now in the form of async (dispatch) above
+ try {
+   dispatch({type: ORDER_CREATE_REQUEST})
+
+    const {userLogin:{userInfo}} = getState()
+   //we do config cus we wanna send he headers a content type of application/json
+   const config = {
+     headers:{
+       'Content-Type':'application/json',
+       Authorization:`Bearer ${userInfo.token}`
+     }
+   }
+   const {data} = await axios.post(`/api/orders`,order,config)
+   //i'm gonna take a stab here and say that the third argument for axios is for setting header property
+
+   dispatch({
+             type: ORDER_CREATE_SUCCESS,
+             payload:data })
+
+ }
+  catch(error){
+    dispatch({type:ORDER_CREATE_FAILURE,
+              payload: error.response && error.response.data.message?
+               error.response.data.message:error.message })
+  }
 }

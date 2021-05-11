@@ -22,9 +22,9 @@ const addOrderItems = asyncHandler(async (req,res)=>{
      orderItems,
      user:req.user._id, //this will give us the currently logged in user
      shippingAddress,
-     paymentMethod,
+     /*paymentMethod,*/
      itemsPrice,
-     taxPrice,
+     /*taxPrice,*/
      deliveryCost,
      totalPrice
    })
@@ -44,6 +44,7 @@ const addOrderItems = asyncHandler(async (req,res)=>{
 //@access Private
 
 const getOrderById = asyncHandler(async (req,res)=>{
+   console.log(req.params.id)
   const objectId = new mongoose.Types.ObjectId(req.params.id)
   const order = await Order.findById(objectId).populate('user', 'name email') /*name and email in the same quotation */
   if(order){
@@ -122,9 +123,24 @@ const getOrders = asyncHandler(async (req,res)=>{
   res.json(orders)
 })
 
+//@desc  update the merchant's quantity they can deliver
+//@route PATCH /api/orders
+//@access Private
+const updatePromisedQty = asyncHandler(async (req,res)=>{
+  const { orderId, productId, updatedQty } =  await req.body
+  if(req.body){console.log(req.body)}
+  else{console.log('nothing dey o')}
+
+  const orderObjectId = new mongoose.Types.ObjectId(orderId)
+  const productObjectId = new mongoose.Types.ObjectId(productId)
+ 
+  await Order.findOneAndUpdate({'_id':orderObjectId,'orderItems.product':productObjectId},{$set:{'orderItems.$.promisedQty': updatedQty } }, { useFindAndModify: false})
+ /*await specificOrder*/
+ /*res.json(orders)*/
+})
 
 export {addOrderItems, getOrderById, updateOrderToPaid,
-updateOrderToDelivered, getMyOrders,getOrders}
+updateOrderToDelivered, getMyOrders,getOrders, updatePromisedQty}
 
 //exports.addOrderItems =addOrderItems
 //exports.getOrderById =getOrderById

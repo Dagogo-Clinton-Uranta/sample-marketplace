@@ -16,7 +16,7 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
   const [email,setEmail] = useState('')  //component level state right here, not application level state
   const [password,setPassword] = useState('')
   const [confirmPassword,setConfirmPassword] = useState('')
-  const [mumFirstName,setMumFirstName] = useState('')
+  const [momFirstName,setMomFirstName] = useState('')
   const [shoeSize,setShoeSize] = useState('')
   const [closestFriend,setClosestFriend] = useState('')
   const [childhoodStreet,setChildhoodStreet] = useState('')
@@ -39,9 +39,7 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
     if(password !=='' && (password === confirmPassword)){
       setMessage(null)
     }
-    /*else{
-      setMessage("yes")
-    }*/
+    
   },[redirect,history,userInfo,password,confirmPassword])
 
 
@@ -50,12 +48,12 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
           e.preventDefault()
        if(password !== confirmPassword){
          setMessage('Passwords do not Match')
-       }else if(!mumFirstName || !shoeSize || !closestFriend || !childhoodStreet || !firstEmployment){
+       }else if(!momFirstName || !shoeSize || !closestFriend || !childhoodStreet || !firstEmployment){
         setMessage('Please Make sure to fill in all entries!')
        }
        else{
          //this is where we want to to call our action to dispatch login
-       dispatch(register(name,email,password, mumFirstName,shoeSize,closestFriend,childhoodStreet, firstEmployment)) /* follow the trail of this register dispatch to see where it leads  */
+       dispatch(register(name,email,password, momFirstName,shoeSize,closestFriend,childhoodStreet, firstEmployment)) /* follow the trail of this register dispatch to see where it leads  */
        }
 
   }
@@ -70,24 +68,35 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
 
          <Form.Label>  Name</Form.Label>
          <Form.Control type='name' placeholder="enter name" value={name} onChange={(e)=>setName(e.target.value)}></Form.Control>
-          {/*the value of form control is form control from the state. You need to read about form group from react bootstrap*/}
+          {/*the value of form control is form control from the state.  need to read about form group from react bootstrap*/}
         </Form.Group>
 
   {/*2*/}        <Form.Group controlId='email'>
 
           <Form.Label>  Email Address </Form.Label>
           <Form.Control type='email' placeholder="enter email" value={email} onChange={(e)=>setEmail(e.target.value)}></Form.Control>
-           {/*the value of form control is form control from the state. You need to read about form group from react bootstrap*/}
+           {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
          </Form.Group>
 
-  {/*3*/}      <Form.Group controlId='password'>
+         {/*3*/}        <Form.Group controlId='usertype'>
+
+         <Form.Label>  Are you a customer or a merchant </Form.Label>
+          <Form.Control type='input'  value onChange></Form.Control>
+           
+         </Form.Group>
+
+
+
+
+
+  {/*4*/}      <Form.Group controlId='password'>
 
           <Form.Label>  Password  </Form.Label>
           <Form.Control type='password' placeholder="enter password" value={password} onChange={(e)=>setPassword(e.target.value)}></Form.Control>
 
          </Form.Group>
 
- {/*4*/}      <Form.Group controlId='confirmPassword'>
+ {/*5*/}      <Form.Group controlId='confirmPassword'>
 
                  <Form.Label>  Confirm password  </Form.Label>
                  <Form.Control type='password' placeholder="confirm password" value={confirmPassword} onChange={(e)=>setConfirmPassword(e.target.value)}></Form.Control>
@@ -115,10 +124,10 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
           <ListGroup>
             <ListGroup.Item className="my-3">
 
-          <Form.Group controlId='mumFirstName'>
+          <Form.Group controlId='momFirstName'>
         
          <Form.Label> What is your mother's first name ?   </Form.Label>
-          <Form.Control type='input'  value={mumFirstName} onChange={(e)=>setMumFirstName(e.target.value)}></Form.Control>
+          <Form.Control type='input'  value={momFirstName} onChange={(e)=>setmomFirstName(e.target.value)}></Form.Control>
 
          </Form.Group>
 

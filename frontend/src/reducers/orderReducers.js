@@ -8,6 +8,9 @@ import {ORDER_CREATE_REQUEST,
         ORDER_PAY_SUCCESS,
         ORDER_PAY_FAILURE,
         ORDER_PAY_RESET,
+        ORDER_APPROVE_REQUEST,
+        ORDER_APPROVE_SUCCESS,
+        ORDER_APPROVE_FAILURE,
         ORDER_LIST_MY_REQUEST,
         ORDER_LIST_MY_SUCCESS,
         ORDER_LIST_MY_FAILURE,
@@ -82,4 +85,13 @@ export const orderListReducer = ( state={orders:[]}, action) => {
 
       default: return state
     }
+}
+
+export const orderApproveReducer = (state={}, action) => {
+  switch (action.type) {
+    case ORDER_APPROVE_REQUEST: return {loading:true}
+    case ORDER_APPROVE_SUCCESS:return {loading:false,success:true, order:action.payload}
+    case ORDER_APPROVE_FAILURE: return {loading:false, error:action.payload}
+    default: return state
+  }
 }
