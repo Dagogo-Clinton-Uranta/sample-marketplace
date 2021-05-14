@@ -62,7 +62,7 @@ const presentClientMessage = asyncHandler(async (req, res) => {
   console.log(req.body)
   const objectId = new mongoose.Types.ObjectId(clientId)
   // i need to reset a particular users message so i have to delete by the id i just recieved, HENCE I NEED ID
-  await User.findByIdAndUpdate({_id:objectId}, { userMessage: clientMessage , messageChange:true}, { useFindAndModify: false })
+  await User.findByIdAndUpdate({_id:objectId}, { userMessage: clientMessage , adminMessageNotification:true , userMessageNotification:false}, { useFindAndModify: false })
   /*clientMessage has been changed to string before being passed into the database cuz of app.use(express.json)*/
 
 
@@ -125,7 +125,7 @@ const presentAdminMessage = asyncHandler(async (req, res) => {
   console.log(req.body)
   const objectId = new mongoose.Types.ObjectId(clientId)
   // i need to reset a particular users message so i have to delete by the id i just recieved, HENCE I NEED ID
-   await User.findByIdAndUpdate({_id:objectId}, { adminMessage:bossMessage, messageChange:false}, { useFindAndModify: false })
+   await User.findByIdAndUpdate({_id:objectId}, { adminMessage:bossMessage, adminMessageNotification:false , userMessageNotification:true}, { useFindAndModify: false })
  
 
 
@@ -246,7 +246,7 @@ const verifyUser = asyncHandler(async (req, res) => {
 //@access Public
 const registerUser = asyncHandler(async (req, res) => {
 
-  const { name, email, password ,mumFirstName,shoeSize,closestFriend,childhoodStreet, firstEmployment } = req.body
+  const { name, email, password ,momFirstName,shoeSize,closestFriend,childhoodStreet, firstEmployment,isMerchant,pickupAddress } = req.body
   //req.body will give us the object thats sent in the body of our front end/POSTMAN JSON, take note
   /* res.send({email,  this res,send was just done for example btw
      password}) */ //res.send accepts an object i think and not just variables, take note...hese are part of the things that you have to research on yor own
@@ -263,10 +263,14 @@ const registerUser = asyncHandler(async (req, res) => {
     password: password,
     momFirstName:momFirstName,
     shoeSize:shoeSize,
+    isMerchant:isMerchant,
+    isAdmin:false,
+    pickupAddress:pickupAddress,
     closestFriend:closestFriend,
     childhoodStreet:childhoodStreet,
-    firstEmployment:firstEmployment
-
+    firstEmployment:firstEmployment,
+    userMessageNotification:false,
+    adminMessageNotification:false,
   })
 
   console.log(user)
@@ -279,8 +283,16 @@ const registerUser = asyncHandler(async (req, res) => {
       userMessage: user.userMessage,
       adminMessage: user.adminMessage,
       isAdmin: user.isAdmin,
+      userMessageNotification:user.userMessageNotification,
+      adminMessageNotification:user.adminMessageNotification,
       isMerchant: user.isMerchant,
-      token: generateToken(user._id)
+      token: generateToken(user._id),
+      pickupAddress:user.pickupAddress,
+      momFirstName:user.momFirstName,
+      shoeSize:user.shoeSize,
+      closestFriend:user.closestFriend,
+      childhoodStreet:user.childhoodStreet,
+      firstEmployment:user.firstEmployment
     })
   } else {
     res.status(400)

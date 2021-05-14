@@ -107,21 +107,31 @@ const ProfileScreen = ({location, history}) => { //he is taking location & histo
        <br/>
        <br/>
 
-       <ListGroup>
+       <ListGroup variant='flush'>
          <ListGroup.Item>
+       {userInfo.adminMessage? (
+       <>
        <Row>
+        <i className='fas fa-circle' style={{color:'red', fontSize:'9px'}}></i> 
+         New message! 
+       </Row>
+       <Row>
+          (click chat to view)
+       </Row>
+       </>
+       ):(<Row>
         Want to make an enquiry/complaint ? click chat below
-        </Row>
+        </Row>)}
         </ListGroup.Item>
         
         <br/>
-       {/* <ListGroup.Item>*/}
+        <ListGroup.Item >
         <Row>
       <LinkContainer to='/communications'>
       <Button type='submit' variant='primary'> Chat </Button>
       </LinkContainer>
         </Row>
-        {/*</ListGroup.Item>*/}
+        </ListGroup.Item>
         </ListGroup>
 
       </Col>

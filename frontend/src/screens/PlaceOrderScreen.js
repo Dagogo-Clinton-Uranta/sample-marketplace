@@ -1,5 +1,6 @@
 import React, {useEffect,useState} from 'react'
 import {Link} from 'react-router-dom'
+import {LinkContainer} from 'react-router-bootstrap'
 import { Button, Row ,Col, Form , ListGroup, Image, Card, FormControl} from 'react-bootstrap'
 //you may need to import form container, seeing as you have used a form
 import {useDispatch, useSelector} from 'react-redux'
@@ -36,16 +37,19 @@ const PlaceOrderScreen =  ({history}) => {
   const [confirmedMessage, setConfirmedMessage] = useState('')
   const [presentQuestion, setPresentQuestion] = useState('')
   const [personalIdQuery, setPersonalIdQuery] = useState('')
-
+  const [proceed,setProceed] = useState('')
   /*THE FACE OF THE BUTTON UNDER THE CONFIRM SECTION 
   i have put this in the use effect, lets see if it works well*/
 
   let buttonLabel = 'Send'
   if(confirmedStates === 'true'){
-   buttonLabel = 'CONTINUE'
+   buttonLabel = 'PLACE ORDER'
   }else if(confirmedStates === 'false'){
      buttonLabel = 'TRY AGAIN'
-  }else{buttonLabel='Send'}
+  }else if(proceed === 'true'){
+    buttonLabel = 'ORDER DETAILS'
+ }
+  else{buttonLabel='Send'}
     
   //CALCULATING THE PRICES
   const addDecimals = (num) => { return(Math.round(num*100)/100).toFixed(2) }
@@ -68,16 +72,16 @@ const PlaceOrderScreen =  ({history}) => {
       
      
     if( confirmedState && confirmedState.confirmedState === 'true'){ 
-    dispatch(createOrder({
+    /*dispatch(createOrder({
       orderItems:cart.cartItems,
       shippingAddress:cart.shippingAddress,
-       /* i removed paymentMethod:cart.paymentMethod */
+       
       itemsPrice:cart.itemsPrice,
       deliveryCost:cart.deliveryCost,
       taxPrice:cart.taxPrice,
       totalPrice:cart.totalPrice
       
-    }))
+    }))*/
  
     setConfirmedStates('true')
     setConfirmedMessage('green banner')
@@ -93,13 +97,14 @@ const PlaceOrderScreen =  ({history}) => {
 
   useEffect(()=>{
     if(order){
+      setProceed('true')
       console.log(order)
     }
     else{
       console.log("ORDER IS STILL EMPTY!!")
     }
       
-    window.history.pushState(null,'','/')
+    /*window.history.pushState(null,'','/')*/
    },[order])
 
 const showConsentHandler = () => {
@@ -157,8 +162,18 @@ const submitHandler = (e) => {
   if(confirmedStates === ''){dispatch(answerVerify(clientId,personalIdQuery, personalIdAnswer))
   
   }else if(confirmedStates === 'true'){
-    
-      history.push(`/order/${order._id}`)
+    dispatch(createOrder({
+      orderItems:cart.cartItems,
+      shippingAddress:cart.shippingAddress,
+       /* i removed paymentMethod:cart.paymentMethod */
+      itemsPrice:cart.itemsPrice,
+      deliveryCost:cart.deliveryCost,
+      taxPrice:cart.taxPrice,
+      totalPrice:cart.totalPrice
+      
+    }))
+      
+      
    }
   else if(confirmedStates === 'false'){
    
@@ -173,10 +188,14 @@ const submitHandler = (e) => {
    const personalIdQuery = propertyArray[randomNumber]
    setPersonalIdQuery(personalIdQuery) 
 
-   confirmedState.confirmedState = '' /*you gotta dispatch something here that'll make confirmedState.confirmedState === 'false' */
+   confirmedState.confirmedState = '' /*you gotta dispatch something here that'll make confirmedState.confirmedState === '' */
   setConfirmedMessage('')
   setConfirmedStates('')
   }
+
+  /*if(proceed==='true'){
+    history.push(`/order/${order._id}`)
+  }*/
   
 }
  
@@ -281,7 +300,7 @@ const submitHandler = (e) => {
                 </ListGroup.Item>
 
                <ListGroup.Item> <Button type='button' className='btn-block' disabled={cart.cartItems.length === 0 || confirmedStates === 'true'} onClick={showConsentHandler}>
-               Place Order
+               Proceed to Place Order
                </Button>
                </ListGroup.Item>
 
@@ -348,11 +367,12 @@ const submitHandler = (e) => {
            <Form.Label>{presentQuestion} </Form.Label>
             {
            confirmedMessage=== 'green banner'?
-            (<Message variant='success'>Order Placed!</Message>):
-            (confirmedMessage === 'red banner'?
-            <Message variant='danger'>Not verified. </Message>:
-   (<Form.Control as ="textarea" variant='danger' rows={1} plaintext value = {personalIdAnswer} onChange ={(e)=>{setpersonalIdAnswer(e.target.value)}}></Form.Control>))
+            (<Message variant='success'>Verified!</Message>):
+            (proceed==='true'?(<Message variant='success'>Order Placed!</Message>):(confirmedMessage === 'red banner'?
+            (<Message variant='danger'>Not verified. </Message>):
+   (<Form.Control as ="textarea" variant='danger' rows={1} plaintext value = {personalIdAnswer} onChange ={(e)=>{setpersonalIdAnswer(e.target.value)}}></Form.Control>)))
             }
+            {proceed==='true' &&(<Message variant='success'>Order Placed!</Message>)}
               
               
                {/*i hope to change the text-area to a message component,
@@ -362,7 +382,16 @@ const submitHandler = (e) => {
                 saying "payment confirmation failed" where the payment confirmed would have been,
                 maybe also close the whole thing */}
            <br/>
-          <Button type='submit' variant='primary'>{buttonLabel}</Button>
+          {proceed==='' &&<Button type='submit' variant='primary'>{buttonLabel}</Button>}
+           {'  '}
+          {proceed==='true' && <LinkContainer to="/">
+          <Button  variant='primary'>GO HOME</Button>
+          </LinkContainer>}
+          {'  '}
+          {proceed==='true' && <LinkContainer to={`/order/${order._id}`}>
+          <Button  variant='primary'>ORDER DETAILS</Button>
+          </LinkContainer>}
+          
          </Form.Group>
       </Form>
                 <Row>

@@ -4,7 +4,8 @@ import  {useState,useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {LinkContainer} from 'react-router-bootstrap'
 import {Container,Nav,Navbar,NavDropdown} from 'react-bootstrap'
-import {logout} from '../actions/userActions.js'
+import {logout,listUsers} from '../actions/userActions.js'
+import {listOrders} from '../actions/orderActions.js'
 import SearchBox from './SearchBox.js'
 import bridgeway from './bridgeway-logo.jpg' 
 
@@ -21,11 +22,38 @@ const Header = () => {
 
   const userLogin = useSelector(state => state.userLogin)
   const {userInfo} = userLogin
+
+  const userList = useSelector(state => state.userList);
+  const {loading, error,users } = userList
+  /*console.log(users)*/
+
+  const orderList = useSelector(state => state.orderList);
+  const {loading:loadingOrders, error:errorOrders,orders } = orderList
+  
+  if(users && userInfo){
+userInfo.newMessages = /*users.some((user)=>{user.userMessageNotification % 2===0}) === true?true :false*/true
+  }
+ 
+
+  if(orders && userInfo){
+    userInfo.newOrders = /*orders.map(function(order){order.orderItems}).every(function(item){item.promisedQty===0})===true?true:false*/true
+  }
   
   useEffect(() => {if(userInfo && (userInfo.isMerchant||userInfo.isAdmin)){
      setCartVisibility(false)}
      else{setCartVisibility(true)}
-  },[userInfo])
+
+     if(userInfo && userInfo.isAdmin ){
+      dispatch(listUsers())
+      }
+
+      if(userInfo && (userInfo.isAdmin || userInfo.isMerchant) ){
+        dispatch(listOrders())
+        }
+      
+      
+
+  },[userInfo,orders])
   
 
   const logoutHandler = () => {
@@ -55,13 +83,17 @@ const Header = () => {
     FROM CDN JS.COM ,JUST TYPE FONT AWESOME AND COPY IT*/}
 {cartVisibility &&
 <LinkContainer to='/cart'>
-     <Nav.Link ><i className='fas fa-shopping-cart'></i>Cart</Nav.Link>
+     <Nav.Link ><i className='fas fa-shopping-cart'></i>Cart
+     {userInfo && userInfo.adminMessageNotification && <i className='fas fa-circle' style={{color:'red', fontSize:'8px', marginLeft:'15px' , marginRight:'-12px'}}></i>}
+     </Nav.Link>
+     
 </LinkContainer> }
 
    {userInfo?(
      <NavDropdown title ={userInfo.name} id='username'>
      <LinkContainer to='/profile'>
-          <NavDropdown.Item >Profile  </NavDropdown.Item>
+          <NavDropdown.Item >Profile { userInfo && userInfo.adminMessageNotification &&<i className='fas fa-circle' style={{color:'red', fontSize:'7px'}}></i>} </NavDropdown.Item>
+          
      </LinkContainer>
 
        <NavDropdown.Item onClick={logoutHandler} >Logout </NavDropdown.Item>
@@ -90,25 +122,30 @@ const Header = () => {
 
 
    {userInfo && userInfo.isAdmin && (
-     <NavDropdown title ='Admin Functions' id='adminmenu'>
+     <>
+  {/*<p> (users && userInfo.newMessages ||orders && userInfo.newOrders)&& <i className='fas fa-circle' style={{color:'red', fontSize:'7px'}}></i> </p>*/}
+  
+  <NavDropdown title ='Admin Functions' id='adminmenu'>
 
 {/*1*/}     <LinkContainer to='/admin/userlist'>
-            <NavDropdown.Item >Users</NavDropdown.Item>
+            <NavDropdown.Item >Users {/*(users && userInfo.newMessages) &&<i className='fas fa-circle' style={{color:'red', fontSize:'7px'}}></i>*/}</NavDropdown.Item>
           </LinkContainer>
 
 {/*2*/}      <LinkContainer to='/admin/productlist'>
-            <NavDropdown.Item >Products</NavDropdown.Item>
+            <NavDropdown.Item >Products</NavDropdown.Item> {/*i dont think admin is allowed to see products*/}
            </LinkContainer>
 
 {/*3*/}      <LinkContainer to='/admin/orderlist'>
-            <NavDropdown.Item >Orders</NavDropdown.Item>
+            <NavDropdown.Item >Orders{/* (orders &&userInfo.newOrders) &&<i className='fas fa-circle' style={{color:'red', fontSize:'7px'}}></i>*/}</NavDropdown.Item>
            </LinkContainer>
 
      </NavDropdown>
+     </>
    )}
 
+{/*console.log(users.some(function(user){user.userMessageNotification}))*/}
 
-
+{/*console.log(orders.map(function(order){order.orderItems}).every(function(item){item.qty>0} ))*/}
 
    </Nav>
 
