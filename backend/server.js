@@ -35,6 +35,8 @@ import orderRoutes from './routes/orderRoutes.js'
 import uploadRoutes from './routes/uploadRoutes.js'
 //const uploadRoutes =require('./routes/uploadRoutes.js')
 
+import cors from 'cors'
+
 dotenv.config()
  
 connectDB()
@@ -46,7 +48,7 @@ if(process.env.NODE_ENV === 'development'){app.use(morgan('dev'))} //I prefer to
 
 
 
-
+app.use(cors())
 app.use('/api/products',productRoutes)
 app.use('/api/users',userRoutes)
 app.use('/api/orders',orderRoutes)
@@ -61,7 +63,7 @@ app.use('/uploads', express.static(path.join(__dirname,'/uploads')))
 
 
 
-/*if(process.NODE_ENV === 'production'){
+if(process.NODE_ENV === 'production'){
 
   app.use(express.static(path.join(__dirname,'/frontend/build')))
 
@@ -71,7 +73,7 @@ app.use('/uploads', express.static(path.join(__dirname,'/uploads')))
 }else{
  /* app.get('/', (req,res) => {
     res.send('API is running...')
-  })
+  })*/
 
   app.use(express.static(path.join(__dirname,'/frontend/build')))
 
@@ -81,7 +83,7 @@ app.use('/uploads', express.static(path.join(__dirname,'/uploads')))
 
 
 
-}*/
+}
 
 app.use(notFound)
 
