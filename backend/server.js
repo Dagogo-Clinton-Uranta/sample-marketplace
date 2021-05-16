@@ -61,7 +61,7 @@ app.use('/uploads', express.static(path.join(__dirname,'/uploads')))
 
 
 
-if(process.NODE_ENV === 'production'){
+/*if(process.NODE_ENV === 'production'){
 
   app.use(express.static(path.join(__dirname,'/frontend/build')))
 
@@ -71,7 +71,7 @@ if(process.NODE_ENV === 'production'){
 }else{
  /* app.get('/', (req,res) => {
     res.send('API is running...')
-  })*/
+  })
 
   app.use(express.static(path.join(__dirname,'/frontend/build')))
 
@@ -81,7 +81,7 @@ if(process.NODE_ENV === 'production'){
 
 
 
-}
+}*/
 
 app.use(notFound)
 
