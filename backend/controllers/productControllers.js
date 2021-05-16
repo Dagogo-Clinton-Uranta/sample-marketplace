@@ -10,7 +10,8 @@ import mongoose from 'mongoose'
 //@access Public
 
 const getProducts = asyncHandler(async (req,res)=>{
-     const pageSize = 3 //i recommend 6 per page
+  res.header("Access-Control-Allow-Origin","*")
+  const pageSize = 3 //i recommend 6 per page
      const page = Number(req.query.pageNumber) || 1
 
  const vendorName = req.query.vendorName  //if your vendorName logic is messing up, come and change it to resemble that of keyword, with the empty object
@@ -161,6 +162,7 @@ const createProductReview = asyncHandler(async (req,res)=>{
 //@route GET /api/products/top
 //@access Public
 const getTopProducts = asyncHandler(async (req,res)=>{
+   res.header("Access-Control-Allow-Origin","*")
   const products = await Product.find({}).sort({rating:-1}).limit(3)
   res.json(products)
 })
