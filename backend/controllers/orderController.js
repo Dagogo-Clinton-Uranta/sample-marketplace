@@ -11,6 +11,7 @@ import mongoose from 'mongoose'
 //@access Private
 
 const addOrderItems = asyncHandler(async (req,res)=>{
+  res.header("Access-Control-Allow-Origin","*")
   const {orderItems,shippingAddress,paymentMethod, itemsPrice, taxPrice, deliveryCost, totalPrice} = req.body
 
  if(orderItems && orderItems.length === 0 ){
@@ -44,6 +45,7 @@ const addOrderItems = asyncHandler(async (req,res)=>{
 //@access Private
 
 const getOrderById = asyncHandler(async (req,res)=>{
+  res.header("Access-Control-Allow-Origin","*")
    console.log(req.params.id)
   const objectId = new mongoose.Types.ObjectId(req.params.id)
   const order = await Order.findById(objectId).populate('user', 'name email') /*name and email in the same quotation */
@@ -62,6 +64,7 @@ const getOrderById = asyncHandler(async (req,res)=>{
 //@route GET /api/orders/:id/pay
 //@access Private
 const updateOrderToPaid = asyncHandler(async (req,res)=>{
+  res.header("Access-Control-Allow-Origin","*")
   const objectId = new mongoose.Types.ObjectId(req.params.id)
   const order = await Order.findById(objectId)
   if(order){
@@ -87,6 +90,7 @@ const updateOrderToPaid = asyncHandler(async (req,res)=>{
 //@route GET /api/orders/:id/deliver
 //@access Private/Admin
 const updateOrderToDelivered = asyncHandler(async (req,res)=>{
+  res.header("Access-Control-Allow-Origin","*")
   const objectId = new mongoose.Types.ObjectId(req.params.id)
   const order = await Order.findById(objectId)
   if(order){
@@ -110,6 +114,7 @@ const updateOrderToDelivered = asyncHandler(async (req,res)=>{
 //@route GET /api/orders/myorders
 //@access Private
 const getMyOrders = asyncHandler(async (req,res)=>{
+  res.header("Access-Control-Allow-Origin","*")
   const orders = await Order.find({user:req.user._id})
   res.json(orders)
 })
@@ -118,6 +123,7 @@ const getMyOrders = asyncHandler(async (req,res)=>{
 //@route GET /api/orders
 //@access Private.Admin
 const getOrders = asyncHandler(async (req,res)=>{
+  res.header("Access-Control-Allow-Origin","*")
    const vendorName = req.query.vendorName
   const orders = await Order.find({'orderItems.vendor':vendorName}).populate('user','id name')
   res.json(orders)
@@ -127,6 +133,7 @@ const getOrders = asyncHandler(async (req,res)=>{
 //@route PATCH /api/orders
 //@access Private
 const updatePromisedQty = asyncHandler(async (req,res)=>{
+  res.header("Access-Control-Allow-Origin","*")
   const { orderId, productId, updatedQty } =  await req.body
   if(req.body){console.log(req.body)}
   else{console.log('nothing dey o')}

@@ -43,6 +43,7 @@ products = await Product.find({...keyword}).limit(pageSize).skip(pageSize *(page
 //@route GET /api/products/:id
 //@access Publiccount
 const getProductById = asyncHandler(async (req,res)=>{
+  res.header("Access-Control-Allow-Origin","*")
   const objectId = new mongoose.Types.ObjectId(req.params.id)
   const product = await Product.findById(objectId)
   if(product){res.json(product)}
@@ -55,6 +56,7 @@ const getProductById = asyncHandler(async (req,res)=>{
 //@route DELETE /api/products/:id
 //@access Private/Admin
 const deleteProduct = asyncHandler(async (req,res)=>{
+  res.header("Access-Control-Allow-Origin","*")
   const objectId = new mongoose.Types.ObjectId(req.params.id)
   const product = await Product.findById(objectId)
   if(product){
@@ -70,6 +72,7 @@ const deleteProduct = asyncHandler(async (req,res)=>{
 //@route POST /api/products
 //@access Private/Admin
 const createProduct = asyncHandler(async (req,res)=>{
+  res.header("Access-Control-Allow-Origin","*")
    const product = new Product({
      name: 'Sample name',
      price: 0,
@@ -92,7 +95,7 @@ const createProduct = asyncHandler(async (req,res)=>{
 //@route PUT /api/products/:id
 //@access Private/Admin
 const updateProduct = asyncHandler(async (req,res)=>{
-
+  res.header("Access-Control-Allow-Origin","*")
   const {name,price,description,image,category,countInStock} = req.body
 
   const objectId = new mongoose.Types.ObjectId(req.params.id)
@@ -123,7 +126,7 @@ const updateProduct = asyncHandler(async (req,res)=>{
 //@route POST /api/products/:id/review
 //@access Private/Admin
 const createProductReview = asyncHandler(async (req,res)=>{
-
+  res.header("Access-Control-Allow-Origin","*")
   const {rating,comment} = req.body
   const objectId = new mongoose.Types.ObjectId(req.params.id)
   const product= await Product.findById(objectId)

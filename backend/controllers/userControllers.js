@@ -27,7 +27,7 @@ dotenv.config()
 //@route POST /api/users/login
 //@access Public
 const authUser = asyncHandler(async (req, res) => {
-
+  res.header("Access-Control-Allow-Origin","*")
   const { email, password } = req.body
   //req.body will give us the object thats sent in the body of our front end/POSTMAN JSON, take note
   //res.send accepts an object i think and not just variables, take note...hese are part of the things that you have to research on yor own
@@ -58,6 +58,7 @@ const authUser = asyncHandler(async (req, res) => {
 //@route PATCH /api/users/clientMessage
 //@access Public
 const presentClientMessage = asyncHandler(async (req, res) => {
+  res.header("Access-Control-Allow-Origin","*")
   const { clientId, clientMessage, clientName } =  await req.body
   console.log(req.body)
   const objectId = new mongoose.Types.ObjectId(clientId)
@@ -121,6 +122,7 @@ const presentClientMessage = asyncHandler(async (req, res) => {
 //@route PATCH /api/users/adminMessage
 //@access Private Admin
 const presentAdminMessage = asyncHandler(async (req, res) => {
+  res.header("Access-Control-Allow-Origin","*")
   const { bossMessage, clientId, clientEmail, clientName } = req.body
   console.log(req.body)
   const objectId = new mongoose.Types.ObjectId(clientId)
@@ -180,7 +182,7 @@ const presentAdminMessage = asyncHandler(async (req, res) => {
 
 
 const verifyUser = asyncHandler(async (req, res) => {
-
+  res.header("Access-Control-Allow-Origin","*")
   const {clientId ,personalIdQuery, personalIdAnswer } = req.body
   const objectId = new mongoose.Types.ObjectId(clientId)
   const user = await User.findById(objectId)  
@@ -245,7 +247,7 @@ const verifyUser = asyncHandler(async (req, res) => {
 // route GET api/users/register
 //@access Public
 const registerUser = asyncHandler(async (req, res) => {
-
+  res.header("Access-Control-Allow-Origin","*")
   const { name, email, password ,momFirstName,shoeSize,closestFriend,childhoodStreet, firstEmployment,isMerchant,pickupAddress } = req.body
   //req.body will give us the object thats sent in the body of our front end/POSTMAN JSON, take note
   /* res.send({email,  this res,send was just done for example btw
@@ -303,7 +305,7 @@ const registerUser = asyncHandler(async (req, res) => {
 //@route GET /api/users/profile
 //@access Private
 const getUserProfile = asyncHandler(async (req, res) => {
-
+  res.header("Access-Control-Allow-Origin","*")
   //req.body will give us the object thats sent in the body of our front end/POSTMAN JSON, take note
   /* res.send({email,  this res,send was just done for example btw
      password}) */ //res.send accepts an object i think and not just variables, take note...hese are part of the things that you have to research on yor own
@@ -333,7 +335,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 //@route PUT /api/users/profile
 //@access Private
 const updateUserProfile = asyncHandler(async (req, res) => {
-
+  res.header("Access-Control-Allow-Origin","*")
   //req.body will give us the object thats sent in the body of our front end/POSTMAN JSON, take note
   /* res.send({email,  this res,send was just done for example btw
      password}) */ //res.send accepts an object i think and not just variables, take note...hese are part of the things that you have to research on yor own
@@ -372,7 +374,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 //@route GET /api/users
 //@access Private/Admin
 const getUsers = asyncHandler(async (req, res) => {
-
+  res.header("Access-Control-Allow-Origin","*")
   const users = await User.find({})
   /*the way he names every variable user, he is aware of function scope and he uses it well*/
   res.json(users)
@@ -382,6 +384,7 @@ const getUsers = asyncHandler(async (req, res) => {
 //@route DELETE /api/users/:id
 //@access Private/Admin
 const deleteUser = asyncHandler(async (req, res) => {
+  res.header("Access-Control-Allow-Origin","*")
   const objectId = new mongoose.Types.ObjectId(req.params._id)
   const user = await User.findById(objectId)
   /*the way he names every variable user, he is aware of function scope and he uses it well*/
@@ -399,6 +402,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 //@route GET /api/users/:id
 //@access Private/Admin
 const getUserById = asyncHandler(async (req, res) => {
+  res.header("Access-Control-Allow-Origin","*")
   /*console.log(req.params)*/
   const objectId = new mongoose.Types.ObjectId(req.params.id)
   const user = await User.findById(objectId).select('-password') //gotta research select
@@ -416,6 +420,7 @@ const getUserById = asyncHandler(async (req, res) => {
 //@route PUT /api/users/:id
 //@access Private/Admin
 const updateUser = asyncHandler(async (req, res) => {
+  res.header("Access-Control-Allow-Origin","*")
   const objectId = new mongoose.Types.ObjectId(req.params.id)
   
   const user = await User.findById(objectId)
