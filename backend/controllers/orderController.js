@@ -124,8 +124,15 @@ const getMyOrders = asyncHandler(async (req,res)=>{
 //@access Private.Admin
 const getOrders = asyncHandler(async (req,res)=>{
   res.header("Access-Control-Allow-Origin","*")
+
+  let orders
+
    const vendorName = req.query.vendorName
-  const orders = await Order.find({'orderItems.vendor':vendorName}).populate('user','id name')
+   vendorName !==''?(
+   orders = await Order.find({'orderItems.vendor':vendorName}).populate('user','id name')):
+   (
+     orders = await Order.find({}).populate('user','id name')
+   )
   res.json(orders)
 })
 
