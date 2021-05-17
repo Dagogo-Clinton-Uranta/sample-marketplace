@@ -123,7 +123,7 @@ userInfo.newMessages = /*users.some((user)=>{user.userMessageNotification % 2===
 
    {userInfo && userInfo.isAdmin && (
   
-  <NavDropdown title ={'Admin Functions'} id='adminmenu'>
+  <NavDropdown title ={'Merchant Functions'} id='username'>
 
 {/*1*/}     <LinkContainer to='/admin/userlist'>
             <NavDropdown.Item >Users </NavDropdown.Item>
