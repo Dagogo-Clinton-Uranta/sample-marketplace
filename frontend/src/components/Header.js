@@ -122,8 +122,6 @@ userInfo.newMessages = /*users.some((user)=>{user.userMessageNotification % 2===
 
 
    {userInfo && userInfo.isAdmin && (
-     <>
-  {/*<p> (users && userInfo.newMessages ||orders && userInfo.newOrders)&& <i className='fas fa-circle' style={{color:'red', fontSize:'7px'}}></i> </p>*/}
   
   <NavDropdown title ='Admin Functions' id='adminmenu'>
 
@@ -140,7 +138,7 @@ userInfo.newMessages = /*users.some((user)=>{user.userMessageNotification % 2===
            </LinkContainer>
 
      </NavDropdown>
-     </>
+     
    )}
 
 {/*console.log(users.some(function(user){user.userMessageNotification}))*/}
