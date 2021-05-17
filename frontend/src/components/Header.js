@@ -123,10 +123,10 @@ userInfo.newMessages = /*users.some((user)=>{user.userMessageNotification % 2===
 
    {userInfo && userInfo.isAdmin && (
   
-  <NavDropdown title ='Admin Functions' id='adminmenu'>
+  <NavDropdown title ={'Admin Functions'} id='adminmenu'>
 
 {/*1*/}     <LinkContainer to='/admin/userlist'>
-            <NavDropdown.Item >Users {/*(users && userInfo.newMessages) &&<i className='fas fa-circle' style={{color:'red', fontSize:'7px'}}></i>*/}</NavDropdown.Item>
+            <NavDropdown.Item >Users </NavDropdown.Item>
           </LinkContainer>
 
 {/*2*/}      <LinkContainer to='/admin/productlist'>
@@ -134,7 +134,7 @@ userInfo.newMessages = /*users.some((user)=>{user.userMessageNotification % 2===
            </LinkContainer>
 
 {/*3*/}      <LinkContainer to='/admin/orderlist'>
-            <NavDropdown.Item >Orders{/* (orders &&userInfo.newOrders) &&<i className='fas fa-circle' style={{color:'red', fontSize:'7px'}}></i>*/}</NavDropdown.Item>
+            <NavDropdown.Item >Orders</NavDropdown.Item>
            </LinkContainer>
 
      </NavDropdown>
