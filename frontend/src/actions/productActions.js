@@ -29,7 +29,7 @@ import {PRODUCT_LIST_REQUEST,
 import axios from 'axios'
 
 
-export const listProducts =(keyword='',pageNumber='', vendorName={}) =>async(dispatch) => { /*this is an action creator, the object that is created is the action */
+export const listProducts =(keyword='',pageNumber='', vendorName='') =>async(dispatch) => { /*this is an action creator, the object that is created is the action */
   /*redux-thunk middleware allows me to have a function within a function, as below*/
       
         try{

@@ -25,32 +25,23 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
   const userLogin = useSelector(state => state.userLogin);
   const {userInfo } = userLogin
    
-  let vendorName /*= userInfo.isMerchant ? userInfo.name : ''*/
+  let vendorName =userInfo && userInfo.isMerchant ? userInfo.name : ''
 
   //THE LOGIC FOR CALCULATING THE TOTAL PRICE OF ITEMS THAT IS SPECIFIC TO EACH VENDOR
   /*const addDecimals = (num) => { return(Math.round(num*100)/100).toFixed(2) }
       
     cart.itemsPrice = addDecimals(cart.cartItems.reduce((acc, item)=>acc +item.price*item.qty,0))*/
 
-    useEffect(()=> {
-      if(userInfo.isMerchant){
-        vendorName = userInfo.name
-      }
-      else if(userInfo.isAdmin){
-        
-        vendorName = /(.*)/
-      }
-  
-      },[userInfo])
+   
 
   useEffect( () => {
-  if(userInfo && (userInfo.isAdmin ||userInfo.isMerchant )){
-  dispatch(listOrders(vendorName))
+  if(userInfo){
+  dispatch(listOrders(vendorName)) /*console.log('orders nigga')*/
   }else{
    history.push('/login')
   }
     }
-  ,[dispatch,history,userInfo]) //successDelete was passed into useEffect because youu want the list of users to reload, showing the effective delete
+  ,[dispatch,history,userInfo,vendorName]) //successDelete was passed into useEffect because youu want the list of users to reload, showing the effective delete
 
 
     return (
@@ -60,11 +51,11 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
         {userInfo.isMerchant && <p>Orders in green are newly placed orders from customers, please attend to them </p>}
         {userInfo.isAdmin && <h5> The colour codes below indicate
            the status of the order. They will change based on merchant/administrator actions </h5>}
-        {userInfo.isAdmin && <p  style={{backgroundColor:'rgba(0, 255, 0, 0.2)'}}> Green - New orders, not checked by respective merchants </p>}
-        {userInfo.isAdmin && <p style={{backgroundColor:'rgba(233, 212, 96, 0.4)'}}> Yellow - Some Merchants have viewed and committed to delivering their items, the order may still be put forth for delivery, but customers should to be informed on missing items </p>}
-        {userInfo.isAdmin && <p style={{backgroundColor:'rgba(0, 0, 255, 0.2)'}}> Blue - All Merchants have committed to delivering their items </p>}
+        {userInfo.isAdmin && <p  style={{backgroundColor:'rgba(0, 255, 0, 0.2)', width:'50%'}}> Green - New orders, not checked by respective merchants </p>}
+        {userInfo.isAdmin && <p style={{backgroundColor:'rgba(233, 212, 96, 0.4)',width:'50%'}}> Yellow - Some Merchants have viewed and committed to delivering their items, the order may still be put forth for delivery, but customers should to be informed on missing items </p>}
+        {userInfo.isAdmin && <p style={{backgroundColor:'rgba(0, 0, 255, 0.2)',width:'50%'}}> Blue - All Merchants have committed to delivering their items </p>}
         {userInfo.isAdmin && <p > No Colour - Order has been dealt with and delivered, it may be deleted now </p>}
-        {userInfo.isAdmin && <p style={{backgroundColor:'rgba(255, 0, 0, 0.2)'}}> Red - Administrator has not sent a dispatch rider before the expected date </p>}
+        {userInfo.isAdmin && <p style={{backgroundColor:'rgba(255, 0, 0, 0.2)',width:'50%'}}> Red - Administrator has not sent a dispatch rider before the expected date </p>}
         {loading ? <Loader/>:error ? <Message variant='danger'>{error}</Message>:(
 
         <Table striped border hover responsive className ='table-sm'>

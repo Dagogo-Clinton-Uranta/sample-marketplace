@@ -30,7 +30,7 @@ const AdminComScreen = ({location, match,history}) => { //he is taking location 
      console.log(userDetails)
 
       /*consider renaming these from clientId, clientEmail,clientName , cuz youre updating adminMessage even though it's in the client's data */
-     const clientId = userId
+     const clientId = user._id
      const clientEmail = user.email
      const clientName = user.name
 

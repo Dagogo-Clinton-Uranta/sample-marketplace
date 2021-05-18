@@ -36,7 +36,7 @@ const UserListScreen = ({history}) => { //he is taking location & history out of
 
   useEffect( () => {
   if(userInfo && userInfo.isAdmin ){
-  dispatch(listUsers())
+  dispatch(listUsers()) /*console.log('user nigga')*/
   }else if(userInfo && userInfo.isMerchant){
    history.push('/')
   }
@@ -80,7 +80,7 @@ if(window.confirm('Are you sure you want to delete this item ?')){
          </thead>
          <tbody>
           {users.map(user => (
-            <tr key={user._id}  style={{backgroundColor: user.messageNotification && 'rgba(0, 255, 0, 0.2)'}}>
+            <tr key={user._id}  /*style={{backgroundColor: user.messageNotification && 'rgba(0, 255, 0, 0.2)'}}*/>
               <td>{user._id}</td>
               <td>{user.name}</td>
               <td><a href={`mailto:${user.email}`}>{user.email}</a></td>
@@ -91,18 +91,18 @@ if(window.confirm('Are you sure you want to delete this item ?')){
               <td>
                <LinkContainer to={`/admin/user/${user._id}/edit`}>
                 <Button variant='light' className='btn-sm'>
-                   <i className='fas fa-edit'></i>
+                   <i className='fas fa-edit'></i> Edit
                 </Button>
                </LinkContainer>
 
                <LinkContainer to={`/admin/user/${user._id}/communications`}>
                 <Button variant='light' className='btn-sm'>
-                   <i className='fas fa-paper-plane'></i>
+                   <i className='fas fa-paper-plane'></i> Chat
                 </Button>
                </LinkContainer>
 
                <Button variant='danger' className='btn-sm' onClick={()=>deleteHandler(user._id)}>
-                 <i className='fas fa-trash'></i>
+                 <i className='fas fa-trash'></i> Delete
                </Button>
              </td>
 

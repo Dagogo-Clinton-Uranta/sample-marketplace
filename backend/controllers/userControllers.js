@@ -127,13 +127,13 @@ const presentAdminMessage = asyncHandler(async (req, res) => {
   console.log(req.body)
   const objectId = new mongoose.Types.ObjectId(clientId)
   // i need to reset a particular users message so i have to delete by the id i just recieved, HENCE I NEED ID
-   await User.findByIdAndUpdate({_id:objectId}, { adminMessage:bossMessage, adminMessageNotification:false , userMessageNotification:true}, { useFindAndModify: false })
+  await User.findByIdAndUpdate({_id:objectId}, { adminMessage:bossMessage, adminMessageNotification:false , userMessageNotification:true}, { useFindAndModify: false })
  
 
 
   //what we will use to generate a dynamic access token
   //I did this above earlier, am i covered by function scope-yes
-  oAuth75Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN })
+  /*oAuth75Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN })
   const accessToken = await oAuth75Client.getAccessToken().token
 
   //setup of email for nodemailer
@@ -157,10 +157,10 @@ const presentAdminMessage = asyncHandler(async (req, res) => {
   //what i actually want to send to the user/client 
   let mailOptions = {
     from: process.env.EMAIL,
-    to: clientEmail /*NB: i need the client's email address, when sending from the admin side of things */,
+    to: clientEmail ,
     cc: 'dagogouranta@gmail.com',
-    subject: `Message from bridgeway customer service to ${clientName}`, /*consider sending if theyre a merchant or a client */
-    text: ` Dear ${clientName}, ${bossMessage}` /*again, is there any conversion from JSON */
+    subject: `Message from bridgeway customer service to ${clientName}`, 
+    text: ` Dear ${clientName}, ${bossMessage}` 
   }
 
   //actually sending the mail
@@ -171,7 +171,7 @@ const presentAdminMessage = asyncHandler(async (req, res) => {
       console.log('Email sent!');
     }
 
-  })
+  })*/
 
   res.status(201)
 })
@@ -374,7 +374,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 //@route GET /api/users
 //@access Private/Admin
 const getUsers = asyncHandler(async (req, res) => {
-  res.header("Access-Control-Allow-Origin","*")
+  /*res.header("Access-Control-Allow-Origin","*")*/
   const users = await User.find({})
   /*the way he names every variable user, he is aware of function scope and he uses it well*/
   res.json(users)

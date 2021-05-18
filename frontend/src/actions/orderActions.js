@@ -180,7 +180,7 @@ export const listMyOrders  = () => async (dispatch,getState)=> {
 }
 
 
-export const listOrders  = (vendorName={}/*try a reg ex of all allowable characters, not just an empty object */) => async (dispatch,getState)=> {
+export const listOrders  = (vendorName=''/*try a reg ex of all allowable characters, not just an empty object */) => async (dispatch,getState)=> {
 //form of async (dispatch) above
   try {
     dispatch({type: ORDER_LIST_REQUEST})

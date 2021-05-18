@@ -13,7 +13,7 @@ const router = express.Router()
 //@GET api/products/
 //@Public access
 //@this is good commenting syntax,leting others know the routes
-router.route('/').get(getProducts).post(protect,admin,createProduct)
+router.route('/').get(getProducts).post(protect,createProduct)
 router.route('/:id/reviews').post(protect,createProductReview)
 router.get('/top',getTopProducts)
 

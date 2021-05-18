@@ -29,7 +29,7 @@ const ProductListScreen =({history, match}) => { //he is taking location & histo
 
   /* const keyword = ''just in case you need an empty string in listProducts */
 
-  let vendorName = userInfo.isMerchant ? userInfo.name :/(.*)/g
+  let vendorName = userInfo.isMerchant ? userInfo.name :''
 
 
 

@@ -30,26 +30,26 @@ const Header = () => {
   const orderList = useSelector(state => state.orderList);
   const {loading:loadingOrders, error:errorOrders,orders } = orderList
   
-  if(users && userInfo){
-userInfo.newMessages = /*users.some((user)=>{user.userMessageNotification % 2===0}) === true?true :false*/true
-  }
+  /*if(users && userInfo){
+userInfo.newMessages = users.some((user)=>{user.userMessageNotification % 2===0}) === true?true :falsetrue
+  }*/
  
 
-  if(orders && userInfo){
-    userInfo.newOrders = /*orders.map(function(order){order.orderItems}).every(function(item){item.promisedQty===0})===true?true:false*/true
-  }
+  /*if(orders && userInfo){
+    userInfo.newOrders = orders.map(function(order){order.orderItems}).every(function(item){item.promisedQty===0})===true?true:false
+  }*/
   
   useEffect(() => {if(userInfo && (userInfo.isMerchant||userInfo.isAdmin)){
      setCartVisibility(false)}
      else{setCartVisibility(true)}
 
-     if(userInfo && userInfo.isAdmin ){
+     /*if(userInfo && userInfo.isAdmin ){
       dispatch(listUsers())
-      }
+      }*/
 
-      if(userInfo && (userInfo.isAdmin || userInfo.isMerchant) ){
+      /*if(userInfo && (userInfo.isAdmin || userInfo.isMerchant) ){
         dispatch(listOrders())
-        }
+        }*/
       
       
 
@@ -123,14 +123,14 @@ userInfo.newMessages = /*users.some((user)=>{user.userMessageNotification % 2===
 
    {userInfo && userInfo.isAdmin && (
   
-  <NavDropdown title ={'Merchant Functions'} id='username'>
+  <NavDropdown title ={'Admin Functions'} id='username'>
 
 {/*1*/}     <LinkContainer to='/admin/userlist'>
             <NavDropdown.Item >Users </NavDropdown.Item>
           </LinkContainer>
 
 {/*2*/}      <LinkContainer to='/admin/productlist'>
-            <NavDropdown.Item >Products</NavDropdown.Item> {/*i dont think admin is allowed to see products*/}
+            <NavDropdown.Item >Products</NavDropdown.Item> 
            </LinkContainer>
 
 {/*3*/}      <LinkContainer to='/admin/orderlist'>

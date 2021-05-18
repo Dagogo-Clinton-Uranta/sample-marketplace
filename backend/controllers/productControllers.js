@@ -82,7 +82,8 @@ const createProduct = asyncHandler(async (req,res)=>{
      category:'Sample category',
      countInStock:0,
      numReviews:0, /*is it reviews or num reviews  */
-     description:'Sample Description' 
+     description:'Sample Description',
+     vendor:'Sample Vendor'
    })
 
    const createdProduct = await product.save()
@@ -128,6 +129,9 @@ const updateProduct = asyncHandler(async (req,res)=>{
 const createProductReview = asyncHandler(async (req,res)=>{
   res.header("Access-Control-Allow-Origin","*")
   const {rating,comment} = req.body
+  console.log(req.body)
+  console.log(req.user.name)
+  
   const objectId = new mongoose.Types.ObjectId(req.params.id)
   const product= await Product.findById(objectId)
 
@@ -137,18 +141,36 @@ const createProductReview = asyncHandler(async (req,res)=>{
       if(alreadyReviewed){
         res.status(400)
         throw new Error('Product already reviewed')}
+         
+        let numberRating 
 
+        switch(rating){
+          case'1': numberRating = 1
+          break;
+          case'2': numberRating = 2
+          break;
+          case'3': numberRating = 3
+          break;
+          case'4': numberRating = 4
+          break;
+          case'5': numberRating = 5
+          default:5
+        }
 
       const review ={
         name:req.user.name,
         comment,
-        rating:Number(rating),
-        user:req.user_id
+        rating:Number(req.body.rating),
+        user:req.user._id
       }
 
       product.reviews.push(review)
-      product.numReviews = product.reviews.Length
-      product.rating = product.reviews.reduce((acc,item) =>{item.rating + acc},0)/product.reviews.length
+      product.numReviews = product.reviews.length
+      const formingNewAverage = product.reviews.map((item) =>{item.rating})
+
+      /*consider changing this check to not use == , but rather ===*/ 
+      product.rating = formingNewAverage==false?Number(rating):Number(formingNewAverage.reduce((acc,item) =>{item + acc},0)/product.reviews.length)
+      console.log(formingNewAverage)
       await product.save()
 
       res.status(201).json({message:'Review added'})

@@ -66,10 +66,10 @@ const previousPageHandler = () => {
 
 const submitHandler =(e) =>{
   e.preventDefault() //since submit handler is being called inside a form
-  dispatch(createProductReview(match.params.id),{
+  dispatch(createProductReview(match.params.id,{
     rating,
-    comment, //both rating and component are coming from local/component state
-  })
+    comment //both rating and comment are coming from local/comment state
+  }))
 }
 
   
@@ -93,7 +93,7 @@ const submitHandler =(e) =>{
               </ListGroup.Item>
 
               <ListGroup.Item>
-               <Rating value={product.rating} text={`${product.numReviews} reviews`}/>
+               <Rating value={product.rating} text={`${product.numReviews} ${product.numReviews===1?'review':'reviews'}`}/>
               </ListGroup.Item>
 
               <ListGroup.Item>
@@ -175,7 +175,7 @@ const submitHandler =(e) =>{
                  <ListGroup.Item key={review._id}>
                   <strong>{review.name}</strong>
                    <Rating value={review.rating} />
-                   <p>{review.creaedAt.substring(0,10)}</p>
+                   <p>{review.createdAt.substring(0,10)}</p>
                    <p>{review.comment}</p>
                  </ListGroup.Item>
                ) )}

@@ -121,9 +121,9 @@ const getMyOrders = asyncHandler(async (req,res)=>{
 
 //@desc  get all orders
 //@route GET /api/orders
-//@access Private.Admin
+//@access Private Admin
 const getOrders = asyncHandler(async (req,res)=>{
-  res.header("Access-Control-Allow-Origin","*")
+  /*res.header("Access-Control-Allow-Origin","*")*/
 
   let orders
 
@@ -131,7 +131,7 @@ const getOrders = asyncHandler(async (req,res)=>{
    vendorName !==''?(
    orders = await Order.find({'orderItems.vendor':vendorName}).populate('user','id name')):
    (
-     orders = await Order.find().populate('user','id name')
+     orders = await Order.find({}).populate('user','id name')
    )
   res.json(orders)
 })

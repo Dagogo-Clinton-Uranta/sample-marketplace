@@ -35,7 +35,13 @@ import orderRoutes from './routes/orderRoutes.js'
 import uploadRoutes from './routes/uploadRoutes.js'
 //const uploadRoutes =require('./routes/uploadRoutes.js')
 
-import cors from 'cors'
+import {presentAdminMessage} from './controllers/userControllers.js'
+//const {authUser, getUserProfile, registerUser,updateUserProfile,getUsers, deleteUser,getUserById, updateUser} =require('../controllers/userControllers.js')
+
+import {protect,admin} from './Middleware/authMiddleware.js'
+//const {protect,admin} = require('../Middleware/authMiddleware.js')
+
+/*import cors from 'cors'*/
 
 dotenv.config()
  
@@ -48,7 +54,7 @@ if(process.env.NODE_ENV === 'development'){app.use(morgan('dev'))} //I prefer to
 
 
 
-app.use(cors())
+/*app.use(cors())*/
 app.use('/api/products',productRoutes)
 app.use('/api/users',userRoutes)
 app.use('/api/orders',orderRoutes)
@@ -57,6 +63,11 @@ app.use('/api/upload',uploadRoutes)
 app.get('/api/config/paypal',(req,res)=>{
   res.send(process.env.PAYPAL_CLIENT_ID)
 }) //this is a CONFIG route to access the paypal client id
+
+//this is a temporary route, until i can figure out what is going on with my admin messages
+app.patch('/admin/user/:id/api/users/adminMessage',presentAdminMessage)
+//this is a temporary route, until i can figure out what is going on with my admin messages
+
 
 const __dirname =path.resolve() //OKAY BRAD DID THIS TO MIMIC PATH.JOIN(__DIRNAME) , BECAUSE THE OG __dirname IS ONLY ACCESSIBLE IN COMMON JS AND NOT ES6 SYNTAX
 app.use('/uploads', express.static(path.join(__dirname,'/uploads')))
@@ -71,15 +82,15 @@ if(process.NODE_ENV === 'production'){
     res.sendFile(path.resolve(__dirname,'frontend','build','index.html'))
   })
 }else{
- /* app.get('/', (req,res) => {
+  app.get('/', (req,res) => {
     res.send('API is running...')
-  })*/
+  })
 
-  app.use(express.static(path.join(__dirname,'/frontend/build')))
+  /*app.use(express.static(path.join(__dirname,'/frontend/build')))
 
   app.get('*', (req,res) =>{ 
     res.sendFile(path.resolve(__dirname,'frontend','build','index.html'))
-  })
+  })*/
 
 
 
