@@ -123,7 +123,7 @@ const getMyOrders = asyncHandler(async (req,res)=>{
 //@route GET /api/orders
 //@access Private Admin
 const getOrders = asyncHandler(async (req,res)=>{
-  /*res.header("Access-Control-Allow-Origin","*")*/
+  res.header("Access-Control-Allow-Origin","*")
 
   let orders
 

@@ -337,7 +337,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 const updateUserProfile = asyncHandler(async (req, res) => {
   res.header("Access-Control-Allow-Origin","*")
   //req.body will give us the object thats sent in the body of our front end/POSTMAN JSON, take note
-  /* res.send({email,  this res,send was just done for example btw
+  
      password}) */ //res.send accepts an object i think and not just variables, take note...hese are part of the things that you have to research on yor own
      const objectId = new mongoose.Types.ObjectId(req.user._id)
   
@@ -374,9 +374,9 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 //@route GET /api/users
 //@access Private/Admin
 const getUsers = asyncHandler(async (req, res) => {
-  /*res.header("Access-Control-Allow-Origin","*")*/
+  res.header("Access-Control-Allow-Origin","*")
   const users = await User.find({})
-  /*the way he names every variable user, he is aware of function scope and he uses it well*/
+  
   res.json(users)
 })
 
@@ -387,7 +387,7 @@ const deleteUser = asyncHandler(async (req, res) => {
   res.header("Access-Control-Allow-Origin","*")
   const objectId = new mongoose.Types.ObjectId(req.params._id)
   const user = await User.findById(objectId)
-  /*the way he names every variable user, he is aware of function scope and he uses it well*/
+  
   if (user) {
     await user.remove()
     res.json({ message: 'User removed' })
