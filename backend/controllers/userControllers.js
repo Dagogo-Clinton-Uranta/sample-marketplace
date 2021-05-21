@@ -338,7 +338,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   res.header("Access-Control-Allow-Origin","*")
   //req.body will give us the object thats sent in the body of our front end/POSTMAN JSON, take note
   
-     password}) */ //res.send accepts an object i think and not just variables, take note...hese are part of the things that you have to research on yor own
+       //res.send accepts an object i think and not just variables, take note...hese are part of the things that you have to research on yor own
      const objectId = new mongoose.Types.ObjectId(req.user._id)
   
      const user = await User.findById(objectId)
