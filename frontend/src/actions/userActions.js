@@ -99,7 +99,7 @@ export const adminSaid = (bossMessage, clientId,clientEmail,clientName) => async
       }
     }
     
-    const {data} = await axios.patch('api/users/adminMessage',{bossMessage, clientId,clientEmail,clientName},config)
+    const {data} = await axios.patch('/admin/user/:id/api/users/adminMessage',{bossMessage, clientId,clientEmail,clientName},config)
     
     dispatch({type:ADMIN_SEND_SUCCESS,
     payload:data})
