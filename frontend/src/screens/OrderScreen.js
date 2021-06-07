@@ -299,9 +299,9 @@ const submitHandler = (e) => {
                    {item.vendor}
                    </Col>
                    
-                   <Col md={4}>
+                   {userInfo.isAdmin && <Col md={4}>
                    {item.promisedQty}
-                </Col>
+                   </Col>}
 
                    <Col md={3}>
                    {item.qty} x ₦ {item.price} = ₦ {item.qty*item.price}
