@@ -72,7 +72,7 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
          </thead>
          <tbody>
           {orders.map(order => ( 
-            <tr key={order._id} style={{backgroundColor: order.orderItems.every((item) => (item.promisedQty === 0))? 'rgba(0, 255, 0, 0.2)':(userInfo.isAdmin && order.orderItems.some((item) => (item.promisedQty === 0))?'rgba(233, 212, 96, 0.4)':((userInfo.isAdmin && order.orderItems.every((item) => (item.promisedQty === item.qty)) && 'rgba(0, 0, 255, 0.2)')))}}>
+            <tr key={order._id} style={{backgroundColor: userInfo.isMerchant && order.orderItems.filter((item) => (item.vendor === userInfo.name)).some((item) => (item.promisedQty === 0))?'rgba(233, 212, 96, 0.4)':(order.orderItems.every((item) => (item.promisedQty === 0))? 'rgba(0, 255, 0, 0.2)':(userInfo.isAdmin && order.orderItems.some((item) => (item.promisedQty === 0))?'rgba(233, 212, 96, 0.4)':((userInfo.isAdmin && order.orderItems.every((item) => (item.promisedQty === item.qty)) && 'rgba(0, 0, 255, 0.2)'))))}}>
               <td>{order._id}</td>
               <td>{order.user && order.user.name}</td>
               <td>{order.createdAt.substring(0,10)}</td>
