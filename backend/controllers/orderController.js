@@ -115,7 +115,7 @@ const updateOrderToDelivered = asyncHandler(async (req,res)=>{
 //@access Private
 const getMyOrders = asyncHandler(async (req,res)=>{
   res.header("Access-Control-Allow-Origin","*")
-  const orders = await Order.find({user:req.user._id})
+  const orders = await Order.find({user:req.user._id}).sort({createdAt:-1})
   res.json(orders)
 })
 
@@ -129,9 +129,9 @@ const getOrders = asyncHandler(async (req,res)=>{
 
    const vendorName = req.query.vendorName
    vendorName !==''?(
-   orders = await Order.find({'orderItems.vendor':vendorName}).populate('user','id name')):
+   orders = await Order.find({'orderItems.vendor':vendorName}).sort({createdAt:-1}).populate('user','id name')):
    (
-     orders = await Order.find({}).populate('user','id name')
+     orders = await Order.find({}).sort({createdAt:-1}).populate('user','id name')
    )
   res.json(orders)
 })

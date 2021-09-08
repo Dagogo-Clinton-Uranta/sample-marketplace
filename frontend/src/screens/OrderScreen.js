@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import {Link} from 'react-router-dom'
+import {LinkContainer} from 'react-router-bootstrap'
 import {PayPalButton} from 'react-paypal-button-v2'
 import { Button, Row ,Col ,Form, ListGroup, Image, Card, ListGroupItem} from 'react-bootstrap'
 import {useDispatch, useSelector} from 'react-redux'
@@ -166,7 +167,23 @@ const submitHandler = (e) => {
       <ListGroup variant="flush">
        <ListGroup.Item>
          <h2>Delivery</h2>
-        <p> {userInfo.isMerchant||userInfo.isAdmin?(<strong>Order placed by:</strong>):(<strong>Name:</strong>) }{'   '}{order.user.name}</p>
+         {userInfo.isMerchant && <>
+         
+         <p>Here you may commit to fulfilling orders. Please select the number of each item that you are sure
+            to give the customer once the dispatch rider comes around.  PLEASE MAKE EFFORTS TO FULLY FULFILL ALL YOUR ORDERS, FOR A GOOD REPUTATION AMONG CUSTOMERS.  Once you
+            select the amount from the dropdown menu click the commit button to 
+            lock it in (for each item).</p>
+            <br/>
+            <p>
+            If you are only able to partially fulfill your order, (you cannot meet the  expected quantity for any item), be sure to send a message to the admin mentioning
+            the order ID, the items in question and how many units you are able to fulfill . The total amount of money you are to recieve, will be reflected in the payment summary, based on the number of units you agree to fulfill.
+            </p>
+            <br/>
+            <p>Please commit all your order items by: &nbsp; <span style={{color:'black', fontSize:'1rem'}}>{new Date(new Date(order.createdAt).getTime()+ 24 * 60 * 60 * 1000).toLocaleDateString()}</span></p>
+            <br/>
+                  
+            </>}
+        <p> {userInfo.isMerchant||userInfo.isAdmin?(<strong>Order placed by :</strong>):(<strong>Name :</strong>) }{'   '}{order.user.name}</p>
 
        { !userInfo.isMerchant &&
        <>
@@ -202,7 +219,7 @@ const submitHandler = (e) => {
           <Row>
           {!userInfo.isMerchant && <Col md={2}>S/N</Col>}
           <Col md={2}>Item</Col>
-          <Col md={2}>Vendor</Col>
+          <Col md={2}>To Fulfill</Col>
           {userInfo.isMerchant?(<Col md={4}>How many can you fulfill?</Col>):(userInfo.isAdmin && <Col md={2}>Merchant's promised amount)</Col>)}
           {userInfo.isMerchant && <Col md={2}>Item Total</Col>}
           
@@ -229,7 +246,7 @@ const submitHandler = (e) => {
                   </Link>
                   </Col>
                   <Col md={2}>
-                   {item.vendor}
+                   {item.qty}
                    </Col>
                    
                    <Col md={4}>
@@ -342,7 +359,7 @@ const submitHandler = (e) => {
             <Row>
 
              <Col>Delivery Cost </Col>
-             <Col>₦ {order.deliveryCost} </Col>
+             <Col>₦ {(order.deliveryCost).toFixed(2)} </Col>
 
             </Row>
            </ListGroup.Item>
@@ -373,13 +390,13 @@ const submitHandler = (e) => {
        { userInfo.isMerchant && <Card>
           <ListGroup variant='flush'>
            <ListGroup.Item>
-            <h2>Order Summary</h2>
+            <h2>Payment Summary</h2>
            </ListGroup.Item>
 
            <ListGroup.Item>
             <Row>
 
-             <Col>Expected total: </Col>
+             <Col>Total Payable: </Col>
              <Col>₦ {(order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.qty),0)).toFixed(2)} </Col> 
                
             </Row>
@@ -388,8 +405,8 @@ const submitHandler = (e) => {
            <ListGroup.Item>   
             <Row>
 
-             <Col> Total Fulfillable: </Col>
-             <Col>₦ {order.itemsPrice} </Col> {/*gotta come change this, and effect the price in the total as well */}
+             <Col> To Recieve: </Col>
+             <Col>₦ {(order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.promisedQty),0)).toFixed(2)} </Col> 
                
             </Row>
            </ListGroup.Item>
@@ -397,8 +414,8 @@ const submitHandler = (e) => {
             <ListGroup.Item>
             <Row>
 
-             <Col>Delivery Cost: </Col>
-             <Col>₦ {order.deliveryCost} </Col>
+             <Col>Delivery Deductions: </Col>
+             <Col>-₦{(Number(order.deliveryCost)).toFixed(2)} </Col> {/*we don't know who the delivery cost falls to, but here i've assumed it falls to suppliers*/}
 
             </Row>
            </ListGroup.Item>
@@ -409,7 +426,7 @@ const submitHandler = (e) => {
             <Row>
 
              <Col>Total </Col>
-             <Col>₦ {(Number(order.deliveryCost) + Number(order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.qty),0))).toFixed(2)} </Col>
+             <Col>₦ {(order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.promisedQty),0)).toFixed(2)} </Col>
 
             </Row>
            </ListGroup.Item>
@@ -420,12 +437,29 @@ const submitHandler = (e) => {
              {!sdkReady ?<Loader/> :(<PayPalButton amount ={order.totalPrice} onSuccess={successPaymentHandler}/>)  }
             </ListGroup.Item>
           )*/}
-
+           
+           
 
          </ListGroup>
        </Card> }
 
+       {userInfo.isMerchant && 
+       
+       <center>
+         <ListGroup > 
+      <ListGroup.Item > 
+        
+    
 
+  <LinkContainer to={`/communications?specificOrderId=${order._id}`}>
+  <Button type='submit' variant='primary'> CLICK TO MESSAGE ADMIN </Button>
+  </LinkContainer>
+     
+    
+    </ListGroup.Item>
+    </ListGroup>
+    </center>}
+  
 
        {userInfo.isAdmin && <Card>
           <ListGroup variant='flush'>
@@ -434,7 +468,7 @@ const submitHandler = (e) => {
            </ListGroup.Item>
 
            <ListGroup.Item>
-            <p>Please, ONLY perform these transactions when
+            <p>Please, ONLY perform these transactions after the deadline date ({new Date(new Date(order.createdAt).getTime()+ 24 * 60 * 60 * 1000).toLocaleDateString()}), when
             the respective merchants have confirmed that they can deliver the goods. </p>
            </ListGroup.Item>
 
@@ -442,7 +476,7 @@ const submitHandler = (e) => {
            <ListGroup.Item>
             <Row>
 
-             <Col>TO BridgeWay Co-operative Account: </Col>
+             <Col>To BridgeWay Co-operative Account: </Col>
              <Col>₦ {(order.itemsPrice * (1/19) ).toFixed(2)} </Col>
 
             </Row>

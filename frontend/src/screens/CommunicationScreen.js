@@ -13,7 +13,10 @@ import FormContainer from '../components/FormContainer.js'
 
 
 const CommunicationScreen = ({location, history}) => { //he is taking location & history out of the props, normally it is props.location
-  const [clientMessage,setClientMessage] = useState('')  //component level state right here, not application level state
+  
+  const orderId = location.search ? location.search.split('=')[1] : false
+
+  const [clientMessage,setClientMessage] = useState(orderId ?`Good day Admin, I am writing to tell you about order number ${orderId} `:'')  //component level state right here, not application level state
   
   const dispatch = useDispatch() //dont forget that real dispatches only take place in action creators, you are only calling useDispatch here
   const userLogin = useSelector(state => state.userLogin);
@@ -50,7 +53,14 @@ const CommunicationScreen = ({location, history}) => { //he is taking location &
          dispatch(clientSaid(clientMessage, clientId ,clientName))
   }
 
+  const previousPageHandler = () => {
+  
+    window.history.back()
+  }
+
     return (
+      <>
+      <Button className='btn btn-primary my-3' onClick={previousPageHandler}>GO BACK</Button>
        <FormContainer>
         <h1>Send A Message ...</h1>
         {error && <Message variant='danger'>{error}</Message>}
@@ -61,7 +71,7 @@ const CommunicationScreen = ({location, history}) => { //he is taking location &
          <Form.Group controlId='reply-message'>
 
           <Form.Label> Customer Service: </Form.Label>
-          <Form.Control as ="textarea" rows={6} plaintext readOnly value={userInfo.adminMessage} defaultValue={`Good day user ${userInfo.name},how may we help you?`}></Form.Control>
+          <Form.Control as ="textarea" rows={6} plaintext readOnly value={userInfo.adminMessage} defaultValue={`Good day ${userInfo.name},how may we help you?`}></Form.Control>
 
          </Form.Group>
          
@@ -97,7 +107,7 @@ const CommunicationScreen = ({location, history}) => { //he is taking location &
         </Row>          
 
        </FormContainer>
-
+      </>
     )
 
 }

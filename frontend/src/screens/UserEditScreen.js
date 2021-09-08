@@ -38,7 +38,7 @@ const UserEditScreen = ({match, history}) => { //he is taking location & history
     dispatch({type:USER_UPDATE_RESET})
     history.push('/admin/userlist')
   }else{
-    if(!user.name ||user.id !== userId){ //we are just checking any aspect of the user here to see if user object exists
+    if(user._id !== userId){ //we are just checking any aspect of the user here to see if user object exists
       dispatch(getUserDetails(userId))
     }else {
       setName(user.name)
@@ -65,6 +65,9 @@ const UserEditScreen = ({match, history}) => { //he is taking location & history
 
     <FormContainer>
     <h1>Edit User</h1>
+    <p>Here you may change the status of a user to either a merchant, an admin or neither.
+      You are unable to change a user's name or email, only users may change these. </p>
+      <br/>
     {loadingUpdate &&<Loader/> }
     {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
     {loading? <Loader/>:error?<Message variant='danger'>{error}</Message>:(
@@ -72,30 +75,30 @@ const UserEditScreen = ({match, history}) => { //he is taking location & history
  {/*1*/}      <Form.Group controlId='name'>
 
        <Form.Label>  Name</Form.Label>
-       <Form.Control type='name' placeholder="enter name" value={name} onChange={(e)=>setName(e.target.value)}></Form.Control>
+       <Form.Control type='name' placeholder="enter name" value={name} onChange={(e)=>setName(e.target.value)} readOnly></Form.Control>
         {/*the value of form control is form control from the state. You need to read about form group from react bootstrap*/}
       </Form.Group>
 
  {/*2*/}        <Form.Group controlId='email'>
 
         <Form.Label>  Email Address </Form.Label>
-        <Form.Control type='email' placeholder="enter email" value={email} onChange={(e)=>setEmail(e.target.value)}></Form.Control>
+        <Form.Control type='email' placeholder="enter email" value={email} onChange={(e)=>setEmail(e.target.value)} readOnly></Form.Control>
          {/*the value of form control is form control from the state. You need to read about form group from react bootstrap*/}
        </Form.Group>
 
  {/*3*/}      <Form.Group controlId='isadmin'>
 
 
-        <Form.Check type='checkbox' label="Is Admin" checked={isAdmin} onChange={(e)=>setIsAdmin(e.target.checked)}></Form.Check>
+        <Form.Check type='checkbox' label="Is Admin" checked={isAdmin} onChange={(e)=>{setIsAdmin(e.target.checked); setIsMerchant(false)}}></Form.Check>
 
        </Form.Group>
 
 {/*4*/}      <Form.Group controlId='ismerchant'>
 
 
-<Form.Check type='checkbox' label="Is Merchant" checked={isMerchant} onChange={(e)=>setIsMerchant(e.target.checked)}></Form.Check>
+       <Form.Check type='checkbox' label="Is Merchant" checked={isMerchant} onChange={(e)=>{setIsMerchant(e.target.checked); setIsAdmin(false)}}></Form.Check>
 
-</Form.Group>
+       </Form.Group>
 
 
         <Button type='submit' variant='primary'>Update</Button>

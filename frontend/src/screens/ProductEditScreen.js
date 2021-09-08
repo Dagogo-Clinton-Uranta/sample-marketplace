@@ -17,7 +17,7 @@ const ProductEditScreen= ({match, history}) => { //he is taking location & histo
 
   const [name,setName] = useState('')
   //const [email,setEmail] = useState('')
-  const [price,setPrice] = useState(0)  //component level state right here, not application level state
+  const [price,setPrice] = useState('')  //component level state right here, not application level state
   const [image,setImage] = useState('')
   const [brand,setBrand] = useState('')
   const [category,setCategory] = useState('')
@@ -48,11 +48,11 @@ const ProductEditScreen= ({match, history}) => { //he is taking location & histo
       history.push('/admin/productlist')
     } 
     else{
-      if(!product.name ||product.id !== productId){ //we are just checking any aspect of the user here to see if user object exists
+      if(product && !product.name ){ //we are just checking if the product has a name here to see if user object exists
         dispatch(listProductDetails(productId))
       }else {
         setName(product.name)
-        //setEmail(product.email)
+        setPrice(product.price)
         setImage(product.image)
         setBrand(product.brand)
         setCategory(product.category)
@@ -85,6 +85,8 @@ const uploadFileHandler =async (e)=>{
    }
 }
 
+console.log(productDetails)
+
   const submitHandler = (e) => {
           e.preventDefault()
   dispatch(updateProduct({
@@ -102,7 +104,7 @@ const uploadFileHandler =async (e)=>{
 
     return (
         <>
-    <Link to='/admin/productlist' className='btn btn-light my-3'>Go back</Link>
+    <Link to='/admin/productlist' className='btn btn-primary my-3'>Go back</Link>
 
     <FormContainer>
     <h1> Create / Edit Product</h1>
@@ -114,21 +116,21 @@ const uploadFileHandler =async (e)=>{
  {/*1*/}      <Form.Group controlId='name'>
 
        <Form.Label>  Name</Form.Label>
-       <Form.Control type='name' placeholder="enter name" value={name} onChange={(e)=>setName(e.target.value)}></Form.Control>
+       <Form.Control type='name' placeholder={ name === product.name? (product.name):"Enter name"} value={name} onChange={(e)=>setName(e.target.value)}></Form.Control>
         {/*the value of form control is form control from the state. You need to read about form group from react bootstrap*/}
       </Form.Group>
 
  {/*2*/}        <Form.Group controlId='price'>
 
-        <Form.Label>  Price </Form.Label>
-        <Form.Control type='number' placeholder="enter price" value={price} onChange={(e)=>setPrice(e.target.value)}></Form.Control>
+        <Form.Label>  Price(₦) </Form.Label>
+        <Form.Control type='number' placeholder={ price === product.price? (product.price):"Enter price"} value={price} onChange={(e)=>setPrice(e.target.value)}></Form.Control>
          {/*the value of form control is form control from the state. You need to read about form group from react bootstrap*/}
        </Form.Group>
 
  {/*3*/}      <Form.Group controlId='image'>
 
         <Form.Label>  Image </Form.Label>
-        <Form.Control type='text' placeholder="Enter image url" value={price} onChange={(e)=>setImage(e.target.value)}></Form.Control>
+        <Form.Control type='text' placeholder= { image === product.image? image:"Enter image url"}  value={image} onChange={(e)=>setImage(e.target.value)}></Form.Control>
         {/*the value of form control is form control from the state. You need to read about form group from react bootstrap*/}
          <Form.File id="image-file" label="choose file" custom onChange={uploadFileHandler}>
            {uploading &&<Loader/>}
@@ -139,7 +141,7 @@ const uploadFileHandler =async (e)=>{
   {/*4*/}      <Form.Group controlId='brand'>
 
               <Form.Label>  Brand </Form.Label>
-              <Form.Control type='text' placeholder="Enter brand" value={brand} onChange={(e)=>setBrand(e.target.value)}></Form.Control>
+              <Form.Control type='text' placeholder={ price === product.brand? (brand):"enter brand"} value={brand} onChange={(e)=>setBrand(e.target.value)}></Form.Control>
                {/*the value of form control is form control from the state. You need to read about form group from react bootstrap*/}
              </Form.Group>
 
@@ -147,27 +149,27 @@ const uploadFileHandler =async (e)=>{
  {/*5*/}        <Form.Group controlId='countInStock'>
 
                 <Form.Label>  Count in Stock </Form.Label>
-                <Form.Control type='number' placeholder="Enter count in stock" value={countInStock} onChange={(e)=>setCountInStock(e.target.value)}></Form.Control>
+                <Form.Control type='number' placeholder={ countInStock === product.countInStock? (countInStock):"Enter count in stock"} value={countInStock} onChange={(e)=>setCountInStock(e.target.value)}></Form.Control>
                      {/*the value of form control is form control from the state. You need to read about form group from react bootstrap*/}
              </Form.Group>
 
  {/*6*/}        <Form.Group controlId='category'>
 
                 <Form.Label>  Category </Form.Label>
-                <Form.Control type='text' placeholder="Enter category" value={category} onChange={(e)=>setCategory(e.target.value)}></Form.Control>
+                <Form.Control type='text' placeholder={ category === product.category? (category):"Enter category"} value={category} onChange={(e)=>setCategory(e.target.value)}></Form.Control>
                                  {/*the value of form control is form control from the state. You need to read about form group from react bootstrap*/}
                </Form.Group>
 
 {/*7*/}       <Form.Group controlId='description'>
 
                   <Form.Label>  Description</Form.Label>
-                  <Form.Control type='text' placeholder="Enter description" value={description} onChange={(e)=>setDescription(e.target.value)}></Form.Control>
+                  <Form.Control as ='textarea' rows={5} placeholder={ description === product.description? (description):"enter description"} value={description} onChange={(e)=>setDescription(e.target.value)}></Form.Control>
                                                {/*the value of form control is form control from the state. You need to read about form group from react bootstrap*/}
                  </Form.Group>
 
 
 
-        <Button type='submit' variant='primary'>Update</Button>
+        <Button type='submit' variant='primary'>Register Item</Button>
       </Form>
     )}
 

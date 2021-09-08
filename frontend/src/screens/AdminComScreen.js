@@ -59,7 +59,7 @@ const AdminComScreen = ({location, match,history}) => { //he is taking location 
        history.push(redirect)
     } I WANT TO PUT IN THE CUSTOMER SERVICE MESSAGE HERE,SO IT CAN REFRESH UPON CUSTOMER SENDING A MESSAGE*/
       
-  },[dispatch, userId /*, clientEmail, clientName*/]) /*why client id an client name */
+  },[dispatch, userId /*, clientEmail, clientName*/]) /*why client id and client name? */
 
 
 

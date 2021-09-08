@@ -94,6 +94,11 @@ if(window.confirm('Are you sure you want to delete this item ?')){ //window.conf
 
     return (
        <>
+       <br/>
+       <center><p style={{color:'black', maxWidth:'600px'  }}>
+     { userInfo.isAdmin && 'This is a list of all products on the marketplace'} 
+     { userInfo.isMerchant && ' This is a list of all your products on the marketplace. You may edit, create or delete them here.'}
+     </p></center>
         <Row className='align-items-center'>
          <Col>
           <h1>Products</h1>

@@ -22,7 +22,7 @@ const ProductComponent = ({product}) => {
 
 
     <Card.Text as='div'>
-      <Rating value={product.rating} text={`${product.numReviews} reviews`} color='#f8e825'/>
+    <span style={{ fontSize:'0.8rem'}}><Rating value={product.rating} text={`${product.numReviews} reviews`} color='#f8e825'/></span>
      {/*theres gonna be a rating component eventually, and its there now*/}
     </Card.Text>
 

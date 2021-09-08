@@ -97,7 +97,7 @@ const createProduct = asyncHandler(async (req,res)=>{
 //@access Private/Admin
 const updateProduct = asyncHandler(async (req,res)=>{
   res.header("Access-Control-Allow-Origin","*")
-  const {name,price,description,image,category,countInStock} = req.body
+  const {name,price,description,brand,image,category,countInStock} = req.body
 
   const objectId = new mongoose.Types.ObjectId(req.params.id)
   const product= await Product.findById(objectId)
