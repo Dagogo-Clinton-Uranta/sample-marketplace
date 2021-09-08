@@ -22,18 +22,18 @@ const Header = () => {
 
   const userLogin = useSelector(state => state.userLogin)
   const {userInfo} = userLogin
+   /*console.log(userInfo)*/
 
   const userList = useSelector(state => state.userList);
   const {loading, error,users } = userList
-  /*console.log(users)*/
+  const newMessages =users && users.some((user)=>{return user.adminMessageNotification ===true})?true:false
+  const numberOfMessages = users? users.filter((user)=>{return user.adminMessageNotification ===true}).length:''
 
   const orderList = useSelector(state => state.orderList);
   const {loading:loadingOrders, error:errorOrders,orders } = orderList
-  
-  /*if(users && userInfo){
-userInfo.newMessages = users.some((user)=>{user.userMessageNotification % 2===0}) === true?true :falsetrue
-  }*/
- 
+  const newOrders =orders && orders.some((user)=>{return orders.adminMessageNotification ===true})?true:false
+  const numberOfOrders = orders? orders.filter((user)=>{return orders.adminMessageNotification ===true}).length:''
+  console.log(orders)
 
   /*if(orders && userInfo){
     userInfo.newOrders = orders.map(function(order){order.orderItems}).every(function(item){item.promisedQty===0})===true?true:false
@@ -43,18 +43,28 @@ userInfo.newMessages = users.some((user)=>{user.userMessageNotification % 2===0}
      setCartVisibility(false)}
      else{setCartVisibility(true)}
 
-     /*if(userInfo && userInfo.isAdmin ){
+     if(userInfo && userInfo.isAdmin ){
       dispatch(listUsers())
-      }*/
+      }
 
-      /*if(userInfo && (userInfo.isAdmin || userInfo.isMerchant) ){
+      if(userInfo && (userInfo.isAdmin || userInfo.isMerchant) ){
         dispatch(listOrders())
-        }*/
+        }
       
       
 
   },[userInfo])
   
+
+
+ /*useEffect(() =>{
+   if(users && userInfo && userInfo.isAdmin){
+ userInfo.newMessages = users.some((user)=>{return user.adminMessageNotification ===true})
+ userInfo.numberOfMessages =  users.filter((user)=>{return user.adminMessageNotification ===true}).length
+}
+
+ },[users])*/
+
 
   const logoutHandler = () => {
     
@@ -84,25 +94,31 @@ userInfo.newMessages = users.some((user)=>{user.userMessageNotification % 2===0}
 {cartVisibility &&
 <LinkContainer to='/cart'>
      <Nav.Link ><i className='fas fa-shopping-cart'></i>Cart
-     {userInfo && userInfo.adminMessageNotification && <i className='fas fa-circle' style={{color:'red', fontSize:'8px', marginLeft:'15px' , marginRight:'-12px'}}></i>}
+     {userInfo && userInfo.userMessageNotification && <i className='fas fa-circle' style={{color:'red', fontSize:'8px', marginLeft:'15px' , marginRight:'-12px'}}></i>}
      </Nav.Link>
      
 </LinkContainer> }
 
    {userInfo?(
-     <NavDropdown title ={userInfo.name} id='username'>
+     <>
+     <span>{userInfo && userInfo.isMerchant && userInfo.userMessageNotification && <i className='fas fa-circle' style={{color:'red', fontSize:'8px', marginLeft:'15px' , marginRight:'-1px', marginTop:'14px'}}></i>}</span>
+     <NavDropdown title ={userInfo.name + `${(userInfo && userInfo.userMessageNotification)? ' (1)':''}`} id='username'>
      <LinkContainer to='/profile'>
-          <NavDropdown.Item >Profile { userInfo && userInfo.adminMessageNotification &&<i className='fas fa-circle' style={{color:'red', fontSize:'7px'}}></i>} </NavDropdown.Item>
+          <NavDropdown.Item >Profile { userInfo && userInfo.userMessageNotification &&<i className='fas fa-circle' style={{color:'red', fontSize:'7px'}}></i>} </NavDropdown.Item>
           
      </LinkContainer>
 
        <NavDropdown.Item onClick={logoutHandler} >Logout </NavDropdown.Item>
      </NavDropdown>
+     </>
    ):(
      <LinkContainer to='/login'>
           <Nav.Link><i className='fas fa-user'></i>Sign In</Nav.Link>
      </LinkContainer>
-   )}
+     
+   )
+    
+   }
 
 
 {userInfo && userInfo.isMerchant && (
@@ -122,11 +138,13 @@ userInfo.newMessages = users.some((user)=>{user.userMessageNotification % 2===0}
 
 
    {userInfo && userInfo.isAdmin && (
-  
+     <>
+     {/*the code below is too long, try and refactor it*/} 
+  <span>{(userInfo && userInfo.isAdmin && (newMessages/*||newOrders*/)) && <i className='fas fa-circle' style={{color:'red', fontSize:'8px', marginLeft:'15px' , marginRight:'-1px', marginTop:'14px'}}></i>}</span>
   <NavDropdown title ={'Admin Functions'} id='username'>
 
 {/*1*/}     <LinkContainer to='/admin/userlist'>
-            <NavDropdown.Item >Users </NavDropdown.Item>
+            <NavDropdown.Item >Users { (userInfo && userInfo.isAdmin && numberOfMessages) && `(${numberOfMessages})`} </NavDropdown.Item>
           </LinkContainer>
 
 {/*2*/}      <LinkContainer to='/admin/productlist'>
@@ -134,11 +152,11 @@ userInfo.newMessages = users.some((user)=>{user.userMessageNotification % 2===0}
            </LinkContainer>
 
 {/*3*/}      <LinkContainer to='/admin/orderlist'>
-            <NavDropdown.Item >Orders</NavDropdown.Item>
+            <NavDropdown.Item >Orders{ (userInfo && userInfo.isAdmin && numberOfMessages) && `(${numberOfMessages})`} </NavDropdown.Item>
            </LinkContainer>
 
      </NavDropdown>
-     
+     </> 
    )}
 
 {/*console.log(users.some(function(user){user.userMessageNotification}))*/}

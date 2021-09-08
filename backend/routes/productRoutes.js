@@ -23,8 +23,12 @@ router.get('/top',getTopProducts)
 //@GET api/products/:id
 //@@Public access
 
-router.route('/:id').get(getProductById).delete(protect,admin,deleteProduct).put(protect,admin,updateProduct)
-
+router.route('/:id').get(getProductById).delete(protect,admin,deleteProduct).put(protect/*,admin*/,updateProduct)
+                       /*the admin you commented out above is your defence against casual
+                        users manually trying to edit a product, maybe make another middleware called merchant that grants
+                        limited access,like if the 'merchant' middleware is on the route, 
+                        both admins and merchants can access it 
+                        */
 
 //exports.router = router;
 export default router

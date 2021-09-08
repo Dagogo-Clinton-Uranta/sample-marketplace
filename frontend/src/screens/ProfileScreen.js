@@ -60,14 +60,26 @@ const ProfileScreen = ({location, history}) => { //he is taking location & histo
          setMessage('Passwords do not Match')
        }else{
          //this is where we want to to call our action to dispatch login
-      dispatch(updateUserProfile({id: user._id, name,email, password}))
+         window.alert('Profile Updated! Changes will be reflected on your next sign in.')
+         dispatch(updateUserProfile({id: user._id, name,email, password}))
        }
 
   }
 
     return (
       <>
+      <br/>
+      <br/>
+     <center><p style={{color:'black', maxWidth:'600px'  }}>Welcome to your profile! Here you may update your username and password.
+     { !userInfo.isAdmin && ' You may also send and reply to messages.'} 
+     { (userInfo.isAdmin || userInfo.isMerchant) && ' You can write notes which you\'ll refer to later, for your operation on this platform.'}
+     </p></center>
+
+      <br/>
+      <br/>
+      <br/>
      <Row>
+       
       <Col md={3}>
       <h2>User Profile</h2>
       <Form onSubmit={submitHandler}>
@@ -109,35 +121,36 @@ const ProfileScreen = ({location, history}) => { //he is taking location & histo
 
        <ListGroup variant='flush'>
          <ListGroup.Item>
-       {userInfo.adminMessage? (
+       { !userInfo.isAdmin && userInfo.adminMessage? (
        <>
-       <Row>
-        <i className='fas fa-circle' style={{color:'red', fontSize:'9px'}}></i> 
+       <Row style={{color:'red'}}>
+        <i className='fas fa-circle' style={{color:'red', fontSize:'9px', padding:'4px'}}></i> 
          New message! 
        </Row>
        <Row>
           (click chat to view)
        </Row>
        </>
-       ):(<Row>
+       ):(!userInfo.isAdmin && <Row>
         Want to make an enquiry/complaint ? click chat below
         </Row>)}
         </ListGroup.Item>
         
         <br/>
-        <ListGroup.Item >
+        {!userInfo.isAdmin && <ListGroup.Item >
         <Row>
       <LinkContainer to='/communications'>
       <Button type='submit' variant='primary'> Chat </Button>
       </LinkContainer>
         </Row>
         </ListGroup.Item>
+        }
         </ListGroup>
 
       </Col>
 
       <Col md={9}>
-      <h2>My Orders</h2>
+      <h2>{!userInfo.isAdmin && !userInfo.isMerchant ? 'My Orders':'My Notes'}</h2>
       {loadingOrders ? <Loader/>:errorOrders? <Message variant='danger'>{errorOrders}</Message>:(
         
         <Table striped bordered hover responsive className='table-sm'>
@@ -145,7 +158,7 @@ const ProfileScreen = ({location, history}) => { //he is taking location & histo
           <tr>
            <th>ID</th>
            <th>DATE</th>
-           <th>TOTAL</th>
+           <th>TOTAL(₦)</th>
            <th>PAID</th>
            <th>DELIVERED</th>
            <th></th>
@@ -160,7 +173,7 @@ const ProfileScreen = ({location, history}) => { //he is taking location & histo
              <td>{order.isPaid ? order.paidAt.substring(0,10):(<i className='fas fa-times'style={{color:'red'}}></i>)} </td>
 
              <td>{order.isDelivered ? order.deliveredAt.substring(0,10):(<i className='fas fa-times'style={{color:'red'}}></i>)} </td>
-                 {/*QUICK REMINDER: IF SOMEHING IS NOT DEFINED IN YOUR CONSOLE, THEN YOU'VE CALLED IT AS A VARIABLE , WITHOUT DECLARING IT SOMEWHERE, IF IS NOT MEANT TO BE A VARIABLE CHECK IF YOU FORGOT TO MAKE IT A STRING*/}
+                 
              <td>
              <LinkContainer to={`/order/${order._id}`}>
               <Button variant='light' className='btn-sm'> Details </Button>

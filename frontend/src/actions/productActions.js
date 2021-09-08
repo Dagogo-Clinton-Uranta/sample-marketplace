@@ -180,7 +180,7 @@ export const updateProduct  = (product) => async (dispatch,getState)=> {
         Authorization:`Bearer ${userInfo.token}`
       }
     }
-   const{data} = await axios.put(`/api/products/${product.id}`,product,config) //we passed in a post request but we're not sending any data here, hence the empty object in the place of no data
+   const{data} = await axios.put(`/api/products/${product._id}`,product,config) //we passed in a post request but we're not sending any data here, hence the empty object in the place of no data
     //i'm gonna take a stab here and say that the third argument for axios is for setting header property
 
     dispatch({

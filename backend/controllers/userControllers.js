@@ -42,8 +42,9 @@ const authUser = asyncHandler(async (req, res) => {
       adminMessage: user.adminMessage,
       isAdmin: user.isAdmin,
       isMerchant: user.isMerchant,
-      token: generateToken(user._id)
-
+      token: generateToken(user._id),
+      userMessageNotification:user.userMessageNotification,
+      adminMessageNotification:user.adminMessageNotification
 
     })
   } else {
