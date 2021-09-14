@@ -31,9 +31,13 @@ const Header = () => {
 
   const orderList = useSelector(state => state.orderList);
   const {loading:loadingOrders, error:errorOrders,orders } = orderList
-  const newOrders =orders && orders.some((user)=>{return orders.adminMessageNotification ===true})?true:false
-  const numberOfOrders = orders? orders.filter((user)=>{return orders.adminMessageNotification ===true}).length:''
-  console.log(orders)
+ 
+  const newOrders =orders && orders.some((order)=>{return order.isDelivered ===false})?true:false
+  const numberOfOrders = orders? orders.filter((order)=>{return order.isDelivered ===false}).length:''
+  const newVendorOrders = orders?orders.filter((order)=>(order.orderItems.filter((item) => (item.vendor === userInfo.name)).some((item) => (item.promisedQty === 0)))):false
+  /*const numberOfVendorOrders = *//*USE MONGO DB to laser return all promised quantities of zero of a particular vendor from the order items of ALL orders  AND STOP STRESSING */
+
+  /*console.log(numberOfVendorOrders)*/
 
   /*if(orders && userInfo){
     userInfo.newOrders = orders.map(function(order){order.orderItems}).every(function(item){item.promisedQty===0})===true?true:false
@@ -122,7 +126,9 @@ const Header = () => {
 
 
 {userInfo && userInfo.isMerchant && (
-     <NavDropdown title ={'Merchant Functions'} id='username'>
+  <>
+    <span>{(userInfo && userInfo.isMerchant && (newVendorOrders)) && <i className='fas fa-circle' style={{color:'red', fontSize:'8px', marginLeft:'15px' , marginRight:'-1px', marginTop:'14px'}}></i>}</span>
+    <NavDropdown title ={'Merchant Functions'} id='username'>
 
 {/*i need to make a merchant token, so that merchants have access to a productlist distinct of admins*/}
 {/*1*/}      <LinkContainer to='/admin/productlist'>
@@ -130,21 +136,22 @@ const Header = () => {
            </LinkContainer> 
 
 {/*2*/}      <LinkContainer to='/admin/orderlist'>
-            <NavDropdown.Item >Orders</NavDropdown.Item>
+            <NavDropdown.Item >Orders { (userInfo && userInfo.isMerchant && newVendorOrders) && <i className='fas fa-circle' style={{color:'red', fontSize:'7px'}}></i>} </NavDropdown.Item>
            </LinkContainer>
 
      </NavDropdown>
+     </>
    )}
 
 
    {userInfo && userInfo.isAdmin && (
      <>
      {/*the code below is too long, try and refactor it*/} 
-  <span>{(userInfo && userInfo.isAdmin && (newMessages/*||newOrders*/)) && <i className='fas fa-circle' style={{color:'red', fontSize:'8px', marginLeft:'15px' , marginRight:'-1px', marginTop:'14px'}}></i>}</span>
-  <NavDropdown title ={'Admin Functions'} id='username'>
+  <span>{(userInfo && userInfo.isAdmin && (newMessages||newOrders)) && <i className='fas fa-circle' style={{color:'red', fontSize:'8px', marginLeft:'15px' , marginRight:'-1px', marginTop:'14px'}}></i>}</span>
+  <NavDropdown title ={'Admin Functions' +' '+ `${numberOfMessages + numberOfOrders > 0 ? `(${numberOfMessages + numberOfOrders})`:''}`} id='username'>
 
 {/*1*/}     <LinkContainer to='/admin/userlist'>
-            <NavDropdown.Item >Users { (userInfo && userInfo.isAdmin && numberOfMessages) && `(${numberOfMessages})`} </NavDropdown.Item>
+            <NavDropdown.Item >Users { (userInfo && userInfo.isAdmin && numberOfMessages > 0) && `(${numberOfMessages})`} </NavDropdown.Item>
           </LinkContainer>
 
 {/*2*/}      <LinkContainer to='/admin/productlist'>
@@ -152,7 +159,7 @@ const Header = () => {
            </LinkContainer>
 
 {/*3*/}      <LinkContainer to='/admin/orderlist'>
-            <NavDropdown.Item >Orders{ (userInfo && userInfo.isAdmin && numberOfMessages) && `(${numberOfMessages})`} </NavDropdown.Item>
+            <NavDropdown.Item >Orders{ (userInfo && userInfo.isAdmin && numberOfOrders > 0) && `(${numberOfOrders})`} </NavDropdown.Item>
            </LinkContainer>
 
      </NavDropdown>

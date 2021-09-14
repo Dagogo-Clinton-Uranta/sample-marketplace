@@ -24,6 +24,9 @@
          USER_UPDATE_PROFILE_REQUEST,
          USER_UPDATE_PROFILE_SUCCESS,
          USER_UPDATE_PROFILE_FAILURE,
+         USER_UPDATE_NOTES_REQUEST,
+         USER_UPDATE_NOTES_SUCCESS,
+         USER_UPDATE_NOTES_FAILURE,
          USER_LIST_REQUEST,
          USER_LIST_SUCCESS,
          USER_LIST_FAILURE,
@@ -211,6 +214,8 @@ export const getUserDetails = (id) => async (dispatch,getState) => {
                 error.response.data.message:error.message })
    }
 }
+
+
 export const updateUserProfile  = (user /*the entire user object*/) => async(dispatch,getState) => {
    //redux thunk was used just now in the form of async (dispatch) above
   try {
@@ -238,6 +243,43 @@ export const updateUserProfile  = (user /*the entire user object*/) => async(dis
                 error.response.data.message:error.message })
    }
 }
+
+
+
+export const updateUserNotes  = (user) => async(dispatch,getState) => {
+  //redux thunk was used just now in the form of async (dispatch) above
+ try {
+   dispatch({type: USER_UPDATE_NOTES_REQUEST})
+
+    const {userLogin:{userInfo}} = getState()
+   //we do config cus we wanna send the headers a content type of application/json
+   const config = {
+     headers:{
+       'Content-Type':'application/json',
+       Authorization:`Bearer ${userInfo.token}`
+     }
+   }
+   const {data} = await axios.put(`/api/users/notes`,user,config)
+   //i'm gonna take a stab here and say that the third argument for axios is for setting header property
+   
+   dispatch({
+             type: USER_UPDATE_NOTES_SUCCESS,
+             payload:data})
+
+ }
+  catch(error){
+    dispatch({type:USER_UPDATE_NOTES_FAILURE,
+              payload: error.response && error.response.data.message?
+               error.response.data.message:error.message })
+  }
+}
+
+
+
+
+
+
+
 
 
 

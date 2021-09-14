@@ -1,8 +1,10 @@
-import path from 'path'
-//const path = require('path')
+
 
 import express from 'express'
 //const express = require('express')
+
+import path from 'path'
+//const path = require('path')
 
 //import products from './data/products.js'
 import dotenv from 'dotenv'

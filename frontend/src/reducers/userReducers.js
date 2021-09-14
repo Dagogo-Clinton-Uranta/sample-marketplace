@@ -22,6 +22,10 @@ import {USER_LOGIN_REQUEST,
         USER_UPDATE_PROFILE_SUCCESS,
         USER_UPDATE_PROFILE_FAILURE,
         USER_UPDATE_PROFILE_RESET,
+        USER_UPDATE_NOTES_REQUEST,
+        USER_UPDATE_NOTES_SUCCESS,
+        USER_UPDATE_NOTES_FAILURE,
+        USER_UPDATE_NOTES_RESET,
         USER_LIST_REQUEST,
         USER_LIST_SUCCESS,
         USER_LIST_FAILURE,
@@ -128,6 +132,22 @@ export const  userProfileUpdateReducer = (state={},action) => {
     case USER_UPDATE_PROFILE_FAILURE: return{ loading:false, error:action.payload}
 
     case USER_UPDATE_PROFILE_RESET: return{ loading:false, error:action.payload}
+
+    default: return state
+
+  }
+}
+
+
+export const  userNotesUpdateReducer = (state={},action) => {
+  switch(action.type){
+    case USER_UPDATE_NOTES_REQUEST : return {...state, loading:true}
+
+    case USER_UPDATE_NOTES_SUCCESS: return{ loading:false,success:true ,userInfo:action.payload}
+
+    case USER_UPDATE_NOTES_FAILURE: return{ loading:false, error:action.payload}
+
+    case USER_UPDATE_NOTES_RESET: return{ loading:false, error:action.payload}
 
     default: return state
 

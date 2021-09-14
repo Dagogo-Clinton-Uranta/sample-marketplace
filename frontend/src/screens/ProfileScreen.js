@@ -4,8 +4,9 @@ import {Table,Form, Button, Row, Col, ListGroup} from 'react-bootstrap'
 import {useDispatch, useSelector} from 'react-redux'
 import Message from '../components/Message.js'
 import Loader from '../components/Message.js'
-import {getUserDetails, updateUserProfile} from '../actions/userActions.js'
+import {getUserDetails, updateUserProfile,updateUserNotes} from '../actions/userActions.js'
 import {listMyOrders} from '../actions/orderActions.js'
+import FormContainer from '../components/FormContainer.js'
 
 
 
@@ -16,25 +17,36 @@ const ProfileScreen = ({location, history}) => { //he is taking location & histo
   const [email,setEmail] = useState('')  //component level state right here, not application level state
   const [password,setPassword] = useState('')
   const [confirmPassword,setConfirmPassword] = useState('')
+  const [notes,setNotes] =useState('')
   const [message,setMessage] = useState(null)
+  
   const dispatch = useDispatch() //dont forget that real dispatches only take place in action creators, you are only calling useDispatch here
 
   const userDetails = useSelector((state) => state.userDetails);
   const {loading, error,user} = userDetails
    
-  console.log(userDetails)
+  
   
    const userLogin = useSelector((state) => state.userLogin);
   const {userInfo} = userLogin
 
   const userProfileUpdate = useSelector((state) => state.userProfileUpdate);
   const {success} = userProfileUpdate
+
+
+  const userNotesUpdate = useSelector((state) => state.userNotesUpdate);
+  const {success:successNotes} = userNotesUpdate
  
   const orderListMy  = useSelector((state) => state.orderListMy);
   const {loading: loadingOrders,error: errorOrders, orders} = orderListMy
 //location .search has the url query string, study it a bit
 
 //because we dont want to able to come into the login screen ONCE WE ARE ALREADY LOGGED IN, effect this in the useEffect below
+console.log(user)
+
+
+
+
 
   useEffect( () => {
     if(!userInfo){ //cuz user info exists only when you're logged in
@@ -46,8 +58,10 @@ const ProfileScreen = ({location, history}) => { //he is taking location & histo
       }else{
      setName(user.name)
      setEmail(user.email)
+     setNotes(user.notes)
+     
       }
-      //
+      
     }
 
   },[dispatch,history,userInfo ,user])
@@ -60,22 +74,35 @@ const ProfileScreen = ({location, history}) => { //he is taking location & histo
          setMessage('Passwords do not Match')
        }else{
          //this is where we want to to call our action to dispatch login
-         window.alert('Profile Updated! Changes will be reflected on your next sign in.')
+         
          dispatch(updateUserProfile({id: user._id, name,email, password}))
        }
 
   }
 
+
+  const noteSubmitHandler = (e) => {
+    e.preventDefault()
+ 
+    dispatch(updateUserNotes({id:userInfo._id,notes}))
+
+}
+
+
     return (
       <>
       <br/>
+      <hr/>
       <br/>
-     <center><p style={{color:'black', maxWidth:'600px'  }}>Welcome to your profile! Here you may update your username and password.
+      
+     <center><p style={{color:'black', maxWidth:'600px', fontSize:'1.3rem' }}>Welcome to your profile! Here you may update your username and password.
      { !userInfo.isAdmin && ' You may also send and reply to messages.'} 
      { (userInfo.isAdmin || userInfo.isMerchant) && ' You can write notes which you\'ll refer to later, for your operation on this platform.'}
      </p></center>
+     
 
       <br/>
+      <hr/>
       <br/>
       <br/>
      <Row>
@@ -150,9 +177,10 @@ const ProfileScreen = ({location, history}) => { //he is taking location & histo
       </Col>
 
       <Col md={9}>
-      <h2>{!userInfo.isAdmin && !userInfo.isMerchant ? 'My Orders':'My Notes'}</h2>
+      <h2>{!userInfo.isAdmin && !userInfo.isMerchant ? 'My Orders':''}</h2>
       {loadingOrders ? <Loader/>:errorOrders? <Message variant='danger'>{errorOrders}</Message>:(
         
+        !(userInfo.isAdmin || userInfo.isMerchant) ?
         <Table striped bordered hover responsive className='table-sm'>
          <thead>
           <tr>
@@ -184,13 +212,45 @@ const ProfileScreen = ({location, history}) => { //he is taking location & histo
          </tbody>
         </Table>
         
-      )}
+      :(
+      <>
+      
+        <h1> My Notes </h1>
+       <p> {error && <Message variant='danger'>{error}</Message>}
+        {loading && <Loader/>}
+        </p>
+
+        
+         <Form onSubmit={noteSubmitHandler}>
+        
+
+
+          <Form.Group controlId='reply-message'>
+
+          <Form.Label>  Update your notes below: </Form.Label>
+          <Form.Control as ="textarea" rows={12}  value={notes} placeholder='type message here...' onChange={(e)=>{setNotes(e.target.value)}}></Form.Control>
+
+         </Form.Group>
+
+         
+         <Button type='submit'  /*onClick={noteSubmitHandler}*/ variant='primary'>Save Notes</Button>
+         
+
+        </Form>
+       
+        
+        
+      </> 
+       
+       ))}
+
       </Col>
       </Row>
         {/*<h1>User Profile</h1>*/}
         {message && <Message variant='danger'>{message}</Message>}
         {error && <Message variant='danger'>{error}</Message>}
-        {success && <Message variant='success'>Profile Updated</Message>}
+        {success && <Message variant='success'>Profile Updated! changes will be reflected on your next login</Message>}
+        {successNotes && <Message variant='success'>Notes Updated!</Message>}
         {loading && <Loader/>}
        
         </>

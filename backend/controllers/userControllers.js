@@ -295,7 +295,8 @@ const registerUser = asyncHandler(async (req, res) => {
       shoeSize:user.shoeSize,
       closestFriend:user.closestFriend,
       childhoodStreet:user.childhoodStreet,
-      firstEmployment:user.firstEmployment
+      firstEmployment:user.firstEmployment,
+      notes:user.notes
     })
   } else {
     res.status(400)
@@ -323,7 +324,8 @@ const getUserProfile = asyncHandler(async (req, res) => {
       userMessage: user.userMessage,
       adminMessage: user.adminMessage,
       isAdmin: user.isAdmin,
-      isMerchant: user.isMerchant
+      isMerchant: user.isMerchant,
+      notes:user.notes
     })
   }
   else {
@@ -360,7 +362,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       adminMessage: updatedUser.adminMessage,
       isAdmin: updatedUser.isAdmin,
       isMerchant: updatedUser.isMerchant,
-      token: generateToken(updatedUser._id)
+      token: generateToken(updatedUser._id),
+      notes:updatedUser.notes
     })
   }
   else {
@@ -369,6 +372,36 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 })
 
+
+//@desc  update user notes
+//@route POST /api/users/notes
+//@access Private
+const updateUserNotes = asyncHandler(async (req, res) => {
+  res.header("Access-Control-Allow-Origin","*")
+  //req.body will give us the object thats sent in the body of our front end/POSTMAN JSON, take note
+         
+       //res.send accepts an object i think and not just variables, take note...hese are part of the things that you have to research on yor own
+     const objectId = new mongoose.Types.ObjectId(req.body.id)
+  
+   
+     const user = await User.findById(objectId)
+
+   console.log(user)
+
+  if (user) {
+    user.notes = req.body.notes || user.notes
+    
+     await user.save()
+    
+    res.json({
+      message:'notes updated!'
+    })
+  }
+  else {
+    res.status(404)
+    throw new Error('User not found')
+  }
+})
 
 
 //@desc  GET all users
@@ -439,8 +472,8 @@ const updateUser = asyncHandler(async (req, res) => {
       userMessage: updatedUser.userMessage,
       adminMessage: updatedUser.adminMessage,
       isAdmin: updatedUser.isAdmin,
-      isMerchant: updatedUser.isMerchant
-
+      isMerchant: updatedUser.isMerchant,
+      notes:updatedUser.notes
     })
   }
   else {
@@ -452,7 +485,7 @@ const updateUser = asyncHandler(async (req, res) => {
 
 export {
   authUser, presentClientMessage, presentAdminMessage, getUserProfile, registerUser,
-  updateUserProfile, getUsers, deleteUser, getUserById, updateUser,verifyUser
+  updateUserProfile, updateUserNotes ,getUsers, deleteUser, getUserById, updateUser,verifyUser
 }
 
 //exports.authUser =authUser

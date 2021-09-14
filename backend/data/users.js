@@ -17,7 +17,8 @@ const users = [
     shoeSize:'44',
     closestFriend:'Jamil',
     childhoodStreet:'Eti-Osa Way',
-    firstEmployment:'Niger Insurance'
+    firstEmployment:'Niger Insurance',
+    notes:''
   },
 
   {
@@ -33,6 +34,7 @@ const users = [
     closestFriend:'Jamil',
     childhoodStreet:'Eti-Osa Way',
     firstEmployment:'Niger Insurance'
+    
   },
 
   {
@@ -47,7 +49,8 @@ const users = [
     shoeSize:'44',
     closestFriend:'Jamil',
     childhoodStreet:'Eti-Osa Way',
-    firstEmployment:'Niger Insurance'
+    firstEmployment:'Niger Insurance',
+    notes:''
   }
 ]
 

@@ -21,11 +21,12 @@ const userSchema =  mongoose.Schema({
         adminMessage:{type: String ,required:false},
         userMessageNotification:{type:Boolean , default:false},
         adminMessageNotification:{type:Boolean , default:false},
-        pickupAddress:{type: String ,required:false}
+        pickupAddress:{type: String ,required:false},
+        notes:{type:String, required:false}
         /* maybe an address entry for merchants ? */
         /*maybe an account number entry, so we can verify that you have an account at bridgeway */
 
-},{timestamps:true /*you want a createdAt? you add timestamps:true*/})
+},{timestamps:true })
 
 userSchema.methods.matchPassword = async function(enteredPassword){
   return await bcrypt.compare(enteredPassword,this.password)

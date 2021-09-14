@@ -12,7 +12,7 @@ import Loader from '../components/Loader.js'
 import {ORDER_PAY_RESET,ORDER_DELIVER_RESET } from '../constants/orderConstants.js'  //HE MADE AN EXCEPTION HERE DISPATCHING STRAIGHT FROM CONSTANTS WITHOUT CALLING ACTIONS, TO MAKE THINGS FASTER
 
 
-const OrderScreen =  ({match,history}) => {
+const TransactionScreen =  ({match,history}) => {
      const [sdkReady,setSdkReady] = useState('false') // this is our piece of local state for when the SDK is ready
 
 
@@ -536,4 +536,4 @@ const submitHandler = (e) => {
 }
 
 
-export default OrderScreen;
+export default TransactionScreen;
