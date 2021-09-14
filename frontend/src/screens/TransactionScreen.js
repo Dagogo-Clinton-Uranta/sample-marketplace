@@ -29,7 +29,7 @@ const TransactionScreen =  ({match,history}) => {
  const [colour, setColour] = useState('black')
   const orderDetails = useSelector((state) => state.orderDetails )
   const {order,loading,error} = orderDetails
-   /*console.log(order)*/
+   console.log(order)
   
  
 
@@ -162,219 +162,145 @@ const submitHandler = (e) => {
 
     <h1>Order ID: {order._id}</h1>
     <Row>
-     <Col md={8}>
+     
 
-      <ListGroup variant="flush">
-       <ListGroup.Item>
-         <h2>Delivery</h2>
-         {userInfo.isMerchant && <>
+     <Col md={12}>
+    
          
-         <p>Here you may commit to fulfilling orders. Please select the number of each item that you are sure
-            to give the customer once the dispatch rider comes around.  PLEASE MAKE EFFORTS TO FULLY FULFILL ALL YOUR ORDERS, FOR A GOOD REPUTATION AMONG CUSTOMERS.  Once you
-            select the amount from the dropdown menu click the commit button to 
-            lock it in (for each item).</p>
-            <br/>
-            <p>
-            If you are only able to partially fulfill your order, (you cannot meet the  expected quantity for any item), be sure to send a message to the admin mentioning
-            the order ID, the items in question and how many units you are able to fulfill . The total amount of money you are to recieve, will be reflected in the payment summary, based on the number of units you agree to fulfill.
-            </p>
-            <br/>
-            <p>Please commit all your order items by: &nbsp; <span style={{color:'black', fontSize:'1rem'}}>{new Date(new Date(order.createdAt).getTime()+ 24 * 60 * 60 * 1000).toLocaleDateString()}</span></p>
-            <br/>
-                  
-            </>}
-        <p> {userInfo.isMerchant||userInfo.isAdmin?(<strong>Order placed by :</strong>):(<strong>Name :</strong>) }{'   '}{order.user.name}</p>
-
-       { !userInfo.isMerchant &&
-       <>
-       <p> <strong>Email:</strong>{' '} <a href= {`mailto:${order.user.email}`}>{order.user.email}</a> </p>
-          <p>
-         <strong>Address:</strong>
-         {order.shippingAddress.address},{order.shippingAddress.city}{' '},
-         {order.shippingAddress.postalCode}{' '},{order.shippingAddress.country}
-         </p>
          
-      </> }
+       
+{/*!order.isPaid && (
+            <ListGroup.Item>
+             {loadingPay && <Loader/>}
+             {!sdkReady ?<Loader/> :(<PayPalButton amount ={order.totalPrice} onSuccess={successPaymentHandler}/>)  }
+            </ListGroup.Item>
+          )*/}
+      
 
-         {order.isDelivered ?<Message variant='success'>Delivered on {order.deliveredAt.substring(0,10)}</Message> :
-                        <Message variant='danger'> Not delivered</Message> }
+       { <Card>
+          <ListGroup variant='flush'>
+           <ListGroup.Item>
+            <Row>
+              <Col md ={8}>
+            <h2>Teller Transaction{order.isDelivered?" Performed":" Instructions"}</h2>
+             </Col>
+             <Col md ={4}>
+               <LinkContainer to={`/communications?specificOrderId=${order._id}`}>
+                <Button type='submit' variant='primary'> INSUFFICIENT FUNDS </Button>
+               </LinkContainer>
+             </Col>
+            </Row>
+           </ListGroup.Item>
 
-          </ListGroup.Item>
+          {<ListGroup.Item>
+            <p>1.)PLEASE MAKE SURE TO PERFORM DEBIT FIRST</p>
+            <p>2.) IF THE DEBIT CANNOT BE PERFORMED, PLEASE SELECT 'INSUFFICIENT FUNDS' </p>
+            <p>    MESSAGE THE ADMIN TO COMMUNICATE THAT THE CLIENT HAD INSUFFICIENT FUNDS</p>
+            <p>3.) IF THE DEBIT IS SUCCESSFUL, PLEASE CREDIT MERCHANT ACCOUNTS</p>
+            <p>4.) CLICK  'TRANSACTIONS COMPLETED'  ONLY WHEN YOU HAVE PERFORMED ALL TRANSACTIONS.</p>
+           </ListGroup.Item>}
 
-          {/*<ListGroup.Item>
-           <h2>Payment Method</h2>
-
-            <p>
-            <strong>Method:</strong>
-            {order.paymentMethod}
-            </p>
-       {order.isPaid ?<Message variant='success'>Paid on {order.paidAt}</Message> :
-                      <Message variant='danger'> Not paid</Message> }
-           </ListGroup.Item>*/}
 
            <ListGroup.Item>
-           <ListGroup>
-             <ListGroupItem>
-            <h2>Order Items</h2>
-          <Row>
-          {!userInfo.isMerchant && <Col md={2}>S/N</Col>}
-          <Col md={2}>Item</Col>
-          <Col md={2}>To Fulfill</Col>
-          {userInfo.isMerchant?(<Col md={4}>How many can you fulfill?</Col>):(userInfo.isAdmin && <Col md={2}>Merchant's promised amount)</Col>)}
-          {userInfo.isMerchant && <Col md={2}>Item Total</Col>}
-          
-          {!userInfo.isMerchant && <Col md={2}>Total</Col>}
-          
-          </Row>
-          </ListGroupItem>
-          </ListGroup>
-          { order.orderItems.length === 0 ? ( <Message>Order is empty </Message>):(userInfo.isMerchant ?
-            (<>
-               
-            <ListGroup variant="flush">
-              { 
-                /*merchantItems = order.orderItems.filter((item) => (item.vendor === userInfo.vendor))*/
-                order.orderItems.filter((item) => (item.vendor === userInfo.name)).map((item, index) =>(
-                   
-                <ListGroup.Item key ={index}>
-                <Row>
-                {/*<Col md={2}>{index + 1}</Col>*/}
-                 <Col md={2}>
-                  <Image src={item.image} alt={item.name} fluid rounded/>
-                  <Link to={`product/${item.product}`/*remember product property is the id in the cart*/}>
-                   {item.name}
-                  </Link>
-                  </Col>
-                  <Col md={2}>
-                   {item.qty}
-                   </Col>
-                   
-                   <Col md={4}>
-                 <Form className="form-inline" onSubmit={submitHandler}>
-                   
-                   <Form.Group>
-                   <Form.Row>
-                   <Col md={2}>
-                   <Form.Control as='select' defaultValue={0} onMouseEnter ={(e)=>{initialState(order,item)}} onChange ={(e)=>{   
-                                                                   liveUpdate(e,item) 
-                                                                   setCommittedValue(Number(e.target.value))
-                                                                   setProductId(item.product)
-                                                                                
-                                                                                }}>
-          {[...Array(item.qty+1).keys()].map((x) =>(
-            <option key={x} value={x} disabled={item.merchantPromise} >
-             {x}
-            </option>
+            <Row>
+
+             <Col>Account Name </Col>
+             <Col>Account Number </Col>
+             <Col>Type </Col> 
+             <Col>Amount</Col>
+
+            </Row>
+           </ListGroup.Item>
+
+
+           <ListGroup.Item>
+            <Row>
+
+             <Col>{order.user.name} </Col>
              
-          ))}
-               
-        </Form.Control>
-        
-                  </Col>
-                   
-                  </Form.Row>
-                  </Form.Group>
-                    
-                   <Form.Group>
-                   <Form.Row>
-                   
-                   <Col md={{span:2,offset:2}}>
-                   
-                      <Button type='submit' variant='primary' className='btn-sm' onMouseDown={(e)=>{ /*setHighlight('16px') setColour('green')*/}} onMouseUp={(e)=>{/*setHighlight('13px') setColour('black')*/}}>
-                       COMMIT
-                    
-                       </Button>
-                   </Col>
-                   </Form.Row>
-                   </Form.Group>
-              </Form>
-              </Col>
-                   <Col md={3} style={{fontSize:highlight, color:colour}}>
-                   {promisedQtyArray===''?(item.promisedQty):(typeof(promisedQtyArray[merchantProductsArray.indexOf(item)])!=='number'? 0:promisedQtyArray[merchantProductsArray.indexOf(item)])} x ₦ {item.price} = ₦ {(promisedQtyArray===''?(item.promisedQty):(typeof(promisedQtyArray[merchantProductsArray.indexOf(item)])!=='number'? 0:promisedQtyArray[merchantProductsArray.indexOf(item)]))*item.price}
-                   </Col>
+             <Col>1200000898 </Col>
+             <Col>DEBIT </Col>
+             <Col>₦ {(order.itemsPrice * (1) ).toFixed(2)} </Col>
 
-                  </Row>
+            </Row>
+           </ListGroup.Item>
 
-                </ListGroup.Item>
-              ))}
-              </ListGroup>
-          </>):
-            (
-            <ListGroup variant="flush">
-              {order.orderItems.map((item, index) =>(
-
-                <ListGroup.Item key ={index}>
-                <Row>
-                <Col md={2}>{index + 1}</Col>
-                 <Col md={2}>
-                  <Image src={item.image} alt={item.name} fluid rounded/>
-                  <Link to={`product/${item.product}`/*remember product property is the id in the cart*/}>
-                   {item.name}
-                  </Link>
-                  </Col>
-                  <Col md={2}>
-                   {item.vendor}
-                   </Col>
-                   
-                   {userInfo.isAdmin && <Col md={4}>
-                   {item.promisedQty}
-                   </Col>}
-
-                   <Col md={3}>
-                   {item.qty} x ₦ {item.price} = ₦ {item.qty*item.price}
-                   </Col>
-
-                  </Row>
-
-                </ListGroup.Item>
-                )
-              )}
-            </ListGroup>
-           ))
-               } 
-               
-               </ListGroup.Item>
-      </ListGroup>
-     </Col>
-
-     <Col md={4}>
-      {(!userInfo.isAdmin && !userInfo.isMerchant) && <Card>
-          <ListGroup variant='flush'>
            <ListGroup.Item>
-            <h2>Order Summary</h2>
+            <Row style ={{color:'red'}}> 
+
+             <Col>TOTAL DEBIT: </Col>
+             <Col> </Col>
+             <Col> </Col>
+             <Col>₦ {(order.totalPrice).toFixed(2)} </Col>
+
+            </Row>
+           </ListGroup.Item>
+
+
+
+
+           <ListGroup.Item>
+            <Row>
+
+             <Col> </Col>
+             
+             <Col></Col>
+             <Col></Col>
+             <Col> </Col>
+
+            </Row>
            </ListGroup.Item>
 
            <ListGroup.Item>
             <Row>
 
-             <Col> Items </Col>
-             <Col>₦ {order.itemsPrice} </Col>
-               
+             <Col>BridgeWay Co-operative: </Col>
+             
+             <Col>1200000898 </Col>
+             <Col>CREDIT </Col>
+             <Col>₦ {(order.itemsPrice * (1/19) ).toFixed(2)} </Col>
+
             </Row>
            </ListGroup.Item>
 
            
-
-            <ListGroup.Item>
+      {order.orderItems.map((item, index) =>(
+            <ListGroup.Item  key ={index}>
             <Row>
 
-             <Col>Delivery Cost </Col>
-             <Col>₦ {(order.deliveryCost).toFixed(2)} </Col>
+             <Col> {index + 1}. {item.vendor}:  </Col>
+             <Col>{'000000000'}</Col>
+             <Col>CREDIT</Col>
+             <Col>₦ {((18/19) * item.price).toFixed(2) * item.qty } </Col>
 
             </Row>
            </ListGroup.Item>
-
-            
-
-           <ListGroup.Item>
+           ))}
+      
+      {<ListGroup.Item>
             <Row>
 
-             <Col>Total </Col>
-             <Col>₦ {order.totalPrice} </Col>
+             <Col> dispatch rider: </Col>
+             <Col></Col>
+             <Col></Col>
+             
+             <Col>₦ {(Number(order.deliveryCost)).toFixed(2)} </Col>
+
+            </Row>
+      </ListGroup.Item>}
+
+        <ListGroup.Item>
+            <Row style ={{color:'red'}}>
+
+             <Col>TOTAL CREDIT: </Col>
+             <Col> </Col>
+             <Col> </Col>
+             <Col>₦ {(order.totalPrice).toFixed(2)} </Col>
 
             </Row>
            </ListGroup.Item>
-
+      
+           
           {/*!order.isPaid && (
             <ListGroup.Item>
              {loadingPay && <Loader/>}
@@ -383,67 +309,12 @@ const submitHandler = (e) => {
           )*/}
 
 
-         </ListGroup>
-       </Card> }
-         
-         
-       { userInfo.isMerchant && <Card>
-          <ListGroup variant='flush'>
-           <ListGroup.Item>
-            <h2>Payment Summary</h2>
-           </ListGroup.Item>
 
-           <ListGroup.Item>
-            <Row>
 
-             <Col>Total Payable: </Col>
-             <Col>₦ {(order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.qty),0)).toFixed(2)} </Col> 
-               
-            </Row>
-           </ListGroup.Item>
 
-           <ListGroup.Item>   
-            <Row>
 
-             <Col> To Recieve: </Col>
-             <Col>₦ {(order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.promisedQty),0)).toFixed(2)} </Col> 
-               
-            </Row>
-           </ListGroup.Item>
-
-            <ListGroup.Item>
-            <Row>
-
-             <Col>Delivery Deductions: </Col>
-             <Col>-₦{(Number(order.deliveryCost)).toFixed(2)} </Col> {/*we don't know who the delivery cost falls to, but here i've assumed it falls to suppliers*/}
-
-            </Row>
-           </ListGroup.Item>
-
-            
-
-           <ListGroup.Item>
-            <Row>
-
-             <Col>Total </Col>
-             <Col>₦ {(order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.promisedQty),0)).toFixed(2)} </Col>
-
-            </Row>
-           </ListGroup.Item>
-
-          {/*!order.isPaid && (
-            <ListGroup.Item>
-             {loadingPay && <Loader/>}
-             {!sdkReady ?<Loader/> :(<PayPalButton amount ={order.totalPrice} onSuccess={successPaymentHandler}/>)  }
-            </ListGroup.Item>
-          )*/}
-           
-           
-
-         </ListGroup>
-       </Card> }
-
-       {userInfo.isMerchant && 
+       
+       { 
        
        <center>
          <ListGroup > 
@@ -459,71 +330,29 @@ const submitHandler = (e) => {
     </ListGroup.Item>
     </ListGroup>
     </center>}
+
+
+
+    
   
 
-       {userInfo.isAdmin && <Card>
-          <ListGroup variant='flush'>
-           <ListGroup.Item>
-            <h2>Teller Transactions{order.isDelivered?" Performed":" To Perform"}</h2>
-           </ListGroup.Item>
+    { 
+       
+       <center>
+         <ListGroup > 
+      <ListGroup.Item > 
+        
+    
 
-          {userInfo.isAdmin && !order.isDelivered && <ListGroup.Item>
-            <p>Please, ONLY perform these transactions after the deadline date ({new Date(new Date(order.createdAt).getTime()+ 24 * 60 * 60 * 1000).toLocaleDateString()}), when
-            the respective merchants have confirmed that they can deliver the goods. </p>
-           </ListGroup.Item>}
+  <LinkContainer to={`/communications?specificOrderId=${order._id}`}>
+  <Button type='submit' variant='primary'> TRANSACTION COMPLETED </Button>
+  </LinkContainer>
+     
+    
+    </ListGroup.Item>
+    </ListGroup>
+    </center>}
 
-
-           <ListGroup.Item>
-            <Row>
-
-             <Col>To BridgeWay Co-operative Account: </Col>
-             <Col>₦ {(order.itemsPrice * (1/19) ).toFixed(2)} </Col>
-
-            </Row>
-           </ListGroup.Item>
-      {order.orderItems.map((item, index) =>(
-            <ListGroup.Item  key ={index}>
-            <Row>
-
-             <Col> {index + 1}. TO {item.vendor} account:  </Col>
-             <Col>₦ {((18/19) * item.price).toFixed(2) * item.qty } </Col>
-
-            </Row>
-           </ListGroup.Item>
-           ))}
-      
-      <ListGroup.Item>
-            <Row>
-
-             <Col>To dispatch rider account: </Col>
-             <Col>₦ {(Number(order.deliveryCost)).toFixed(2)} </Col>
-
-            </Row>
-           </ListGroup.Item>
-
-        <ListGroup.Item>
-            <Row>
-
-             <Col>Total: </Col>
-             <Col>₦ {(order.totalPrice).toFixed(2)} </Col>
-
-            </Row>
-           </ListGroup.Item>
-      
-           
-          {/*!order.isPaid && (
-            <ListGroup.Item>
-             {loadingPay && <Loader/>}
-             {!sdkReady ?<Loader/> :(<PayPalButton amount ={order.totalPrice} onSuccess={successPaymentHandler}/>)  }
-            </ListGroup.Item>
-          )*/}
-
-       {loadingDeliver && <Loader/>}
-      {userInfo && userInfo.isAdmin /*&& order.isPaid*/ && !order.isDelivered && (
-        <ListGroup.Item>
-        <Button type='button' className='btn btn-block' onClick={deliverHandler}> Mark As Delivered</Button>
-        </ListGroup.Item>
-      )}
 
          </ListGroup>
        </Card>}
