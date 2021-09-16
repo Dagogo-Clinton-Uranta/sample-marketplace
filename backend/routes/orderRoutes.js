@@ -4,7 +4,7 @@ import express from 'express'
 //import bcrypt from  'bcryptjs'
 //const bcrypt= require('bcryptjs')
 
-import {addOrderItems, getOrderById, updateOrderToPaid,updateOrderToDelivered,updatePromisedQty, getMyOrders,getOrders} from '../controllers/orderController.js'
+import {addOrderItems, getOrderById, updateOrderToPaid,updateOrderToDelivered,updatePromisedQty, getMyOrders,getOrders,getUnpaidOrders} from '../controllers/orderController.js'
 //const {addOrderItems, getOrderById, updateOrderToPaid,updateOrderToDelivered, getMyOrders,getOrders}= require('../controllers/orderController.js')
 
 import {protect,admin } from '../Middleware/authMiddleware.js'
@@ -18,6 +18,8 @@ const router = express.Router()
 //@this is good commenting syntax,leting others know the routes
 router.route('/').post(protect,addOrderItems).get(protect,/*admin,*/getOrders).put(protect,updatePromisedQty)
 router.route('/myorders').get(protect,getMyOrders)
+router.route('/unpaidorders').get(protect,getUnpaidOrders)
+
 //in the get route, protect is the middleware, thats how you implement middleware in this syntax, so smooth,no app.use)
 router.route('/:id/pay').put(protect,updateOrderToPaid)
 router.route('/:id/deliver').put(protect,admin, updateOrderToDelivered)

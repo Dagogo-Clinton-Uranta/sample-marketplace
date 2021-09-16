@@ -18,6 +18,9 @@ import {ORDER_CREATE_REQUEST,
         ORDER_LIST_REQUEST,
         ORDER_LIST_SUCCESS,
         ORDER_LIST_FAILURE,
+        UNPAID_ORDER_LIST_REQUEST,
+        UNPAID_ORDER_LIST_SUCCESS,
+        UNPAID_ORDER_LIST_FAILURE,
         ORDER_DELIVER_REQUEST,
         ORDER_DELIVER_SUCCESS,
         ORDER_DELIVER_FAILURE,
@@ -58,7 +61,7 @@ export const orderDeliverReducer = ( state={}, action) => {
 export const orderPayReducer = ( state={}, action) => {
     switch (action.type) {
       case ORDER_PAY_REQUEST: return {loading:true}
-      case ORDER_PAY_SUCCESS:return {loading:false, success:true}
+      case ORDER_PAY_SUCCESS:return {loading:false, success:action.payload.isPaid}
       case ORDER_PAY_FAILURE: return {loading:false, error:action.payload}
       case ORDER_PAY_RESET: return {}
       default: return state
@@ -86,6 +89,18 @@ export const orderListReducer = ( state={orders:[]}, action) => {
       default: return state
     }
 }
+
+
+export const unpaidOrderListReducer = ( state={orders:[]}, action) => {
+  switch (action.type) {
+    case UNPAID_ORDER_LIST_REQUEST: return {loading:true}
+    case UNPAID_ORDER_LIST_SUCCESS:return {loading:false, orders:action.payload}
+    case UNPAID_ORDER_LIST_FAILURE: return {loading:false, error:action.payload}
+
+    default: return state
+  }
+}
+
 
 export const orderApproveReducer = (state={}, action) => {
   switch (action.type) {

@@ -359,7 +359,7 @@ const submitHandler = (e) => {
             <Row>
 
              <Col>Delivery Cost </Col>
-             <Col>₦ {(order.deliveryCost).toFixed(2)} </Col>
+             <Col>₦ {(order.deliveryCost*1).toFixed(2)} </Col>
 
             </Row>
            </ListGroup.Item>

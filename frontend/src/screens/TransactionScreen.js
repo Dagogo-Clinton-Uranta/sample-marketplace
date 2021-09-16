@@ -109,8 +109,9 @@ useEffect(()=> {
         0
       ))) 
        setMerchantProductsArray(order.orderItems.filter((item) => (item.vendor === userInfo.name)))*/
-
-  const addPayPalScript = async () => {
+       if(!order){ dispatch(getOrderDetails(orderId)) }
+  
+       const addPayPalScript = async () => {
     const {data:clientId} = await axios.get('/api/config/paypal')
     const script = document.createElement('script') //this script being created will not be in the source code, cuz it comes to life AFTER the source code loads
     script.type ='text/javascript'
@@ -123,26 +124,32 @@ useEffect(()=> {
     
   }
 
-
-  if(!order||successPay||successDeliver){
+  
+  /*if(!order||successPay||successDeliver){
     dispatch({type:ORDER_PAY_RESET})
     dispatch({type:ORDER_DELIVER_RESET})  //AGAIN HE MADE AN EXCEPTION HERE AND DISPATCHED STRAIGHT FROM CONSTANTS SO HE CAN KEEP IT SHORT
 
-    dispatch(getOrderDetails(orderId))}
+    }
 
   else if(!order.isPaid){
     if(!window.paypal){
       addPayPalScript()
     }
     else{ setSdkReady(true) }
-  }
-},[dispatch,orderId,successPay,successDeliver,order,history,userInfo])
+  }*/
+},[dispatch,orderId,order,history,userInfo])
 
-const successPaymentHandler = (paymentResult) => {
+/*const successPaymentHandler = (paymentResult) => {
    console.log(paymentResult)
   dispatch(payOrder(orderId, paymentResult))
 
+}*/
+
+const paidToggleHandler = (e)=> {
+     e.preventDefault()
+  dispatch(payOrder(order._id))
 }
+
 
 const deliverHandler = ()=> {
   dispatch(deliverOrder(order))
@@ -184,20 +191,26 @@ const submitHandler = (e) => {
               <Col md ={8}>
             <h2>Teller Transaction{order.isDelivered?" Performed":" Instructions"}</h2>
              </Col>
-             <Col md ={4}>
+            {order && !order.isPaid &&  <Col md ={4}>
                <LinkContainer to={`/communications?specificOrderId=${order._id}`}>
                 <Button type='submit' variant='primary'> INSUFFICIENT FUNDS </Button>
                </LinkContainer>
              </Col>
+           }
+
             </Row>
            </ListGroup.Item>
 
           {<ListGroup.Item>
+            <p style={{color:'red'}}>NOTE: THESE TRANSACTIONS ARE TO BE CARRIED OUT ON BANK ONE </p>
             <p>1.)PLEASE MAKE SURE TO PERFORM DEBIT FIRST</p>
             <p>2.) IF THE DEBIT CANNOT BE PERFORMED, PLEASE SELECT 'INSUFFICIENT FUNDS' </p>
             <p>    MESSAGE THE ADMIN TO COMMUNICATE THAT THE CLIENT HAD INSUFFICIENT FUNDS</p>
             <p>3.) IF THE DEBIT IS SUCCESSFUL, PLEASE CREDIT MERCHANT ACCOUNTS</p>
-            <p>4.) CLICK  'TRANSACTIONS COMPLETED'  ONLY WHEN YOU HAVE PERFORMED ALL TRANSACTIONS.</p>
+            <p>4.) CLICK  'CHANGE PAYMENT STATUS'  ONLY WHEN YOU HAVE PERFORMED ALL TRANSACTIONS.</p>
+            <p>5.) YOU MAY CHANGE PAYMENT STATUS AS MUCH AS YOU LIKE, UNTIL YOU ARE READY TO LEAVE THE PAGE.</p>
+            <p>6.) IF YOU LEAVE THIS PAGE WITH THE PAYMENT STATUS SET TO PAID, YOU WILL NOT BE ALLOWED TO RETURN, </p>
+            <p>    AND A SIGNAL WILL BE SENT TO THE ADMIN THAT YOU HAVE SUCCESSFULLY PERFORMED THE ABOVE TRANSACTIONS </p>
            </ListGroup.Item>}
 
 
@@ -314,9 +327,9 @@ const submitHandler = (e) => {
 
 
        
-       { 
+        
        
-       <center>
+       {<center>
          <ListGroup > 
       <ListGroup.Item > 
         
@@ -333,25 +346,36 @@ const submitHandler = (e) => {
 
 
 
-    
-  
-
-    { 
        
-       <center>
+       {!order.isPaid &&
+       
+      ( <center>
          <ListGroup > 
       <ListGroup.Item > 
         
+       <Button type='button' variant='primary' onClick={paidToggleHandler}> CHANGE TRANSACTION STATUS </Button>
     
+     </ListGroup.Item>
+     </ListGroup>
+    </center>)}
+  
+   { <center>
+         <ListGroup > 
+      <ListGroup.Item > 
+    {/*message && <Message variant='danger'>{message}</Message>*/}
+        {error && <Message variant='danger'>{error}</Message>}
+       {order && !order.isPaid && ( 
+         successPay ? <Message variant='success'>Order marked as Paid</Message>:
+         <Message variant='danger'>Order NOT Paid</Message>
+        )
+        }
+        {order && order.isPaid && <Message variant='success'>Order marked as Paid</Message>}
 
-  <LinkContainer to={`/communications?specificOrderId=${order._id}`}>
-  <Button type='submit' variant='primary'> TRANSACTION COMPLETED </Button>
-  </LinkContainer>
-     
-    
-    </ListGroup.Item>
+        {loading && <Loader/>}
+        </ListGroup.Item>
     </ListGroup>
-    </center>}
+
+        </center>}
 
 
          </ListGroup>

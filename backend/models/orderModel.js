@@ -57,12 +57,18 @@ const orderSchema =  mongoose.Schema({
           required:true,
           default:0.0 },
 
-        /*isPaid:{
+        isPaid:{
           type: Boolean,
+          default:false
+
            },
+           insufficientFunds:{
+            type: Boolean,
+             default:false},
+
            paidAt:{
              type: Date,
-              },*/
+              },
 
           isDelivered:{
           type: Boolean,
@@ -75,7 +81,7 @@ const orderSchema =  mongoose.Schema({
 
 
 
-},{timestamps:true /*you want a createdAt? you add timestamps:true*/})
+},{timestamps:true })
 
 
 const Order = mongoose.model('Order',orderSchema)

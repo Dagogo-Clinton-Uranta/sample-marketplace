@@ -17,6 +17,9 @@ import {ORDER_CREATE_REQUEST,
         ORDER_LIST_REQUEST,
         ORDER_LIST_SUCCESS,
         ORDER_LIST_FAILURE,
+        UNPAID_ORDER_LIST_REQUEST,
+        UNPAID_ORDER_LIST_SUCCESS,
+        UNPAID_ORDER_LIST_FAILURE,
         ORDER_DELIVER_REQUEST,
         ORDER_DELIVER_SUCCESS,
         ORDER_DELIVER_FAILURE
@@ -85,7 +88,7 @@ export const getOrderDetails  = (id) => async (dispatch,getState)=> {
 
 
 
-export const payOrder  = (orderId,paymentResult) => async (dispatch,getState) =>{
+export const payOrder  = (orderId) => async (dispatch,getState) =>{
 //form of async (dispatch) above
   try {
     dispatch({type: ORDER_PAY_REQUEST})
@@ -98,7 +101,7 @@ export const payOrder  = (orderId,paymentResult) => async (dispatch,getState) =>
         Authorization:`Bearer ${userInfo.token}`
       }
     }
-    const {data} = await axios.put(`/api/orders/${orderId}/pay`,paymentResult,config)
+    const {data} = await axios.put(`/api/orders/${orderId}/pay`,{},config)
     //i'm gonna take a stab here and say that the third argument for axios is for setting header property
 
     dispatch({
@@ -210,6 +213,39 @@ export const listOrders  = (vendorName=''/*try a reg ex of all allowable charact
                 error.response.data.message:error.message })
    }
 }
+
+
+
+export const listUnpaidOrders  = () => async (dispatch,getState)=> {
+  //form of async (dispatch) above
+    try {
+      dispatch({type: UNPAID_ORDER_LIST_REQUEST})
+  
+       const {userLogin:{userInfo}} = getState()
+      //we do config cus we wanna send he headers a content type of application/json
+      const config = {
+        headers:{
+  
+          Authorization:`Bearer ${userInfo.token}`
+        }
+      }
+      const {data} = await axios.get(`/api/orders/unpaidorders`,config)
+      //i'm gonna take a stab here and say that the third argument for axios is for setting header property
+  
+      dispatch({
+                type: UNPAID_ORDER_LIST_SUCCESS,
+                payload:data /*this data variable is file specific*/
+  
+  
+  
+      })
+    }
+     catch(error){
+       dispatch({type:UNPAID_ORDER_LIST_FAILURE,
+                 payload: error.response && error.response.data.message?
+                  error.response.data.message:error.message })
+     }
+  }
 
 
 export const merchantApproveOrder  = (orderId,productId,updatedQty) => async (dispatch,getState)=> {

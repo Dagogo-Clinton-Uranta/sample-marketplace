@@ -46,11 +46,11 @@ const addOrderItems = asyncHandler(async (req,res)=>{
 
 const getOrderById = asyncHandler(async (req,res)=>{
   res.header("Access-Control-Allow-Origin","*")
-   console.log(req.params.id)
+   
   const objectId = new mongoose.Types.ObjectId(req.params.id)
   const order = await Order.findById(objectId).populate('user', 'name email') /*name and email in the same quotation */
   if(order){
-    console.log(order)
+    
     res.json(order)
   }
   else{
@@ -65,17 +65,14 @@ const getOrderById = asyncHandler(async (req,res)=>{
 //@access Private
 const updateOrderToPaid = asyncHandler(async (req,res)=>{
   res.header("Access-Control-Allow-Origin","*")
+ 
   const objectId = new mongoose.Types.ObjectId(req.params.id)
   const order = await Order.findById(objectId)
   if(order){
-     order.isPaid = true
+    console.log(order.isPaid)
+     order.isPaid = !order.isPaid
      order.paidAt = Date.now()
-     order.paymentResult = {
-      id: req.body.id,
-      status:req.body.status,
-      update_time:req.body.update_time,
-      email_address: req.body.payer.email_address
-     }
+     
      const updatedOrder = await order.save()
 
      res.json(updatedOrder)
@@ -107,6 +104,15 @@ const updateOrderToDelivered = asyncHandler(async (req,res)=>{
   }
 })
 
+
+//@desc  get all orders that havent had money deducted from the users' accounts 
+//@route GET /api/orders/unpaidorders
+//@access Private
+const getUnpaidOrders = asyncHandler(async (req,res)=>{
+  res.header("Access-Control-Allow-Origin","*")
+  const orders = await Order.find({isPaid:false}).sort({createdAt:1})
+  res.json(orders)
+})
 
 
 
@@ -154,7 +160,7 @@ const updatePromisedQty = asyncHandler(async (req,res)=>{
 })
 
 export {addOrderItems, getOrderById, updateOrderToPaid,
-updateOrderToDelivered, getMyOrders,getOrders, updatePromisedQty}
+updateOrderToDelivered, getMyOrders,getOrders,getUnpaidOrders ,updatePromisedQty}
 
 //exports.addOrderItems =addOrderItems
 //exports.getOrderById =getOrderById

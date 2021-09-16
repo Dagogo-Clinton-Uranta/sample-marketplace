@@ -4,7 +4,7 @@ import {Table,Button} from 'react-bootstrap'
 import {useDispatch, useSelector} from 'react-redux'
 import Message from '../components/Message.js'
 import Loader from '../components/Message.js'
-import {listOrders} from '../actions/orderActions.js'
+import {/*listOrders,*/ listUnpaidOrders} from '../actions/orderActions.js'
 
 
 
@@ -18,10 +18,11 @@ const TransactionListScreen = ({history}) => { //he is taking location & history
   const [message,setMessage] = useState(null)*/
   const dispatch = useDispatch() //dont forget that real dispatches only take place in action creators, you are only calling useDispatch here
 
-  const orderList = useSelector(state => state.orderList);
-  const {loading, error,orders } = orderList
+  /*const orderList = useSelector(state => state.orderList);
+  const {loading, error,orders } = orderList*/
   
-  
+  const unpaidOrderList = useSelector(state => state.unpaidOrderList);
+  const {loading, error,orders } = unpaidOrderList
 
   const userLogin = useSelector(state => state.userLogin);
   const {userInfo } = userLogin
@@ -38,7 +39,8 @@ const TransactionListScreen = ({history}) => { //he is taking location & history
 
   useEffect( () => {
   if(userInfo /*&& userInfo.isTeller*/){
-  dispatch(listOrders(vendorName)) 
+  /*dispatch(listOrders(vendorName)) */
+    dispatch(listUnpaidOrders()) 
   }else{
    history.push('/login')
   }
@@ -51,7 +53,9 @@ const TransactionListScreen = ({history}) => { //he is taking location & history
         <h1>Transactions to Carry Out</h1>
         {userInfo/*.isTeller*/ && 
          <>
-        <h6>Below are a list of transactions to be carried out on the bank-One platform. Click "Details" on each item to view the exact transactions to be carried out for each order  </h6>
+        <h6>Below are a list of transactions to be carried out on the bank-One platform. </h6>
+        <h6> Click "Details" on each item to view the exact transactions to be carried out for each order  </h6>
+        <p style={{backgroundColor:'rgba(233, 212, 96, 0.4)',width:'50%'}} >Orders in yellow means that you tried to debit a customer, but they had insufficient funds at the time, you may try to debit him/her once more, or when instructed by the admin </p>
          <br/>
          <h6>Please perform these transactions as soon as possible, so that goods may be sent to clients without delay </h6>
          
@@ -85,6 +89,7 @@ const TransactionListScreen = ({history}) => { //he is taking location & history
            {userInfo/*.isTeller*/ ?(<th>TOTAL TO DEBIT</th>):(<th>RECEIVABLE</th> )}{/*We want to give tellers a taste of  what transactions to make, so the are eager to press details*/}
            {/*<th>CREDIT (TO BRIDGEWAY)</th>*/}
            <th>COMPLETED</th>
+           <th>SUFFICIENT FUNDS?</th>
           {/*<th>DELIVERED</th>*/}
            
          </tr>
@@ -98,14 +103,7 @@ const TransactionListScreen = ({history}) => { //he is taking location & history
                                                          :5) if the user is an admin,and at least one item has been promised AND at least one item has been promised(again ,dodgy logic, try !(all have been fully promised) ),  give it a yellow, it is incomplete
                                                          :6)if the logged in user is an admin and all items are fully committed to, then give the color a blue, it is a fully completed order.
                                                          :7)if the user is an admin and all merchants have promised something, give it blue it is a fully committed order ready to go  */
-            <tr key={order._id} /*style={{backgroundColor:1 userInfo.isMerchant && !(order.orderItems.filter((item) => (item.vendor === userInfo.name)).every((item) => (item.promisedQty === 0))) && order.orderItems.filter((item) => (item.vendor === userInfo.name)).some((item) => (item.promisedQty !== 0))?'rgba(233, 212, 96, 0.4)'
-                                                        /*2:(userInfo.isMerchant && (order.orderItems.filter((item) => (item.vendor === userInfo.name)).every((item) => (item.promisedQty === 0))) &&  new Date() > new Date(new Date(order.createdAt).getTime() + 48 * 60 * 60 * 1000)  ?'rgba(255,0,0,0.2)'*/
-                                                        /*3  :(!order.isDelivered && userInfo.isAdmin && new Date() > new Date(new Date(order.createdAt).getTime() + 96 * 60 * 60 * 1000) ?  'rgba(255,0,0,0.2)'*/
-                                                        /*4:(order.orderItems.every((item) => (item.promisedQty === 0)) && userInfo.isMerchant && new Date() < new Date(new Date(order.createdAt).getTime() + 48 * 60 * 60 * 1000) ? 'rgba(0, 255, 0, 0.2)'*/
-                                                        /*5 :(userInfo.isAdmin && order.orderItems.some((item) => (item.promisedQty !== 0)) && !(order.orderItems.every((item) => (item.promisedQty === 0)))?'rgba(233, 212, 96, 0.4)'*/
-                                                        /*6 :(userInfo.isAdmin && order.orderItems.every((item) => (item.promisedQty === item.qty))  ? 'rgba(0, 0, 255, 0.2)'*/
-                                                        /*7 :(order.orderItems.every((item) => (item.promisedQty === 0)) && userInfo.isAdmin && (new Date() < new Date(new Date(order.createdAt).getTime() +  96* 60 * 60 * 1000)) && 'rgba(0, 255, 0, 0.2)')))))) }} */>
-              <td>{order._id}</td>
+            <tr key={order._id}style ={{backgroundColor: order.insufficientFunds && 'rgba(233, 212, 96, 0.4)'}} >
               <td>{order.user && order.user.name}</td>
               <td> 00001   </td>
               <td>{new Date(order.createdAt).toLocaleDateString()}</td>
@@ -116,6 +114,11 @@ const TransactionListScreen = ({history}) => { //he is taking location & history
                 (<i className='fas fa-times' style={{color:'red'}}></i>)}
               </td>}
       
+              {<td>{order.insufficientFunds ? (<i className='fas fa-times' style={{color:'red'}}></i>):  
+               <i className='fas fa-check' style={{color:'green'}}></i> }
+              </td>}
+
+
               {/*<td>
                 {order.isDelivered ? (order.deliveredAt.substring(0,10)): 
                 (<i className='fas fa-times' style={{color:'red'}}></i>)}
