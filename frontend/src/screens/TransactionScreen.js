@@ -7,7 +7,7 @@ import { Button, Row ,Col ,Form, ListGroup, Image, Card, ListGroupItem} from 're
 import {useDispatch, useSelector} from 'react-redux'
 import Message from '../components/Message.js'
 //import {getUserDetails, updateUserProfile} from '../actions/userActions.js'
-import {getOrderDetails,payOrder,deliverOrder,merchantApproveOrder/*,merchantLockOrder*/} from '../actions/orderActions.js'
+import {getOrderDetails,payOrder,merchantCreditOrder,deliverOrder,merchantApproveOrder,insufficientFundsOrder/*,merchantLockOrder*/} from '../actions/orderActions.js'
 import Loader from '../components/Loader.js'
 import {ORDER_PAY_RESET,ORDER_DELIVER_RESET } from '../constants/orderConstants.js'  //HE MADE AN EXCEPTION HERE DISPATCHING STRAIGHT FROM CONSTANTS WITHOUT CALLING ACTIONS, TO MAKE THINGS FASTER
 
@@ -40,6 +40,13 @@ const TransactionScreen =  ({match,history}) => {
 
   const orderPay = useSelector((state) => state.orderPay )
   const {loading:loadingPay, success:successPay} = orderPay //this is renaming what you destructured, not making a new object
+
+  const orderInsufficientFunds = useSelector((state) => state.insufficientFundsOrder )
+  const {loading:loadingInsufficient, success:successInsufficient} = orderInsufficientFunds
+
+
+   const merchantCreditForOrder =useSelector((state) => state.merchantCreditOrder)
+    const {loading:loadingCredit, success:successCredit} = merchantCreditForOrder
 
   const orderDeliver = useSelector((state) => state.orderDeliver )
   const {loading:loadingDeliver, success:successDeliver} = orderDeliver
@@ -123,8 +130,9 @@ useEffect(()=> {
     script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}` //this is the software development kit that paypal gives us
     
   }
+ 
 
-  
+
   /*if(!order||successPay||successDeliver){
     dispatch({type:ORDER_PAY_RESET})
     dispatch({type:ORDER_DELIVER_RESET})  //AGAIN HE MADE AN EXCEPTION HERE AND DISPATCHED STRAIGHT FROM CONSTANTS SO HE CAN KEEP IT SHORT
@@ -148,6 +156,18 @@ useEffect(()=> {
 const paidToggleHandler = (e)=> {
      e.preventDefault()
   dispatch(payOrder(order._id))
+}
+
+const merchantCreditToggleHandler = (e)=> {
+  e.preventDefault()
+dispatch(merchantCreditOrder(order._id))
+}
+
+
+
+const insufficientFundsHandler = (e)=> {
+  e.preventDefault()
+dispatch(insufficientFundsOrder(order._id))
 }
 
 
@@ -192,25 +212,28 @@ const submitHandler = (e) => {
             <h2>Teller Transaction{order.isDelivered?" Performed":" Instructions"}</h2>
              </Col>
             {order && !order.isPaid &&  <Col md ={4}>
-               <LinkContainer to={`/communications?specificOrderId=${order._id}`}>
-                <Button type='submit' variant='primary'> INSUFFICIENT FUNDS </Button>
-               </LinkContainer>
+               
+                <Button type='button' variant='primary' onClick={insufficientFundsHandler}> INSUFFICIENT FUNDS </Button>
+               
              </Col>
            }
 
             </Row>
+            { order && !order.isPaid && successInsufficient && !successPay && <Row>
+            <Message variant='warning'>Inusufficient Funding in {`${order.user.name}'s`} account, remember to try again later </Message>
+
+            </Row>}
            </ListGroup.Item>
 
-          {<ListGroup.Item>
+          {order.isPaid && <ListGroup.Item>
             <p style={{color:'red'}}>NOTE: THESE TRANSACTIONS ARE TO BE CARRIED OUT ON BANK ONE </p>
-            <p>1.)PLEASE MAKE SURE TO PERFORM DEBIT FIRST</p>
-            <p>2.) IF THE DEBIT CANNOT BE PERFORMED, PLEASE SELECT 'INSUFFICIENT FUNDS' </p>
-            <p>    MESSAGE THE ADMIN TO COMMUNICATE THAT THE CLIENT HAD INSUFFICIENT FUNDS</p>
-            <p>3.) IF THE DEBIT IS SUCCESSFUL, PLEASE CREDIT MERCHANT ACCOUNTS</p>
-            <p>4.) CLICK  'CHANGE PAYMENT STATUS'  ONLY WHEN YOU HAVE PERFORMED ALL TRANSACTIONS.</p>
-            <p>5.) YOU MAY CHANGE PAYMENT STATUS AS MUCH AS YOU LIKE, UNTIL YOU ARE READY TO LEAVE THE PAGE.</p>
-            <p>6.) IF YOU LEAVE THIS PAGE WITH THE PAYMENT STATUS SET TO PAID, YOU WILL NOT BE ALLOWED TO RETURN, </p>
-            <p>    AND A SIGNAL WILL BE SENT TO THE ADMIN THAT YOU HAVE SUCCESSFULLY PERFORMED THE ABOVE TRANSACTIONS </p>
+            
+            <p>1.) IF THE DEBIT CANNOT BE PERFORMED, PLEASE SELECT 'INSUFFICIENT FUNDS' </p>
+            <p> 2.)   MESSAGE THE ADMIN TO COMMUNICATE THAT THE CLIENT HAD INSUFFICIENT FUNDS</p>
+            <p>3.)  IF THE DEBIT IS SUCCESSFUL, CLICK  'CHANGE PAYMENT STATUS' .</p>
+            <p>4.) YOU MAY CHANGE PAYMENT STATUS AS MUCH AS YOU LIKE, UNTIL YOU ARE READY TO LEAVE THE PAGE.</p>
+            <p>5.) IF YOU LEAVE THIS PAGE WITH THE PAYMENT STATUS SET TO PAID, YOU WILL NOT BE ALLOWED TO RETURN, </p>
+            <p>    AND A SIGNAL WILL BE SENT TO THE ADMIN THAT YOU HAVE SUCCESSFULLY PERFORMED THE ABOVE TRANSACTION(S) </p>
            </ListGroup.Item>}
 
 
@@ -219,13 +242,16 @@ const submitHandler = (e) => {
 
              <Col>Account Name </Col>
              <Col>Account Number </Col>
-             <Col>Type </Col> 
+             <Col>Transaction Type </Col> 
              <Col>Amount</Col>
 
             </Row>
            </ListGroup.Item>
 
 
+           {!order.isPaid && 
+           
+            <>
            <ListGroup.Item>
             <Row>
 
@@ -248,6 +274,7 @@ const submitHandler = (e) => {
 
             </Row>
            </ListGroup.Item>
+           </>}
 
 
 
@@ -264,7 +291,7 @@ const submitHandler = (e) => {
             </Row>
            </ListGroup.Item>
 
-           <ListGroup.Item>
+           {order.isPaid && <ListGroup.Item>
             <Row>
 
              <Col>BridgeWay Co-operative: </Col>
@@ -274,10 +301,10 @@ const submitHandler = (e) => {
              <Col>₦ {(order.itemsPrice * (1/19) ).toFixed(2)} </Col>
 
             </Row>
-           </ListGroup.Item>
+           </ListGroup.Item>}
 
            
-      {order.orderItems.map((item, index) =>(
+      {order.isPaid && order.orderItems.map((item, index) =>(
             <ListGroup.Item  key ={index}>
             <Row>
 
@@ -290,7 +317,7 @@ const submitHandler = (e) => {
            </ListGroup.Item>
            ))}
       
-      {<ListGroup.Item>
+      {/*<ListGroup.Item>
             <Row>
 
              <Col> dispatch rider: </Col>
@@ -300,9 +327,9 @@ const submitHandler = (e) => {
              <Col>₦ {(Number(order.deliveryCost)).toFixed(2)} </Col>
 
             </Row>
-      </ListGroup.Item>}
+      </ListGroup.Item>*/}
 
-        <ListGroup.Item>
+        {order.isPaid && <ListGroup.Item>
             <Row style ={{color:'red'}}>
 
              <Col>TOTAL CREDIT: </Col>
@@ -311,7 +338,7 @@ const submitHandler = (e) => {
              <Col>₦ {(order.totalPrice).toFixed(2)} </Col>
 
             </Row>
-           </ListGroup.Item>
+           </ListGroup.Item>}
       
            
           {/*!order.isPaid && (
@@ -358,19 +385,43 @@ const submitHandler = (e) => {
      </ListGroup.Item>
      </ListGroup>
     </center>)}
+
+    
+    {order.isPaid && (new Date(order.paidAt) <= new Date(new Date().getTime() - 10 * 60 * 1000)) && !order.merchantsCredited &&
+       
+       ( <center>
+          <ListGroup > 
+       <ListGroup.Item > 
+         
+        <Button type='button' variant='primary' onClick={merchantCreditToggleHandler}> CHANGE TRANSACTION STATUS </Button>
+          
+      </ListGroup.Item>
+      </ListGroup>
+     </center>)
+     }
+ 
+
+
+
   
    { <center>
          <ListGroup > 
       <ListGroup.Item > 
     {/*message && <Message variant='danger'>{message}</Message>*/}
         {error && <Message variant='danger'>{error}</Message>}
+       {order && !order.isPaid && successInsufficient &&  !successPay && <Message variant='warning'>Inusufficient Funding in {`${order.user.name}'s`} account, remember to try again later </Message>} 
        {order && !order.isPaid && ( 
          successPay ? <Message variant='success'>Order marked as Paid</Message>:
          <Message variant='danger'>Order NOT Paid</Message>
         )
         }
-        {order && order.isPaid && <Message variant='success'>Order marked as Paid</Message>}
-
+        {order && order.isPaid && (new Date(order.paidAt) < new Date(new Date().getTime() - /* 48 * 60*/10 * 60 * 1000))  && !order.merchantsCredited ?(
+        successCredit? <Message variant='success'>All merchants credited.</Message>:
+          <Message variant='danger'>transacations not carried out</Message>
+      
+         ):<Message variant='success'>All merchants credited.</Message>
+          }
+        
         {loading && <Loader/>}
         </ListGroup.Item>
     </ListGroup>

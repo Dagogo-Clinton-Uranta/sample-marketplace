@@ -7,6 +7,13 @@ import {ORDER_CREATE_REQUEST,
         ORDER_PAY_REQUEST,
         ORDER_PAY_SUCCESS,
         ORDER_PAY_FAILURE,
+        ORDER_MERCHANT_CREDIT_REQUEST,
+        ORDER_MERCHANT_CREDIT_SUCCESS,
+        ORDER_MERCHANT_CREDIT_FAILURE,
+        ORDER_MERCHANT_CREDIT_RESET,
+        ORDER_INSUFFICIENT_REQUEST,  
+        ORDER_INSUFFICIENT_SUCCESS,
+        ORDER_INSUFFICIENT_FAILURE,
         ORDER_APPROVE_REQUEST,
         ORDER_APPROVE_SUCCESS,
         ORDER_APPROVE_FAILURE,
@@ -118,6 +125,71 @@ export const getOrderDetails  = (id/*this is not the entire object, just an orde
                 error.response.data.message:error.message })
    }
 }
+
+
+export const merchantCreditOrder  = (orderId) => async (dispatch,getState) =>{
+  //form of async (dispatch) above
+    try {
+      dispatch({type: ORDER_MERCHANT_CREDIT_REQUEST})
+  
+       const {userLogin:{userInfo}} = getState()
+      //we do config cus we wanna send he headers a content type of application/json
+      const config = {
+        headers:{
+          'Content-Type':'application/json',
+          Authorization:`Bearer ${userInfo.token}`
+        }
+      }
+      const {data} = await axios.put(`/api/orders/${orderId}/paymerchants`,{},config)
+      //i'm gonna take a stab here and say that the third argument for axios is for setting header property
+  
+      dispatch({
+                type: ORDER_MERCHANT_CREDIT_SUCCESS,
+                payload:data
+              })/*this data variable is file specific
+  export const getOrderDetails  = (id/*this is not the entire object, just an order id*/
+  
+  
+    }
+     catch(error){
+       dispatch({type:ORDER_MERCHANT_CREDIT_FAILURE,
+                 payload: error.response && error.response.data.message?
+                  error.response.data.message:error.message })
+     }
+  }
+
+
+
+export const insufficientFundsOrder  = (orderId) => async (dispatch,getState) =>{
+  //form of async (dispatch) above
+    try {
+      dispatch({type: ORDER_INSUFFICIENT_REQUEST})
+  
+       const {userLogin:{userInfo}} = getState()
+      //we do config cus we wanna send he headers a content type of application/json
+      const config = {
+        headers:{
+          'Content-Type':'application/json',
+          Authorization:`Bearer ${userInfo.token}`
+        }
+      }
+      const {data} = await axios.put(`/api/orders/${orderId}/funds`,{},config)
+      //i'm gonna take a stab here and say that the third argument for axios is for setting header property
+  
+      dispatch({
+                type: ORDER_INSUFFICIENT_SUCCESS,
+                payload:data
+              })/*this data variable is file specific
+  export const getOrderDetails  = (id/*this is not the entire object, just an order id*/
+  
+  
+    }
+     catch(error){
+       dispatch({type:ORDER_INSUFFICIENT_FAILURE,
+                 payload: error.response && error.response.data.message?
+                  error.response.data.message:error.message })
+     }
+  }
 
 
 export const deliverOrder  = (order) => async (dispatch,getState)=> {

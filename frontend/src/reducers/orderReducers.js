@@ -8,6 +8,14 @@ import {ORDER_CREATE_REQUEST,
         ORDER_PAY_SUCCESS,
         ORDER_PAY_FAILURE,
         ORDER_PAY_RESET,
+        ORDER_INSUFFICIENT_REQUEST,
+        ORDER_INSUFFICIENT_SUCCESS,
+        ORDER_INSUFFICIENT_FAILURE,
+        ORDER_INSUFFICIENT_RESET,
+        ORDER_MERCHANT_CREDIT_REQUEST,
+        ORDER_MERCHANT_CREDIT_SUCCESS,
+        ORDER_MERCHANT_CREDIT_FAILURE,
+        ORDER_MERCHANT_CREDIT_RESET,
         ORDER_APPROVE_REQUEST,
         ORDER_APPROVE_SUCCESS,
         ORDER_APPROVE_FAILURE,
@@ -66,6 +74,27 @@ export const orderPayReducer = ( state={}, action) => {
       case ORDER_PAY_RESET: return {}
       default: return state
     }
+}
+
+export const merchantCreditOrderReducer = ( state={}, action) => {
+  switch (action.type) {
+    case ORDER_MERCHANT_CREDIT_REQUEST: return {loading:true}
+    case ORDER_MERCHANT_CREDIT_SUCCESS:return {loading:false, success:action.payload.merchantsCredited}
+    case ORDER_MERCHANT_CREDIT_FAILURE: return {loading:false, error:action.payload}
+    case ORDER_MERCHANT_CREDIT_RESET: return {}
+
+    default: return state
+  }
+}
+
+export const insufficientFundsOrderReducer = ( state={}, action) => {
+  switch (action.type) {
+    case ORDER_INSUFFICIENT_REQUEST: return {loading:true}
+    case ORDER_INSUFFICIENT_SUCCESS:return {loading:false, success:true}
+    case ORDER_INSUFFICIENT_FAILURE: return {loading:false, error:action.payload}
+    case ORDER_INSUFFICIENT_RESET: return {}
+    default: return state
+  }
 }
 
  

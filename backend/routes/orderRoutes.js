@@ -4,7 +4,7 @@ import express from 'express'
 //import bcrypt from  'bcryptjs'
 //const bcrypt= require('bcryptjs')
 
-import {addOrderItems, getOrderById, updateOrderToPaid,updateOrderToDelivered,updatePromisedQty, getMyOrders,getOrders,getUnpaidOrders} from '../controllers/orderController.js'
+import {addOrderItems, getOrderById, updateOrderToPaid,updateMerchantsToCredited,updateOrderToInsufficientFunds,updateOrderToDelivered,updatePromisedQty, getMyOrders,getOrders,getUnpaidOrders} from '../controllers/orderController.js'
 //const {addOrderItems, getOrderById, updateOrderToPaid,updateOrderToDelivered, getMyOrders,getOrders}= require('../controllers/orderController.js')
 
 import {protect,admin } from '../Middleware/authMiddleware.js'
@@ -22,6 +22,8 @@ router.route('/unpaidorders').get(protect,getUnpaidOrders)
 
 //in the get route, protect is the middleware, thats how you implement middleware in this syntax, so smooth,no app.use)
 router.route('/:id/pay').put(protect,updateOrderToPaid)
+router.route('/:id/paymerchants').put(protect,updateMerchantsToCredited)
+router.route('/:id/funds').put(protect,updateOrderToInsufficientFunds)
 router.route('/:id/deliver').put(protect,admin, updateOrderToDelivered)
 router.route('/:id').get(protect,getOrderById)  //make sure this id route is the very last you do, cuz if you place anything below it, it will take whats after the slash as an id(chapter 10.1) ? research this
 //exports.router = router;

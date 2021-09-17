@@ -62,7 +62,7 @@ const getOrderById = asyncHandler(async (req,res)=>{
 
 //@desc  Update order to paid
 //@route GET /api/orders/:id/pay
-//@access Private
+//@access Private/Teller
 const updateOrderToPaid = asyncHandler(async (req,res)=>{
   res.header("Access-Control-Allow-Origin","*")
  
@@ -71,7 +71,13 @@ const updateOrderToPaid = asyncHandler(async (req,res)=>{
   if(order){
     console.log(order.isPaid)
      order.isPaid = !order.isPaid
-     order.paidAt = Date.now()
+     if(order.isPaid = true){
+       order.insufficientFunds=false
+      }
+       else{order.insufficientFunds=true}
+     
+       order.paidAt = Date.now()
+     
      
      const updatedOrder = await order.save()
 
@@ -83,7 +89,61 @@ const updateOrderToPaid = asyncHandler(async (req,res)=>{
   }
 })
 
-//@desc  Update order to paid
+
+
+//@desc  Update merchants for this order to credited status
+//@route GET /api/orders/:id/paymerchants
+//@access Private/Teller
+const updateMerchantsToCredited = asyncHandler(async (req,res)=>{
+  res.header("Access-Control-Allow-Origin","*")
+ 
+  const objectId = new mongoose.Types.ObjectId(req.params.id)
+  const order = await Order.findById(objectId)
+  if(order){
+    console.log(order.merchantsCredited)
+     order.merchantsCredited = !order.merchantsCredited
+     order.merchantsCreditedAt = Date.now()
+     
+     
+     const updatedOrder = await order.save()
+
+     res.json(updatedOrder)
+  }
+  else{
+    res.status(404)
+    throw new Error('Order not found')
+  }
+})
+
+
+//@desc  Update order to insufficient Funds
+//@route GET /api/orders/:id/funds
+//@access Private/Teller
+const updateOrderToInsufficientFunds = asyncHandler(async (req,res)=>{
+  res.header("Access-Control-Allow-Origin","*")
+ 
+  const objectId = new mongoose.Types.ObjectId(req.params.id)
+  const order = await Order.findById(objectId)
+  if(order){
+    console.log(order.insufficientFunds)
+     if(!order.isPaid){
+      order.insufficientFunds = true
+
+     }
+
+     
+     
+     const updatedOrder = await order.save()
+
+     res.json(updatedOrder)
+  }
+  else{
+    res.status(404)
+    throw new Error('Order not found')
+  }
+})
+
+//@desc  Update order to Delivered
 //@route GET /api/orders/:id/deliver
 //@access Private/Admin
 const updateOrderToDelivered = asyncHandler(async (req,res)=>{
@@ -110,7 +170,7 @@ const updateOrderToDelivered = asyncHandler(async (req,res)=>{
 //@access Private
 const getUnpaidOrders = asyncHandler(async (req,res)=>{
   res.header("Access-Control-Allow-Origin","*")
-  const orders = await Order.find({isPaid:false}).sort({createdAt:1})
+  const orders = await Order.find({$or:[{isPaid:false},{$and:[{isPaid:true},{merchantsCredited:false},{paidAt:{$lte:new Date(new Date().getTime() -  /*48 * 60*/1 * 60 * 1000) }}]}]}).sort({createdAt:-1})
   res.json(orders)
 })
 
@@ -159,7 +219,7 @@ const updatePromisedQty = asyncHandler(async (req,res)=>{
  /*res.json(orders)*/
 })
 
-export {addOrderItems, getOrderById, updateOrderToPaid,
+export {addOrderItems, getOrderById, updateOrderToPaid,updateOrderToInsufficientFunds,updateMerchantsToCredited,
 updateOrderToDelivered, getMyOrders,getOrders,getUnpaidOrders ,updatePromisedQty}
 
 //exports.addOrderItems =addOrderItems

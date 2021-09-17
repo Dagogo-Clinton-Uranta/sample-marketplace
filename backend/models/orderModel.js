@@ -62,13 +62,26 @@ const orderSchema =  mongoose.Schema({
           default:false
 
            },
-           insufficientFunds:{
-            type: Boolean,
-             default:false},
 
            paidAt:{
              type: Date,
               },
+
+         insufficientFunds:{
+           type: Boolean,
+             default:false},
+
+             merchantsCredited:{
+              type: Boolean,
+              default:false
+    
+               },
+
+
+           merchantsCreditedAt:{
+             type: Date,
+               },
+   
 
           isDelivered:{
           type: Boolean,

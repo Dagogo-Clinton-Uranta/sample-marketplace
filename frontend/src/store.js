@@ -4,7 +4,7 @@ import {composeWithDevTools} from 'redux-devtools-extension'
 import {productListReducer,productListByMerchantReducer, productDetailsReducer, productDeleteReducer,productCreateReducer,productUpdateReducer, productCreateReviewReducer,productTopRatedReducer} from './reducers/productReducers.js'
 import {cartReducer} from './reducers/cartReducers.js'
 import {userLoginReducer,userSendReducer,adminSendReducer, userVerifyReducer, userRegisterReducer, userDetailsReducer, userProfileUpdateReducer,userNotesUpdateReducer,userListReducer,userDeleteReducer,userUpdateReducer} from './reducers/userReducers.js'
-import {orderCreateReducer, orderDetailsReducer, orderPayReducer,orderDeliverReducer, orderListMyReducer,orderListReducer, unpaidOrderListReducer ,orderApproveReducer } from './reducers/orderReducers.js'
+import {orderCreateReducer, orderDetailsReducer, orderPayReducer,insufficientFundsOrderReducer,orderDeliverReducer, orderListMyReducer,orderListReducer, unpaidOrderListReducer ,orderApproveReducer, merchantCreditOrderReducer } from './reducers/orderReducers.js'
 
 const reducer = combineReducers({
   productList: productListReducer,
@@ -30,6 +30,8 @@ const reducer = combineReducers({
   orderCreate:orderCreateReducer,
   orderDetails:orderDetailsReducer,
   orderPay:orderPayReducer,
+  merchantCreditOrder:merchantCreditOrderReducer,
+  insufficientFundsOrder:insufficientFundsOrderReducer,
   orderDeliver:orderDeliverReducer,
   orderListMy:orderListMyReducer,
   orderList:orderListReducer,

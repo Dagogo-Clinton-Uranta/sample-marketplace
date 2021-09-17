@@ -55,7 +55,7 @@ const TransactionListScreen = ({history}) => { //he is taking location & history
          <>
         <h6>Below are a list of transactions to be carried out on the bank-One platform. </h6>
         <h6> Click "Details" on each item to view the exact transactions to be carried out for each order  </h6>
-        <p style={{backgroundColor:'rgba(233, 212, 96, 0.4)',width:'50%'}} >Orders in yellow means that you tried to debit a customer, but they had insufficient funds at the time, you may try to debit him/her once more, or when instructed by the admin </p>
+        <p style={{backgroundColor:'rgba(233, 212, 96, 0.4)',width:'50%'}} >transactions in yellow are of highest priority and should be performed first </p>
          <br/>
          <h6>Please perform these transactions as soon as possible, so that goods may be sent to clients without delay </h6>
          
@@ -86,7 +86,7 @@ const TransactionListScreen = ({history}) => { //he is taking location & history
            <th>CUSTOMER NAME</th>
            <th>ACCOUNT NUM</th>
            <th>PLACED ON</th>
-           {userInfo/*.isTeller*/ ?(<th>TOTAL TO DEBIT</th>):(<th>RECEIVABLE</th> )}{/*We want to give tellers a taste of  what transactions to make, so the are eager to press details*/}
+           {userInfo/*.isTeller*/ ?(<th>CASH TOTAL</th>):(<th>RECEIVABLE</th> )}{/*We want to give tellers a taste of  what transactions to make, so the are eager to press details*/}
            {/*<th>CREDIT (TO BRIDGEWAY)</th>*/}
            <th>COMPLETED</th>
            <th>SUFFICIENT FUNDS?</th>
@@ -103,7 +103,8 @@ const TransactionListScreen = ({history}) => { //he is taking location & history
                                                          :5) if the user is an admin,and at least one item has been promised AND at least one item has been promised(again ,dodgy logic, try !(all have been fully promised) ),  give it a yellow, it is incomplete
                                                          :6)if the logged in user is an admin and all items are fully committed to, then give the color a blue, it is a fully completed order.
                                                          :7)if the user is an admin and all merchants have promised something, give it blue it is a fully committed order ready to go  */
-            <tr key={order._id}style ={{backgroundColor: order.insufficientFunds && 'rgba(233, 212, 96, 0.4)'}} >
+            <tr key={order._id} style ={{backgroundColor: !order.isPaid && 'rgba(233, 212, 96, 0.4)'}} >
+              <td>{order._id}</td>
               <td>{order.user && order.user.name}</td>
               <td> 00001   </td>
               <td>{new Date(order.createdAt).toLocaleDateString()}</td>

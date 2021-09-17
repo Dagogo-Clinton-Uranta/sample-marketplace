@@ -60,7 +60,7 @@ const PlaceOrderScreen =  ({history}) => {
 
     /*cart.taxPrice = addDecimals(Number((0.10*cart.itemsPrice).toFixed(2)))*/
 
-    cart.totalPrice = (Number(cart.itemsPrice) + Number(cart.deliveryCost) /*+ Number(cart.taxPrice)*/).toFixed(2)
+    cart.totalPrice = (Number(cart.itemsPrice) /*+ Number(cart.deliveryCost) + Number(cart.taxPrice)*/).toFixed(2)
    //if your total price is looking funny, just unwrap addDecimals and wrap in .toFixed(2)
 
   
