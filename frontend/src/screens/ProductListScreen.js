@@ -43,6 +43,10 @@ useEffect(()=> {
     history.push('/login')
     
   }
+
+  if(userInfo && userInfo.isTeller){
+    history.push('/teller/transactionlist')
+ }
  
   },[ userInfo,history,dispatch,successCreate])
 

@@ -38,7 +38,7 @@ const TransactionListScreen = ({history}) => { //he is taking location & history
    
 
   useEffect( () => {
-  if(userInfo /*&& userInfo.isTeller*/){
+  if(userInfo && userInfo.isTeller){
   /*dispatch(listOrders(vendorName)) */
     dispatch(listUnpaidOrders()) 
   }else{

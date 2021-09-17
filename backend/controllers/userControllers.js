@@ -40,6 +40,7 @@ const authUser = asyncHandler(async (req, res) => {
       email: user.email,
       userMessage: user.userMessage,
       adminMessage: user.adminMessage,
+      isTeller:user.isTeller,
       isAdmin: user.isAdmin,
       isMerchant: user.isMerchant,
       token: generateToken(user._id),
@@ -268,6 +269,7 @@ const registerUser = asyncHandler(async (req, res) => {
     shoeSize:shoeSize,
     isMerchant:isMerchant,
     isAdmin:false,
+    isTeller:false,
     pickupAddress:pickupAddress,
     closestFriend:closestFriend,
     childhoodStreet:childhoodStreet,
@@ -286,6 +288,7 @@ const registerUser = asyncHandler(async (req, res) => {
       userMessage: user.userMessage,
       adminMessage: user.adminMessage,
       isAdmin: user.isAdmin,
+      isTeller:user.isTeller,
       userMessageNotification:user.userMessageNotification,
       adminMessageNotification:user.adminMessageNotification,
       isMerchant: user.isMerchant,
@@ -324,7 +327,9 @@ const getUserProfile = asyncHandler(async (req, res) => {
       userMessage: user.userMessage,
       adminMessage: user.adminMessage,
       isAdmin: user.isAdmin,
+      isTeller:user.isTeller,
       isMerchant: user.isMerchant,
+      isTeller:user.isTeller,
       notes:user.notes
     })
   }
@@ -473,6 +478,7 @@ const updateUser = asyncHandler(async (req, res) => {
       adminMessage: updatedUser.adminMessage,
       isAdmin: updatedUser.isAdmin,
       isMerchant: updatedUser.isMerchant,
+      isTeller:user.isTeller,
       notes:updatedUser.notes
     })
   }

@@ -25,6 +25,10 @@ const CartScreen = ({match, location, history}) => {
     else if(userInfo.isMerchant||userInfo.isAdmin){
      history.push(`/`)
     }
+
+    if(userInfo && userInfo.isTeller){
+      history.push('/teller/transactionlist')
+   }
   })
 
 

@@ -29,11 +29,18 @@ const UserEditScreen = ({match, history}) => { //he is taking location & history
      const userUpdate = useSelector((state) => state.userUpdate);
   const {loading:loadingUpdate, error:errorUpdate, success:successUpdate } = userUpdate
 
-
+  const userLogin = useSelector(state => state.userLogin);
+  const {userInfo } = userLogin
 
 
 
   useEffect( () => {
+
+    if(userInfo && userInfo.isTeller){
+      history.push('/teller/transactionlist')
+   }
+
+
     if(successUpdate){
     dispatch({type:USER_UPDATE_RESET})
     history.push('/admin/userlist')

@@ -37,7 +37,12 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
    
 
   useEffect( () => {
-  if(userInfo){
+  
+    if(userInfo && userInfo.isTeller){
+      history.push('/teller/transactionlist')
+   }
+  
+    if(userInfo){
   dispatch(listOrders(vendorName)) /*console.log('orders nigga')*/
   }else{
    history.push('/login')

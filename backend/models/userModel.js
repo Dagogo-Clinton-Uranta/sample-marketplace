@@ -12,6 +12,7 @@ const userSchema =  mongoose.Schema({
         password:{type: String ,required:true},
         isAdmin:{type: Boolean ,required:true, default:false},
         isMerchant:{type: Boolean ,required:true, default:false},
+        isTeller:{type: Boolean ,required:false, default:false},
         momFirstName:{type: String ,required:true},
         shoeSize:{type: String ,required:true},
         closestFriend:{type: String ,required:true},

@@ -68,6 +68,10 @@ const PlaceOrderScreen =  ({history}) => {
   useEffect(()=>{  
     if(!userInfo){
     history.push(`/login`)
+
+    if(userInfo && userInfo.isTeller){
+      history.push('/teller/transactionlist')
+   }
     }
       
      

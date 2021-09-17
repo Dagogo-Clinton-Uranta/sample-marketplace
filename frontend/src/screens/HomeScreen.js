@@ -13,7 +13,7 @@ import {listProducts} from '../actions/productActions.js'
 import Meta from '../components/Meta'
 /*dont forget to npm install axios*/
 
- const HomeScreen = ({match}) => {
+ const HomeScreen = ({match,history}) => {
    const keyword = match.params.keyword
 
    const pageNumber = match.params.pageNumber || 1
@@ -24,18 +24,20 @@ import Meta from '../components/Meta'
 
   const userLogin = useSelector(state => state.userLogin);
   const {userInfo } = userLogin
-
+ console.log(userInfo)
   
 
   let vendorName =  userInfo !== null && userInfo.isMerchant ? userInfo.name:'' 
 
 useEffect(()=>{ //we can't make the useEffect function async
  
-    
+     if(userInfo && userInfo.isTeller){
+        history.push('/teller/transactionlist')
+     }
 
 dispatch(listProducts(keyword,pageNumber,vendorName)) //please note that this dispatch is not actually dispatch, it's use dispatch, which is making use of the useDispatch connector  and that is calling the productList action, which does stuff like fetching data and dispatching action objects to the reducer. hats why they make action creators separately, so we can see them sending things to he reducer
 
-}, [dispatch,keyword,pageNumber,vendorName,userInfo])  // you can't use a function in useEffect, without passing it as a dependency?
+}, [dispatch,keyword,pageNumber,vendorName,userInfo,history])  // you can't use a function in useEffect, without passing it as a dependency?
 
 
    return (

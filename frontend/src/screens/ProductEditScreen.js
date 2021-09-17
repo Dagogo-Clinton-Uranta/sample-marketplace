@@ -40,6 +40,10 @@ const ProductEditScreen= ({match, history}) => { //he is taking location & histo
   useEffect(()=> { 
     if(!userInfo){
       history.push('/login')}
+
+      if(userInfo && userInfo.isTeller){
+        history.push('/teller/transactionlist')
+     }
     },[userInfo,history])
 
   useEffect( () => {

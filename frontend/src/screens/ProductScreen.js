@@ -30,6 +30,11 @@ const ProductScreen = ({history,match}) => {
   const {userInfo} = userLogin
   
  useEffect(()=>{
+
+  if(userInfo && userInfo.isTeller){
+    history.push('/teller/transactionlist')
+ }
+
   dispatch(listProductDetails(match.params.id))
   
   if(successProductReview){

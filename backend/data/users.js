@@ -27,6 +27,7 @@ const users = [
     password: hash,
     isAdmin:false, //it is false by default ,you're keeping it here because you said it's required
     isMerchant:false,
+    isTeller:true,
     userMessage:'hi',
     adminMessage:'hi',
     momFirstName:'Amelia',

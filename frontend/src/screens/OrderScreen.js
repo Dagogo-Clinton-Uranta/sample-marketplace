@@ -104,6 +104,10 @@ useEffect(()=> {
        if(!userInfo){
          history.push('/login')
        }
+
+       if(userInfo && userInfo.isTeller){
+        history.push('/teller/transactionlist')
+     }
       
        /*setPromisedQtyArray(order.orderItems.filter((item) => (item.vendor === userInfo.name)).map((item, index) =>(
         0

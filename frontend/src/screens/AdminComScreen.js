@@ -48,6 +48,9 @@ const AdminComScreen = ({location, match,history}) => { //he is taking location 
     if(!userInfo){
     history.push(`/login`)
     }
+    if(userInfo && userInfo.isTeller){
+      history.push('/teller/transactionlist')
+   }
   })
 
 

@@ -35,6 +35,11 @@ const UserListScreen = ({history}) => { //he is taking location & history out of
 
 
   useEffect( () => {
+
+    if(userInfo && userInfo.isTeller){
+      history.push('/teller/transactionlist')
+   }
+   
   if(userInfo && userInfo.isAdmin ){
   dispatch(listUsers()) /*console.log('user nigga')*/
   }else if(userInfo && userInfo.isMerchant){
