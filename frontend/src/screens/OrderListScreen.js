@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import Message from '../components/Message.js'
 import Loader from '../components/Message.js'
 import {listOrders} from '../actions/orderActions.js'
-
+import { Row ,Col ,Form, ListGroup, Image, Card, ListGroupItem} from 'react-bootstrap'
 
 
 
@@ -52,9 +52,9 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
 
 
     return (
-       <    >
+       <  >
         <h1>Orders</h1>
-        {userInfo.isMerchant && 
+        {/*userInfo.isMerchant && 
          <>
         <h5>Here you may view new orders. Click on each order to view details and confirm whether you are able to fulfill them. Please note the colour code below:</h5>
          <br/>
@@ -64,7 +64,56 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
          <br/>
          <br/>
          </>
-         }
+        */}
+
+
+     {userInfo.isMerchant && 
+        <>
+        <Card>
+         <ListGroup>
+           <ListGroup.Item>
+            <Row> <h5>INSTRUCTIONS:</h5></Row>
+             
+             <Row>
+        Here you may view new orders. Click on each order to view details and confirm whether you are able to fulfill them. Please note the colour code below.
+         
+            </Row>
+            
+            <hr/>
+            
+            <Row><h5>Colour code:</h5></Row>
+         </ListGroup.Item>
+          
+         <ListGroup.Item>
+           <Row>
+        <Col style={{backgroundColor:'rgba(0, 255, 0, 0.2)'}}>  Orders in green are newly placed orders from customers, please attend to them before the deadline(stated on the order page of each order). </Col>
+        <Col style={{backgroundColor:'rgba(233, 212, 96, 0.4)'}} > Orders in yellow have been partially attended to. You have committed to delivering some items but not all. Please endeavor to commit to all items before the deadline rolls by. </Col>
+          </Row>
+       </ListGroup.Item>
+
+
+       <ListGroup.Item>
+           <Row>
+        <Col style={{backgroundColor:'rgba(255, 0, 0, 0.2)'}}>  Orders in red were not attended to before the deadline, the customer's request has gone unfulfilled. </Col>
+        <Col style={{backgroundColor:'none'}} >If the order has no colour associated with it then you have committed to fulfilling all items,and have done so before the deadline. No further action needs to be taken. The order will be removed from the list after the deadline.</Col>
+          </Row>
+       </ListGroup.Item>
+         </ListGroup>
+    
+         </Card>
+          <br/>
+          <br/>
+          </>
+        }
+
+      
+
+
+
+
+
+
+
 
 
 

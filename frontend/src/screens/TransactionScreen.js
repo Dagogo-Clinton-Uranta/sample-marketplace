@@ -419,7 +419,7 @@ const submitHandler = (e) => {
         successCredit? <Message variant='success'>All merchants credited.</Message>:
           <Message variant='danger'>transacations not carried out</Message>
       
-         ):<Message variant='success'>All merchants credited.</Message>
+         ):(order && order.isPaid && (new Date(order.paidAt) < new Date(new Date().getTime() - /* 48 * 60*/10 * 60 * 1000))  && order.merchantsCredited  && <Message variant='success'>All merchants credited.</Message>)
           }
         
         {loading && <Loader/>}

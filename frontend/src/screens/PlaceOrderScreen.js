@@ -62,7 +62,7 @@ const PlaceOrderScreen =  ({history}) => {
 
     cart.totalPrice = (Number(cart.itemsPrice) /*+ Number(cart.deliveryCost) + Number(cart.taxPrice)*/).toFixed(2)
    //if your total price is looking funny, just unwrap addDecimals and wrap in .toFixed(2)
-
+    const orderTotal = cart.totalPrice
   
     
   useEffect(()=>{  
@@ -93,6 +93,9 @@ const PlaceOrderScreen =  ({history}) => {
     else if( confirmedState && confirmedState.confirmedState === 'false'){
       setConfirmedStates('false')
       setConfirmedMessage('red banner')
+    }else if(confirmedState && confirmedState.confirmedState === 'insufficientFunds'){
+      setConfirmedStates('insufficient')
+      setConfirmedMessage('insufficient banner')
     }
    
   
@@ -163,7 +166,7 @@ const submitHandler = (e) => {
   e.preventDefault()
 
   /*I WANT THIS BUTTON TO SERVE MULTIPLE FUNCTIONS, FIRST OF WHICH IS TO CHECK IF THE PERSONS ANSWER MATCHES UP, VIA THE DISPATCH BELOW */
-  if(confirmedStates === ''){dispatch(answerVerify(clientId,personalIdQuery, personalIdAnswer))
+  if(confirmedStates === ''){dispatch(answerVerify(clientId,personalIdQuery, personalIdAnswer,orderTotal))
   
   }else if(confirmedStates === 'true'){
     dispatch(createOrder({
@@ -371,10 +374,17 @@ const submitHandler = (e) => {
            <Form.Label>{presentQuestion} </Form.Label>
             {
            confirmedMessage=== 'green banner'?
-            (<Message variant='success'>Verified!</Message>):
-            (proceed==='true'?(<Message variant='success'>Order Placed!</Message>):(confirmedMessage === 'red banner'?
+            (<Message variant='success'>Verified!</Message>):(
+             
+              confirmedMessage=== 'insufficient banner'?
+              (<Message variant='danger'>Insufficient Balance, please fund your account and try again.</Message>)
+              :(
+              proceed==='true'?(<Message variant='success'>Order Placed!</Message>):(
+                confirmedMessage === 'red banner'?
             (<Message variant='danger'>Not verified. </Message>):
-   (<Form.Control as ="textarea" variant='danger' rows={1} plaintext value = {personalIdAnswer} onChange ={(e)=>{setpersonalIdAnswer(e.target.value)}}></Form.Control>)))
+              (<Form.Control as ="textarea" variant='danger' rows={1} plaintext value = {personalIdAnswer} onChange ={(e)=>{setpersonalIdAnswer(e.target.value)}}></Form.Control>)
+            )
+            ))
             }
             {proceed==='true' &&(<Message variant='success'>Order Placed!</Message>)}
               

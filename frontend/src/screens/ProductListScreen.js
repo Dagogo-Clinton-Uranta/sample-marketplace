@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import {LinkContainer} from 'react-router-bootstrap'
-import {Table,Button,Row,Col} from 'react-bootstrap'
+import {Table,Button,Row,Col,ListGroup, Image, Card, ListGroupItem} from 'react-bootstrap'
 import {useDispatch, useSelector} from 'react-redux'
 import Message from '../components/Message.js'
 import Loader from '../components/Message.js'
@@ -98,14 +98,54 @@ if(window.confirm('Are you sure you want to delete this item ?')){ //window.conf
 
     return (
        <>
+
+
        <br/>
-       <center><p style={{color:'black', maxWidth:'600px'  }}>
-     { userInfo.isAdmin && 'This is a list of all products on the marketplace'} 
-     { userInfo.isMerchant && ' This is a list of all your products on the marketplace. You may edit, create or delete them here.'}
+       <h1>Products</h1>
+       <center><p style={{color:'black'}}>
+     { userInfo.isAdmin && 
+     <>
+    <Card>
+   <ListGroup>
+       <ListGroup.Item>
+         <Row>
+       <h5>INSTRUCTIONS:</h5>
+        </Row>
+        <Row>
+     <p>This is a list of all products on the marketplace, you may view them here, and track which items are sold by a particular vendor. 
+     If you want to message a vendor regarding a particular product , please keep note of the ID and message the vendor from your profile, using the product ID</p>
+        </Row>
+     </ListGroup.Item>
+     </ListGroup>
+     </Card>
+     <br/>
+     <br/>
+     </>
+     } 
+
+     { userInfo.isMerchant &&
+     
+     <Card>
+     <ListGroup>
+         <ListGroup.Item>
+         <Row>
+       <h5>INSTRUCTIONS:</h5>
+        </Row>
+        <Row>
+          
+       This is a list of all products on the marketplace. You may edit, create or delete them here. Simply Click the 'edit' button to
+       make changes to a product, or 'delete' to remove it from the list of products you sell on this platform
+       </Row>
+       </ListGroup.Item>
+       </ListGroup>
+       </Card>
+     
+     }
+
      </p></center>
         <Row className='align-items-center'>
          <Col>
-          <h1>Products</h1>
+          
          </Col>
          <Col className="text-right">
           {userInfo.isMerchant  && (<Button className='my-3' onClick={createProductHandler}>

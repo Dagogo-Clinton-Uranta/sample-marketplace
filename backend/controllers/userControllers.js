@@ -1,6 +1,8 @@
 import User from '../models/userModel.js'
 //const User = require('../models/userModel.js')
 
+import Account from '../models/accountModel.js'
+
 import asyncHandler from 'express-async-handler'
 //const asyncHandler = require('express-async-handler')
 
@@ -185,12 +187,25 @@ const presentAdminMessage = asyncHandler(async (req, res) => {
 
 const verifyUser = asyncHandler(async (req, res) => {
   res.header("Access-Control-Allow-Origin","*")
-  const {clientId ,personalIdQuery, personalIdAnswer } = req.body
+  const {clientId ,personalIdQuery, personalIdAnswer, orderTotal } = req.body
   const objectId = new mongoose.Types.ObjectId(clientId)
-  const user = await User.findById(objectId)  
+  const user = await User.findById(objectId) 
+  
+  //i am not confirming if the user exists for this bit of code because at this stage, if youve logged in then the user exists
+  const  accountNumber =user.nuban.toString()
    
-  /*console.log(user)*/
+  const account = await Account.findOne({},{details:{$elemMatch:{Nubanno:accountNumber}},createdAt:1,time:1}/*,{createdAt:1}*/,{ useFindAndModify: false})  
     
+ const Withdrawablebalance = account.details[0].Withdrawablebalance
+
+
+
+ if(Number(Withdrawablebalance) < Number(orderTotal)){
+  console.log('it works, there are insufficient funds')
+   res.send({confirmedState:'insufficientFunds'})
+ }else{
+
+
   switch(personalIdQuery){
   case 'momFirstName': 
   if(user && user.momFirstName === personalIdAnswer){
@@ -240,6 +255,7 @@ const verifyUser = asyncHandler(async (req, res) => {
   default: return res.send({confirmedState:'false'})
   
 }
+ }
   
 })
 
