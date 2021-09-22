@@ -24,8 +24,10 @@ const ProductEditScreen= ({match, history}) => { //he is taking location & histo
   const [countInStock,setCountInStock] = useState('')
   const [description,setDescription] = useState('')
   const [uploading,setUploading] = useState(false)
+  const [vendor, setVendor] = useState('')
+  const [vendorAddress,setVendorAddress] = useState('')
+  const [vendorAccountNumber,setVendorAccountNumber] = useState('')
 
-  
   const dispatch = useDispatch() //dont forget that real dispatches only take place in action creators, you are only calling useDispatch here
 
   const productDetails = useSelector(state => state.productDetails);
@@ -36,8 +38,9 @@ const ProductEditScreen= ({match, history}) => { //he is taking location & histo
 
   const userLogin = useSelector(state => state.userLogin);
   const {userInfo } = userLogin
-
-  useEffect(()=> { 
+   console.log(userInfo)
+ 
+ useEffect(()=> { 
     if(!userInfo){
       history.push('/login')}
 
@@ -62,6 +65,9 @@ const ProductEditScreen= ({match, history}) => { //he is taking location & histo
         setCategory(product.category)
         setCountInStock(product.countInStock)
         setDescription(product.description)
+        setVendor(userInfo.name)
+        setVendorAddress(userInfo.merchantAddress)
+        setVendorAccountNumber(userInfo.nuban)
       }
     }
 
@@ -98,6 +104,9 @@ console.log(productDetails)
     name,
     price,
     brand,
+    vendor,
+    vendorAddress,
+    vendorAccountNumber,
     category,
     image,
     description,

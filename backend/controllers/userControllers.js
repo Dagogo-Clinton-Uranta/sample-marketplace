@@ -47,8 +47,9 @@ const authUser = asyncHandler(async (req, res) => {
       isMerchant: user.isMerchant,
       token: generateToken(user._id),
       userMessageNotification:user.userMessageNotification,
-      adminMessageNotification:user.adminMessageNotification
-
+      adminMessageNotification:user.adminMessageNotification,
+      nuban:user.nuban,
+      merchantAddress:user.merchantAddress?user.merchantAddress:'this is not a merchant'
     })
   } else {
     res.status(401) //this means unauthorized
@@ -266,7 +267,7 @@ const verifyUser = asyncHandler(async (req, res) => {
 //@access Public
 const registerUser = asyncHandler(async (req, res) => {
   res.header("Access-Control-Allow-Origin","*")
-  const { name, email, password ,momFirstName,shoeSize,closestFriend,childhoodStreet, firstEmployment,isMerchant,pickupAddress } = req.body
+  const { name, email, nuban, password ,momFirstName,shoeSize,closestFriend,childhoodStreet, firstEmployment,isMerchant,pickupAddress } = req.body
   //req.body will give us the object thats sent in the body of our front end/POSTMAN JSON, take note
   /* res.send({email,  this res,send was just done for example btw
      password}) */ //res.send accepts an object i think and not just variables, take note...hese are part of the things that you have to research on yor own
@@ -277,16 +278,27 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error('user already exists!')
   }
 
-  const user = User.create({ //apparently create is syntactic sugar for the save mehod, since creating entails saving i guess
+  const account = await Account.findOne({},{details:{$elemMatch:{Nubanno:nuban}},createdAt:1,time:1}/*,{createdAt:1}*/,{ useFindAndModify: false})
+  
+  const accountNumberCheck = account.details.length
+
+
+  if (accountNumberCheck === 0) {
+    res.status(400)
+    throw new Error('THE ACCOUNT NUMBER YOU ENTERED DOES NOT EXIST. PLEASE CHECK YOUR INPUT AND TRY AGAIN !')
+  }
+
+  const user = User.create({ //apparently create is syntactic sugar for the save method, since creating entails saving i guess
     name: name,
     email: email,
     password: password,
+    nuban:nuban,
     momFirstName:momFirstName,
     shoeSize:shoeSize,
     isMerchant:isMerchant,
     isAdmin:false,
     isTeller:false,
-    pickupAddress:pickupAddress,
+    merchantAddress:pickupAddress,
     closestFriend:closestFriend,
     childhoodStreet:childhoodStreet,
     firstEmployment:firstEmployment,
@@ -301,6 +313,7 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      nuban:user.nuban,
       userMessage: user.userMessage,
       adminMessage: user.adminMessage,
       isAdmin: user.isAdmin,

@@ -81,6 +81,7 @@ const users = [
     nuban:5000,
     isAdmin:false,
     isMerchant:true,
+    merchantAddress:"Dolphin estate, ilupeju way",
     userMessage:'hi',
     adminMessage:'hi',
     momFirstName:'Amelia',

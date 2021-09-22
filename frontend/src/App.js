@@ -13,6 +13,7 @@ import ProfileScreen from './screens/ProfileScreen.js'
 import ShippingScreen from './screens/ShippingScreen.js'
 import PaymentScreen from './screens/PaymentScreen.js'
 import PlaceOrderScreen from './screens/PlaceOrderScreen.js'
+import PrintOrderScreen from './screens/PrintOrderScreen.js'
 import OrderScreen from './screens/OrderScreen.js'
 import OrderListScreen from './screens/OrderListScreen.js'
 import CommunicationScreen from './screens/CommunicationScreen.js'
@@ -35,6 +36,7 @@ const App = () => {
       <main className ='py-3'>
        <Container>
        < Route path='/order/:id' component={OrderScreen}/>
+       < Route path='/printorder/:id' component={PrintOrderScreen}/>
        < Route path='/shipping' component={ShippingScreen}/>
        < Route path='/payment' component={PaymentScreen}/>
        < Route path='/placeorder' component={PlaceOrderScreen}/>

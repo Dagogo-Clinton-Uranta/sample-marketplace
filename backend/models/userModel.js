@@ -24,7 +24,8 @@ const userSchema =  mongoose.Schema({
         userMessageNotification:{type:Boolean , default:false},
         adminMessageNotification:{type:Boolean , default:false},
         pickupAddress:{type: String ,required:false},
-        notes:{type:String, required:false}
+        notes:{type:String, required:false},
+        merchantAddress:{type:String, required:false}
         /* maybe an address entry for merchants ? */
         /*maybe an account number entry, so we can verify that you have an account at bridgeway */
 

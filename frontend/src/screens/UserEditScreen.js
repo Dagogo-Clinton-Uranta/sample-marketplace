@@ -57,7 +57,7 @@ const UserEditScreen = ({match, history}) => { //he is taking location & history
   }
 
 
-},[dispatch,user,userId,history,successUpdate])
+},[dispatch,user,userId,userInfo,history,successUpdate])
 
 
   const submitHandler = (e) => {

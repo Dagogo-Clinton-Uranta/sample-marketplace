@@ -21,8 +21,8 @@ const OrderScreen =  ({match,history}) => {
    const dispatch = useDispatch()
   //const cart = useSelector(state => state.cart) come back and check why you commented this out
 
- const [merchantProductsArray,setMerchantProductsArray] = useState('') /*i never actually change the state of this */
- const [promisedQtyArray,setPromisedQtyArray] = useState('')
+ const [merchantProductsArray,setMerchantProductsArray] = useState([]) /*i never actually change the state of this */
+ const [promisedQtyArray,setPromisedQtyArray] = useState([])
  const [committedValue, setCommittedValue] = useState('')
  const [productId,setProductId] = useState('')
  const [highlight,setHighlight] = useState('13px')
@@ -59,7 +59,7 @@ if(!loading){
   setMerchantProductsArray(vendorArray)
   const promisedArray =  order.orderItems.filter((item) => (item.vendor === userInfo.name)).map((item) => (promisedQtyArray[vendorArray.indexOf(item)]))
   setPromisedQtyArray(promisedArray)
-  console.log(typeof(promisedQtyArray),promisedQtyArray)
+  console.log(typeof(promisedQtyArray),'then',promisedQtyArray)
  }
 
 
@@ -156,7 +156,8 @@ const submitHandler = (e) => {
     e.preventDefault()
     if( promisedQtyArray==='' ){window.alert('please select a value before committing!')}
     else if(typeof((promisedQtyArray.reduce((acc, item)=>acc +item,0)))!=='number'){window.alert('You cannot commit zero,please contact admin if you are out of stock')}
-    else{dispatch(merchantApproveOrder(order._id, productId, committedValue))}
+    else{window.alert('Quantity committed successfully!');
+      dispatch(merchantApproveOrder(order._id, productId, committedValue))}
 }
  /*is there a factor of 18/19 to consider for, --yes */
 /*const merchantTotal = order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.qty),0)*/
@@ -183,7 +184,7 @@ const submitHandler = (e) => {
             the order ID, the items in question and how many units you are able to fulfill . The total amount of money you are to recieve, will be reflected in the payment summary, based on the number of units you agree to fulfill.
             </p>
             <br/>
-            <p>Please commit all your order items by: &nbsp; <span style={{color:'black', fontSize:'1rem'}}>{new Date(new Date(order.createdAt).getTime()+ 24 * 60 * 60 * 1000).toLocaleDateString()}</span></p>
+            <p>Please commit all your order items by: &nbsp; <span style={{color:'black', fontSize:'1rem'}}>{new Date(new Date(order.createdAt).getTime()+ 48 * 60 * 60 * 1000).toLocaleDateString()}</span></p>
             <br/>
                   
             </>}
@@ -200,31 +201,29 @@ const submitHandler = (e) => {
          
       </> }
 
-         {order.isDelivered ?<Message variant='success'>Delivered on {order.deliveredAt.substring(0,10)}</Message> :
-                        <Message variant='danger'> Not delivered</Message> }
+         {order.isDelivered ?<Message variant='success'>Dispatched on {order.deliveredAt.substring(0,10)}</Message> :
+                        <Message variant='danger'> Not dispatched.</Message> }
 
           </ListGroup.Item>
 
-          {/*<ListGroup.Item>
-           <h2>Payment Method</h2>
+          {userInfo.isAdmin &&<ListGroup.Item>
+            <h2>Payment </h2>
 
-            <p>
-            <strong>Method:</strong>
-            {order.paymentMethod}
-            </p>
-       {order.isPaid ?<Message variant='success'>Paid on {order.paidAt}</Message> :
-                      <Message variant='danger'> Not paid</Message> }
-           </ListGroup.Item>*/}
+            
+        {order.isPaid ?(<Message variant='success'>Paid on {order.paidAt}</Message> ):
+                      (<Message variant='danger'> Not paid, please contact the teller to request for the customer to be debited.</Message>)}
+           </ListGroup.Item>}
 
            <ListGroup.Item>
            <ListGroup>
              <ListGroupItem>
             <h2>Order Items</h2>
           <Row>
-          {!userInfo.isMerchant && <Col md={2}>S/N</Col>}
+          {!(userInfo.isMerchant||userInfo.isAdmin) && <Col md={2}>S/N</Col>}
           <Col md={2}>Item</Col>
-          <Col md={2}>To Fulfill</Col>
-          {userInfo.isMerchant?(<Col md={4}>How many can you fulfill?</Col>):(userInfo.isAdmin && <Col md={2}>Merchant's promised amount)</Col>)}
+          {userInfo.isMerchant?<Col md={2}>To Fulfill</Col>:<Col md={2}>Vendor</Col>}
+          {userInfo.isAdmin && <Col md={2}>Requested Quantity</Col>}
+          {userInfo.isMerchant?(<Col md={4}>How many can you fulfill?</Col>):(userInfo.isAdmin && <Col md={2}>Merchant's promised amount</Col>)}
           {userInfo.isMerchant && <Col md={2}>Item Total</Col>}
           
           {!userInfo.isMerchant && <Col md={2}>Total</Col>}
@@ -284,7 +283,7 @@ const submitHandler = (e) => {
                    
                    <Col md={{span:2,offset:2}}>
                    
-                      <Button type='submit' variant='primary' className='btn-sm' onMouseDown={(e)=>{ /*setHighlight('16px') setColour('green')*/}} onMouseUp={(e)=>{/*setHighlight('13px') setColour('black')*/}}>
+                      <Button type='submit' variant='primary' className='btn-sm'  >
                        COMMIT
                     
                        </Button>
@@ -309,7 +308,7 @@ const submitHandler = (e) => {
 
                 <ListGroup.Item key ={index}>
                 <Row>
-                <Col md={2}>{index + 1}</Col>
+               {!userInfo.isAdmin && <Col md={2}>{index + 1}</Col>}
                  <Col md={2}>
                   <Image src={item.image} alt={item.name} fluid rounded/>
                   <Link to={`product/${item.product}`/*remember product property is the id in the cart*/}>
@@ -319,14 +318,19 @@ const submitHandler = (e) => {
                   <Col md={2}>
                    {item.vendor}
                    </Col>
+
+                   {userInfo.isAdmin && <Col md={2}>
+                   {item.qty}
+                   </Col>}
                    
-                   {userInfo.isAdmin && <Col md={4}>
+                   {userInfo.isAdmin && <Col md={2}>
                    {item.promisedQty}
                    </Col>}
 
-                   <Col md={3}>
+                   {<Col md={3}>
                    {item.qty} x ₦ {item.price} = ₦ {item.qty*item.price}
-                   </Col>
+                   </Col>}
+
 
                   </Row>
 
@@ -359,6 +363,7 @@ const submitHandler = (e) => {
 
            
 
+           { /* WE STILL HAVEN'T SORTED OUT WHO BEARS THE DELIVERY COST
             <ListGroup.Item>
             <Row>
 
@@ -366,7 +371,7 @@ const submitHandler = (e) => {
              <Col>₦ {(order.deliveryCost*1).toFixed(2)} </Col>
 
             </Row>
-           </ListGroup.Item>
+      </ListGroup.Item>*/}
 
             
 
@@ -374,7 +379,7 @@ const submitHandler = (e) => {
             <Row>
 
              <Col>Total </Col>
-             <Col>₦ {order.totalPrice} </Col>
+             <Col>₦ {(order.totalPrice).toFixed(2)} </Col>
 
             </Row>
            </ListGroup.Item>
@@ -409,27 +414,30 @@ const submitHandler = (e) => {
            <ListGroup.Item>   
             <Row>
 
-             <Col> To Recieve: </Col>
-             <Col>₦ {(order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.promisedQty),0)).toFixed(2)} </Col> 
-               
+             <Col> Total for items committed: </Col>
+             {/*<Col>₦ {(order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.promisedQty),0)).toFixed(2)} </Col> */}
+             {/*<Col>{(promisedQtyArray===''?(item.promisedQty):(typeof(promisedQtyArray[merchantProductsArray.indexOf(item)])!=='number'? 0:promisedQtyArray[merchantProductsArray.indexOf(item)]))*item.price}</Col>*/}
+            {<Col>₦ {typeof((promisedQtyArray.reduce((acc, item)=>acc +item,0)))!=='number' ?(order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.promisedQty),0)).toFixed(2):(order.orderItems.filter((item) => (item.vendor === userInfo.name)).map((item,index)=>(item.price*promisedQtyArray[index]/*YOU ARE HERE */)).reduce((acc, item)=>acc +(item),0)).toFixed(2)} </Col> }
             </Row>
            </ListGroup.Item>
 
+            {/*BECAUSE WE DONT KNOW WHO BEARS THE BRUNT OF DELIVERY
+            
             <ListGroup.Item>
             <Row>
 
              <Col>Delivery Deductions: </Col>
-             <Col>-₦{(Number(order.deliveryCost)).toFixed(2)} </Col> {/*we don't know who the delivery cost falls to, but here i've assumed it falls to suppliers*/}
+             <Col>-₦{(Number(order.deliveryCost)).toFixed(2)} </Col>
 
             </Row>
-           </ListGroup.Item>
+           </ListGroup.Item>*/}
 
             
 
            <ListGroup.Item>
             <Row>
 
-             <Col>Total </Col>
+             <Col>Total to recieve :</Col>
              <Col>₦ {(order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.promisedQty),0)).toFixed(2)} </Col>
 
             </Row>
@@ -456,7 +464,7 @@ const submitHandler = (e) => {
     
 
   <LinkContainer to={`/communications?specificOrderId=${order._id}`}>
-  <Button type='submit' variant='primary'> CLICK TO MESSAGE ADMIN </Button>
+  <Button type='button' variant='primary'> CLICK TO MESSAGE ADMIN </Button>
   </LinkContainer>
      
     
@@ -472,8 +480,8 @@ const submitHandler = (e) => {
            </ListGroup.Item>
 
           {userInfo.isAdmin && !order.isDelivered && <ListGroup.Item>
-            <p>Please, ONLY perform these transactions after the deadline date ({new Date(new Date(order.createdAt).getTime()+ 24 * 60 * 60 * 1000).toLocaleDateString()}), when
-            the respective merchants have confirmed that they can deliver the goods. </p>
+            <p >ORDER MADE AT: <span style={{color:'red'}}>({new Date(new Date(order.createdAt).getTime()).toLocaleDateString()})</span> </p>
+            <p > MERCHANT DEADLINE: <span style={{color:'red'}}>({new Date(new Date(order.createdAt).getTime()+ 48 * 60 * 60 * 1000).toLocaleDateString()})</span> </p>
            </ListGroup.Item>}
 
 
@@ -496,14 +504,14 @@ const submitHandler = (e) => {
            </ListGroup.Item>
            ))}
       
-      <ListGroup.Item>
+      {/*<ListGroup.Item>
             <Row>
 
              <Col>To dispatch rider account: </Col>
              <Col>₦ {(Number(order.deliveryCost)).toFixed(2)} </Col>
 
             </Row>
-           </ListGroup.Item>
+           </ListGroup.Item>*/}
 
         <ListGroup.Item>
             <Row>
@@ -523,10 +531,24 @@ const submitHandler = (e) => {
           )*/}
 
        {loadingDeliver && <Loader/>}
-      {userInfo && userInfo.isAdmin /*&& order.isPaid*/ && !order.isDelivered && (
+      {userInfo && userInfo.isAdmin && order.isPaid && (order.orderItems.every((item) => (item.promisedQty === item.qty))||new Date() > new Date(new Date(order.createdAt).getTime() + 48 * 60 * 60 * 1000) ) ?(
         <ListGroup.Item>
-        <Button type='button' className='btn btn-block' onClick={deliverHandler}> Mark As Delivered</Button>
+        
+
+        <LinkContainer to={`/printorder/${order._id}`}>
+        <Button type='button' className='btn btn-block'> Proceed to Print Order</Button>
+                   
+                
+               </LinkContainer>
+
         </ListGroup.Item>
+      ):(
+        <ListGroup.Item>
+        
+             <p>You may print out this order (to give to the dispatch rider) ONLY AFTER the deadline for merchants <span style={{color:'red'}}>({new Date(new Date(order.createdAt).getTime()+ 48 * 60 * 60 * 1000).toLocaleDateString()})</span> has passed by, OR if all merchants have fulfilled their orders before the deadline. The button to print will appear once these conditions are met</p>
+
+        </ListGroup.Item>
+
       )}
 
          </ListGroup>

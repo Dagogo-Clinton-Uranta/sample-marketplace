@@ -154,7 +154,7 @@ export const logout = () => (dispatch) => {
 }
  
 
-export const register = (name,email,password,momFirstName,shoeSize,closestFriend,childhoodStreet, firstEmployment,pickupAddress,isMerchant) => async(dispatch)=> {
+export const register = (name,email,nuban,password,momFirstName,shoeSize,closestFriend,childhoodStreet, firstEmployment,pickupAddress,isMerchant) => async(dispatch)=> {
    //redux thunk was used just now in the form of async (dispatch) above
   try {
     dispatch({type: USER_REGISTER_REQUEST})
@@ -165,7 +165,7 @@ export const register = (name,email,password,momFirstName,shoeSize,closestFriend
         'Content-Type':'application/json'
       }
     }
-    const {data} = await axios.post('/api/users',{name,email,password,momFirstName,shoeSize,closestFriend,childhoodStreet, firstEmployment,pickupAddress,isMerchant},config)
+    const {data} = await axios.post('/api/users',{name,email,nuban,password,momFirstName,shoeSize,closestFriend,childhoodStreet, firstEmployment,pickupAddress,isMerchant},config)
     //i'm gonna take a stab here and say that the third argument for axios is for setting header property
 
     dispatch({

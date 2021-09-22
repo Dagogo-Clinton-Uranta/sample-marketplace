@@ -14,6 +14,8 @@ const productSchema =  mongoose.Schema({
         name:{type: String ,required:true},
         image:{type: String ,required:true},
         vendor:{type: String ,required:true},
+        vendorAddress:{type: String,required:true},
+        vendorAccountNumber: {type: String,required:true},
         category:{type:String ,required:true}, /*considering removing this category field */
         description:{type:String ,required:true},
         reviews:[reviewSchema],

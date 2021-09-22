@@ -13,7 +13,8 @@ import FormContainer from '../components/FormContainer.js'
 
 const RegisterScreen = ({location, history}) => { //he is taking location & history out of the props, normally it is props.location
   const [name,setName] = useState('')
-  const [email,setEmail] = useState('')  //component level state right here, not application level state
+  const [nuban ,setNuban] = useState('')
+  const [email,setEmail] = useState('') 
   const [password,setPassword] = useState('')
   const [confirmPassword,setConfirmPassword] = useState('')
   const [isMerchant,setIsMerchant] = useState(false)
@@ -27,7 +28,7 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
   const dispatch = useDispatch() //dont forget that real dispatches only take place in action creators, you are only calling useDispatch here
   const userRegister = useSelector(state => state.userRegister);
   const {loading, error,userInfo } = userRegister
-     console.log(isMerchant)
+     
   const redirect = location.search ? location.search.split('=')[1]:'/'
 //location .search has the url query string, study it a bit
 
@@ -41,8 +42,9 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
     if(password !=='' && (password === confirmPassword)){
       setMessage(null)
     }
-
-    if(isMerchant===false){
+     console.log(isMerchant)
+     console.log(momFirstName,shoeSize,closestFriend,childhoodStreet,firstEmployment)
+    if(isMerchant===true ){
        setPickupAddress('') 
    setMomFirstName('is a merchant') 
    setShoeSize('is a merchant') 
@@ -54,7 +56,7 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
 
     if(name!==''||email!==''||isMerchant && pickupAddress!==''||momFirstName!==''||shoeSize!==''||closestFriend!==''||childhoodStreet!==''||firstEmployment!==''){setMessage(null)}
     
-  },[redirect,history,userInfo,password,confirmPassword,name,email,pickupAddress,momFirstName,shoeSize,closestFriend,childhoodStreet,firstEmployment,isMerchant])
+  },[redirect,history,nuban,userInfo,password,confirmPassword,name,email,pickupAddress,momFirstName,shoeSize,closestFriend,childhoodStreet,firstEmployment,isMerchant])
 
 
 
@@ -68,12 +70,12 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
       else if(isMerchant && pickupAddress===''){
         setMessage('Please Make sure to fill in all entries!')
       }
-       else if( !isMerchant && (momFirstName ==='is a merchant' || shoeSize ==='is a merchant'  || closestFriend==='is a merchant' || childhoodStreet==='is a merchant'  || firstEmployment==='is a merchant')){
+       else if( !isMerchant && (momFirstName ==='is a merchant' || shoeSize ==='is a merchant' || closestFriend==='is a merchant' || childhoodStreet==='is a merchant' || firstEmployment==='is a merchant')){
         setMessage('Please Make sure to fill in all entries!')
        }
        else{
          //this is where we want to to call our action to dispatch login
-       dispatch(register(name,email,password, momFirstName,shoeSize,closestFriend,childhoodStreet,firstEmployment, pickupAddress,isMerchant)) /* follow the trail of this register dispatch to see where it leads  */
+       dispatch(register(name,nuban, email,password, momFirstName,shoeSize,closestFriend,childhoodStreet,firstEmployment, pickupAddress,isMerchant)) /* follow the trail of this register dispatch to see where it leads  */
        }
 
   }
@@ -124,14 +126,24 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
           </ListGroup>}
 
 
-  {/*5*/}      <Form.Group controlId='password'>
+      {/*5*/}      <Form.Group controlId='account num'>
+
+      <Form.Label>  Account Number  </Form.Label>
+          <Form.Control type='input' placeholder="enter your account number" value={nuban} onChange={(e)=>setNuban(e.target.value)}></Form.Control>
+
+         </Form.Group>
+
+
+
+
+  {/*6*/}      <Form.Group controlId='password'>
 
           <Form.Label>  Password  </Form.Label>
           <Form.Control type='password' placeholder="enter password" value={password} onChange={(e)=>setPassword(e.target.value)}></Form.Control>
 
          </Form.Group>
 
- {/*5*/}      <Form.Group controlId='confirmPassword'>
+ {/*7*/}      <Form.Group controlId='confirmPassword'>
 
                  <Form.Label>  Confirm password  </Form.Label>
                  <Form.Control type='password' placeholder="confirm password" value={confirmPassword} onChange={(e)=>setConfirmPassword(e.target.value)}></Form.Control>
