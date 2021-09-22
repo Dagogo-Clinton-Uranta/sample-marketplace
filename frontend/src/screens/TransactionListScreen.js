@@ -88,7 +88,7 @@ const TransactionListScreen = ({history}) => { //he is taking location & history
            <th>PLACED ON</th>
            {userInfo/*.isTeller*/ ?(<th>CASH TOTAL</th>):(<th>RECEIVABLE</th> )}{/*We want to give tellers a taste of  what transactions to make, so the are eager to press details*/}
            {/*<th>CREDIT (TO BRIDGEWAY)</th>*/}
-           <th>COMPLETED</th>
+           
            <th>SUFFICIENT FUNDS?</th>
           {/*<th>DELIVERED</th>*/}
            
@@ -111,9 +111,9 @@ const TransactionListScreen = ({history}) => { //he is taking location & history
               <td>₦ {/*userInfo.isAdmin ? (order.totalPrice) :*/ (((order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.qty),0)))).toFixed(2)}</td>
               {/*<td>₦ {/*userInfo.isAdmin ? (order.totalPrice) : (((order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.qty),0)))*1/19).toFixed(2)}</td>*/}
 
-              {<td>{order.isPaid ? (order.paidAt.substring(0,10)):  
+              {/*<td>{order.isPaid ? (order.paidAt.substring(0,10)):  
                 (<i className='fas fa-times' style={{color:'red'}}></i>)}
-              </td>}
+              </td>*/}
       
               {<td>{order.insufficientFunds ? (<i className='fas fa-times' style={{color:'red'}}></i>):  
                <i className='fas fa-check' style={{color:'green'}}></i> }

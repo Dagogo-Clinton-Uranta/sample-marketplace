@@ -277,7 +277,7 @@ const riderPrepHandler = ()=> {
      
       
 
-         {order.isDelivered ?<Message variant='success'>This order has already beeb dispatched, on {order.deliveredAt.substring(0,10)}</Message> :
+         {order.isDelivered ?<Message variant='success'>Dispatched on {order.deliveredAt.substring(0,10)}</Message> :
                         <Message variant='danger'> Not dispatched</Message> }
 
           </ListGroup.Item>
@@ -293,10 +293,10 @@ const riderPrepHandler = ()=> {
           <Col md={2}>Item</Col>
           { <Col md={2}>Vendor Name</Col>}
           { <Col md={4}>Vendor Address </Col>}
-          {(userInfo.isAdmin && <Col md={2}> Promised Quantity</Col>)}
+          {(userInfo.isAdmin && <Col md={2}>Quantity to collect</Col>)}
           
           
-          {!userInfo.isMerchant && <Col md={2}>CREDITED</Col>}
+          {!userInfo.isMerchant && <Col md={2}>Vendor Credited</Col>}
           
           </Row>
           </ListGroupItem>
@@ -330,7 +330,7 @@ const riderPrepHandler = ()=> {
                    </Col>}
 
                    <Col md={2}>
-                   {/*{item.promisedQty} x ₦ {item.price} =*/} ₦ {item.promisedQty*item.price}
+                   {/*{item.promisedQty} x ₦ {item.price} =*/} ₦ {(18/19*item.promisedQty*item.price).toFixed(2)}
                    </Col>
 
                   </Row>

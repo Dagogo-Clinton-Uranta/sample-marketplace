@@ -54,17 +54,7 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
     return (
        <  >
         <h1>Orders</h1>
-        {/*userInfo.isMerchant && 
-         <>
-        <h5>Here you may view new orders. Click on each order to view details and confirm whether you are able to fulfill them. Please note the colour code below:</h5>
-         <br/>
-         <p style={{backgroundColor:'rgba(0, 255, 0, 0.2)', width:'50%'}}> Orders in green are newly placed orders from customers, please attend to them before the deadline(stated on the order page of each order) </p>
-        <p style={{backgroundColor:'rgba(233, 212, 96, 0.4)',width:'50%'}} >Orders in yellow have been partially attended to. You have committed to delivering some items but not all. Please endeavor to commit to all items before the deadline rolls by</p>
-         <p style={{backgroundColor:'rgba(255, 0, 0, 0.2)',width:'50%'}} >Orders in red were not attended to before the deadline, the customer's request has gone unfulfilled </p>
-         <br/>
-         <br/>
-         </>
-        */}
+       
 
 
      {userInfo.isMerchant && 
@@ -147,7 +137,7 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
                                                          :5) if the user is an admin,and at least one item has been promised AND at least one item has been promised(again ,dodgy logic, try !(all have been fully promised) ),  give it a yellow, it is incomplete
                                                          :6)if the logged in user is an admin and all items are fully committed to, then give the color a blue, it is a fully completed order.
                                                          :7)if the user is an admin and all merchants have promised something, give it blue it is a fully committed order ready to go  */
-            <tr key={order._id} style={{backgroundColor:/*1*/ userInfo.isMerchant && !(order.orderItems.filter((item) => (item.vendor === userInfo.name)).every((item) => (item.promisedQty === 0))) && order.orderItems.filter((item) => (item.vendor === userInfo.name)).some((item) => (item.promisedQty !== 0))?'rgba(233, 212, 96, 0.4)'
+            <tr key={order._id} style={{backgroundColor:/*1*/ userInfo.isMerchant && !(order.orderItems.filter((item) => (item.vendor === userInfo.name)).every((item) => (item.promisedQty === 0))) && !(order.orderItems.filter((item) => (item.vendor === userInfo.name)).every((item) => (item.promisedQty === item.qty))) /*order.orderItems.filter((item) => (item.vendor === userInfo.name)).some((item) => (item.promisedQty !== 0))*/?'rgba(233, 212, 96, 0.4)'
                                                         /*2*/ :(userInfo.isMerchant && (order.orderItems.filter((item) => (item.vendor === userInfo.name)).every((item) => (item.promisedQty === 0))) &&  new Date() > new Date(new Date(order.createdAt).getTime() + 48 * 60 * 60 * 1000)  ?'rgba(255,0,0,0.2)'
                                                         /*3*/  :(!order.isDelivered && userInfo.isAdmin && new Date() > new Date(new Date(order.createdAt).getTime() + 96 * 60 * 60 * 1000) ?  'rgba(255,0,0,0.2)'
                                                         /*4*/ :(order.orderItems.every((item) => (item.promisedQty === 0)) && userInfo.isMerchant && new Date() < new Date(new Date(order.createdAt).getTime() + 48 * 60 * 60 * 1000) ? 'rgba(0, 255, 0, 0.2)'

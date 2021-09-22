@@ -34,7 +34,15 @@ const Header = () => {
  
   const newOrders =orders && orders.some((order)=>{return order.isDelivered ===false})?true:false
   const numberOfOrders = orders? orders.filter((order)=>{return order.isDelivered ===false}).length:''
-  const newVendorOrders = orders?orders.filter((order)=>(order.orderItems.filter((item) => (item.vendor === userInfo.name)).some((item) => (item.promisedQty === 0)))):false
+  const newVendorOrders = orders && orders.filter((order)=>(order.orderItems.filter((item) => (item.vendor === userInfo.name)).some((item) => (item.promisedQty !== item.qty)))).length ===0? false :true
+
+  //THE LOGIC FOR SOME ORDERS, THAT WORKED, THE ONE ABOVE FAILED .
+  /*const newVendorOrders = orders && (orders.filter((order)=>(order.orderItems.filter((item) => (item.vendor === userInfo.name)).every((item) => (item.promisedQty !== item.qty))?        ))):"DIDNT LOAD ORDERS"*/
+  console.log(newVendorOrders)
+
+ /* !(order.orderItems.filter((item) => (item.vendor === userInfo.name)).every((item) => (item.promisedQty === 0))) && !(order.orderItems.filter((item) => (item.vendor === userInfo.name)).every((item) => (item.promisedQty === item.qty)))*/
+
+
   /*const numberOfVendorOrders = *//*USE MONGO DB to laser return all promised quantities of zero of a particular vendor from the order items of ALL orders  AND STOP STRESSING */
 
   /*console.log(numberOfVendorOrders)*/
@@ -78,6 +86,9 @@ const Header = () => {
     
   }
   
+  
+
+
     return(
 <header>
 

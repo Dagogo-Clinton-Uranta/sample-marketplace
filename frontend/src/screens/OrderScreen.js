@@ -210,7 +210,7 @@ const submitHandler = (e) => {
             <h2>Payment </h2>
 
             
-        {order.isPaid ?(<Message variant='success'>Paid on {order.paidAt}</Message> ):
+        {order.isPaid ?(<Message variant='success'>Paid on {new Date(order.paidAt).toLocaleDateString()}</Message> ):
                       (<Message variant='danger'> Not paid, please contact the teller to request for the customer to be debited.</Message>)}
            </ListGroup.Item>}
 
@@ -489,7 +489,7 @@ const submitHandler = (e) => {
             <Row>
 
              <Col>To BridgeWay Co-operative Account: </Col>
-             <Col>₦ {(order.itemsPrice * (1/19) ).toFixed(2)} </Col>
+             <Col>₦ {(order.itemsPrice -(order.orderItems.reduce((acc, item)=>acc +(item.price*item.qty),0) - order.orderItems.reduce((acc, item)=>acc +(item.price*item.promisedQty),0)) - (18/19 *order.orderItems.reduce((acc, item)=>acc +(item.price*item.promisedQty),0)) ).toFixed(2)} </Col>
 
             </Row>
            </ListGroup.Item>
@@ -498,12 +498,25 @@ const submitHandler = (e) => {
             <Row>
 
              <Col> {index + 1}. TO {item.vendor} account:  </Col>
-             <Col>₦ {((18/19) * item.price).toFixed(2) * item.qty } </Col>
+             <Col>₦ {((18/19) * item.price).toFixed(2) * item.promisedQty } </Col>
 
             </Row>
            </ListGroup.Item>
            ))}
       
+       
+            { (order.orderItems.reduce((acc, item)=>acc +(item.price*item.promisedQty),0) !== order.orderItems.reduce((acc, item)=>acc +(item.price*item.qty),0))  &&
+              
+              <ListGroup.Item>
+            <Row>
+
+             <Col>REFUND (for goods unfulfilled): </Col>
+             <Col>₦ {((order.orderItems.reduce((acc, item)=>acc +(item.price*item.qty),0) - order.orderItems.reduce((acc, item)=>acc +(item.price*item.promisedQty),0))).toFixed(2)} </Col>
+
+            </Row>
+           </ListGroup.Item>}
+
+
       {/*<ListGroup.Item>
             <Row>
 

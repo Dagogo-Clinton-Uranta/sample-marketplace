@@ -244,6 +244,7 @@ const submitHandler = (e) => {
              <Col>Account Number </Col>
              <Col>Transaction Type </Col> 
              <Col>Amount</Col>
+             <Col>Description</Col>
 
             </Row>
            </ListGroup.Item>
@@ -260,6 +261,7 @@ const submitHandler = (e) => {
              <Col>1200000898 </Col>
              <Col>DEBIT </Col>
              <Col>₦ {(order.itemsPrice * (1) ).toFixed(2)} </Col>
+             <Col>Purchase of goods from bridgeway co-operative</Col>
 
             </Row>
            </ListGroup.Item>
@@ -271,7 +273,7 @@ const submitHandler = (e) => {
              <Col> </Col>
              <Col> </Col>
              <Col>₦ {(order.totalPrice).toFixed(2)} </Col>
-
+             <Col></Col>
             </Row>
            </ListGroup.Item>
            </>}
@@ -287,6 +289,7 @@ const submitHandler = (e) => {
              <Col></Col>
              <Col></Col>
              <Col> </Col>
+             <Col></Col>
 
             </Row>
            </ListGroup.Item>
@@ -294,12 +297,12 @@ const submitHandler = (e) => {
            {order.isPaid && <ListGroup.Item>
             <Row>
 
-             <Col>BridgeWay Co-operative: </Col>
+             <Col>Bridgeway Co-operative: </Col>
              
              <Col>1200000898 </Col>
              <Col>CREDIT </Col>
-             <Col>₦ {(order.itemsPrice * (1/19) ).toFixed(2)} </Col>
-
+             <Col>₦ {(order.itemsPrice -(order.orderItems.reduce((acc, item)=>acc +(item.price*item.qty),0) - order.orderItems.reduce((acc, item)=>acc +(item.price*item.promisedQty),0)) - (18/19 *order.orderItems.reduce((acc, item)=>acc +(item.price*item.promisedQty),0)) ).toFixed(2)} </Col>
+             <Col>Percentage on sale of goods from Bridgeway-cooperative</Col>
             </Row>
            </ListGroup.Item>}
 
@@ -311,11 +314,25 @@ const submitHandler = (e) => {
              <Col> {index + 1}. {item.vendor}:  </Col>
              <Col>{'000000000'}</Col>
              <Col>CREDIT</Col>
-             <Col>₦ {((18/19) * item.price).toFixed(2) * item.qty } </Col>
-
+             <Col>₦ {((18/19) * item.price).toFixed(2) * item.promisedQty } </Col>
+             <Col> Payment for goods sold on Bridgeway-cooperative.</Col>
             </Row>
            </ListGroup.Item>
            ))}
+
+
+
+{order.isPaid && (order.orderItems.reduce((acc, item)=>acc +(item.price*item.promisedQty),0) !== order.orderItems.reduce((acc, item)=>acc +(item.price*item.qty),0) ) && <ListGroup.Item>
+            <Row>
+
+             <Col>{order.user.name} </Col>
+             
+             <Col>1200000898 </Col>
+             <Col>CREDIT </Col>
+             <Col>₦ {(order.orderItems.reduce((acc, item)=>acc +(item.price*item.qty),0) - order.orderItems.reduce((acc, item)=>acc +(item.price*item.promisedQty),0) ).toFixed(2)} </Col>
+             <Col>Refund on goods requested but not delivered.</Col>
+            </Row>
+           </ListGroup.Item>}
       
       {/*<ListGroup.Item>
             <Row>
@@ -336,7 +353,7 @@ const submitHandler = (e) => {
              <Col> </Col>
              <Col> </Col>
              <Col>₦ {(order.totalPrice).toFixed(2)} </Col>
-
+             <Col></Col>
             </Row>
            </ListGroup.Item>}
       
