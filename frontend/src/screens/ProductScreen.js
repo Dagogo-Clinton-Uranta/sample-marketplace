@@ -102,7 +102,7 @@ const submitHandler =(e) =>{
               </ListGroup.Item>
 
               <ListGroup.Item>
-               Price:₦ {product.price}
+               Price:₦ {(product.price*1).toFixed(2)}
               </ListGroup.Item>
 
               <ListGroup.Item>
@@ -128,7 +128,7 @@ const submitHandler =(e) =>{
                  <Row>
                    <Col>Price:</Col>
                    <Col>
-                    <strong>₦ {product.price}</strong>
+                    <strong>₦ {((product.price*1).toFixed(2))}</strong>
                    </Col>
                  </Row>
                </ListGroup.Item>

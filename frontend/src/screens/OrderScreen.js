@@ -33,7 +33,7 @@ const OrderScreen =  ({match,history}) => {
    const [merchantProductsArray,setMerchantProductsArray] = useState([]) /*i never actually change the state of this */
    const [promisedQtyArray,setPromisedQtyArray] = useState([])
    const [committedValue, setCommittedValue] = useState('')
-   const [productId,setProductId] = useState('')
+   const [productId,setProductId] = useState([])
    const [highlight,setHighlight] = useState('13px')
    const [colour, setColour] = useState('black')
    
@@ -67,7 +67,7 @@ if(!loading){
   setMerchantProductsArray(vendorArray)
   const promisedArray =  order.orderItems.filter((item) => (item.vendor === userInfo.name)).map((item) => (promisedQtyArray[vendorArray.indexOf(item)]))
   setPromisedQtyArray(promisedArray)
-  console.log(typeof(promisedArray),'then',promisedArray)
+  console.log(typeof(productId),'then',productId)
  }
 
 
@@ -120,7 +120,11 @@ useEffect(()=> {
        /*setPromisedQtyArray(order.orderItems.filter((item) => (item.vendor === userInfo.name)).map((item, index) =>(
         0
       ))) */
-      if(order){ setPromisedQtyArray(Array.apply(null,Array(order.orderItems.length)).map((item)=>(0))) }
+      if(order){ /*setPromisedQtyArray(Array.apply(null,Array(order.orderItems.length)).map((item)=>(0)))*/
+                 setPromisedQtyArray(order.orderItems.map((item) => (item.promisedQty)))
+
+                 setProductId(Array.apply(null,Array(order.orderItems.length)).map((item)=>(0)))
+              }
 
   const addPayPalScript = async () => {
     const {data:clientId} = await axios.get('/api/config/paypal')
@@ -165,7 +169,7 @@ const submitHandler = (e) => {
     if( promisedQtyArray.reduce((acc, item)=>acc +item,0) ===0  ){window.alert('please select a value before committing!')}
     else if(promisedQtyArray.indexOf(0) !== -1 ){window.alert('You cannot commit zero for ANY item,please contact admin if you are out of stock')}
     else{window.alert('Committed!')
-      dispatch(merchantApproveOrder(order._id, productId, committedValue))}
+      dispatch(merchantApproveOrder(order._id, productId, promisedQtyArray))}
 }
  /*is there a factor of 18/19 to consider for, --yes */
 /*const merchantTotal = order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.qty),0)*/
@@ -182,14 +186,16 @@ const submitHandler = (e) => {
          <h2>Delivery</h2>
          {userInfo.isMerchant && <>
          
-         <p>Here you may commit to fulfilling orders. Please select the number of each item that you are sure
-            to give the customer once the dispatch rider comes around.  PLEASE MAKE EFFORTS TO FULLY FULFILL ALL YOUR ORDERS, FOR A GOOD REPUTATION AMONG CUSTOMERS.  Once you
-            select the amount from the dropdown menu click the commit button to 
-            lock it in (for each item).</p>
+         <p> 1.) Here you may commit to fulfilling orders. Please select the number of each item that you are sure
+            to give the customer once the dispatch rider comes around. </p>
+
+            <p> 2.) PLEASE MAKE EFFORTS TO FULLY FULFILL ALL YOUR ORDERS, FOR A GOOD REPUTATION AMONG CUSTOMERS.</p>
+            
+             <p> 3.) Initially, You MUST select a value for each product before you click' commit your items' . Subsequently you can commit items individually</p>
             <br/>
             <p>
-            If you are only able to partially fulfill your order, (you cannot meet the  expected quantity for any item), be sure to send a message to the admin mentioning
-            the order ID, the items in question and how many units you are able to fulfill . The total amount of money you are to recieve, will be reflected in the payment summary, based on the number of units you agree to fulfill.
+            4.) If you are only able to partially fulfill your order, (you cannot meet the  expected quantity for any item), be sure to send a message to the admin mentioning
+            the order ID, the product in question and how many units you are able to fulfill . The total amount of money you are to recieve will be reflected in the payment summary, based on the quantity you agree to fulfill.
             </p>
             <br/>
             <p>Please commit all your order items by: &nbsp; <span style={{color:'black', fontSize:'1rem'}}>{new Date(new Date(order.createdAt).getTime()+ 48 * 60 * 60 * 1000).toLocaleDateString()}</span></p>
@@ -269,7 +275,17 @@ const submitHandler = (e) => {
                    <Form.Control as='select' defaultValue={item.promisedQty} onMouseEnter ={(e)=>{initialState(order,item)}} onChange ={(e)=>{   
                                                                    liveUpdate(e,item) 
                                                                    setCommittedValue(Number(e.target.value))
-                                                                   setProductId(item.product)
+                                                                   
+                                                                   /*JUST IN CASE I NEED TO CHANGE TO A SINGLE COMMITS INSTEAD OF A GROUP ONE */
+                                                                   /*setProductId(item.product)*/
+                                                                   
+                                                                   
+                                                                  if(productId.indexOf(item.product) === -1){ 
+                                                                     const dummyArray = productId /*I USED PROMISED QTY ARRAY HERE CUZ I JUST NEEED ANY ARRAY WITH THE SAME LENGTH AS THE PRODUCTS IN THE order items */
+                                                                     dummyArray[merchantProductsArray.indexOf(item)] = item.product
+                                                                    
+                                                                    setProductId(dummyArray)}
+                                                                     
                                                                                 
                                                                                 }}>
           {[...Array(item.qty+1).keys()].map((x) =>(
@@ -286,7 +302,7 @@ const submitHandler = (e) => {
                   </Form.Row>
                   </Form.Group>
                     
-                   <Form.Group>
+                  {/* <Form.Group>
                    <Form.Row>
                    
                    <Col md={{span:2,offset:2}}>
@@ -297,7 +313,8 @@ const submitHandler = (e) => {
                        </Button>
                    </Col>
                    </Form.Row>
-                   </Form.Group>
+                   </Form.Group>*/}
+
               </Form>
               </Col>
                    <Col md={3} style={{fontSize:highlight, color:colour}}>
@@ -308,7 +325,26 @@ const submitHandler = (e) => {
                   </Row>
 
                 </ListGroup.Item>
-              ))}
+              )
+               ) 
+                }
+              </ListGroup>
+             
+              <ListGroup>
+              <ListGroup.Item>
+              
+              <Row>
+                <Col></Col>
+                <Col></Col>
+                <Col></Col>
+                <Col>  <Button type='buton' variant='primary' className='btn-md'  onClick={submitHandler} >
+                       COMMIT YOUR ITEMS
+                    
+                       </Button>
+                       
+                       </Col>
+              </Row>
+              </ListGroup.Item>
               </ListGroup>
           </>):
             (
@@ -337,7 +373,7 @@ const submitHandler = (e) => {
                    </Col>}
 
                    {<Col md={3}>
-                   {item.qty} x ₦ {item.price} = ₦ {item.qty*item.price}
+                   {item.qty} x ₦ {(item.price*1).toFixed(2)} = ₦ {(item.qty*item.price).toFixed(2)}
                    </Col>}
 
 
@@ -423,7 +459,7 @@ const submitHandler = (e) => {
            <ListGroup.Item>   
             <Row>
 
-             <Col> Total gain for items committed: </Col>
+             <Col> Current gain for items committed: </Col>
              {/*<Col>₦ {(order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.promisedQty),0)).toFixed(2)} </Col> */}
              {/*<Col>{(promisedQtyArray===''?(item.promisedQty):(typeof(promisedQtyArray[merchantProductsArray.indexOf(item)])!=='number'? 0:promisedQtyArray[merchantProductsArray.indexOf(item)]))*item.price}</Col>*/}
             {<Col>₦ {(promisedQtyArray.reduce((acc, item)=>acc +item,0)) ===0 ?(18/19*order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.promisedQty),0)).toFixed(2):(18/19*order.orderItems.filter((item) => (item.vendor === userInfo.name)).map((item,index)=>(item.price*promisedQtyArray[index]/*YOU ARE HERE */)).reduce((acc, item)=>acc +(item),0)).toFixed(2)} </Col> }

@@ -212,14 +212,22 @@ const getOrders = asyncHandler(async (req,res)=>{
 const updatePromisedQty = asyncHandler(async (req,res)=>{
   res.header("Access-Control-Allow-Origin","*")
   const { orderId, productId, updatedQty } =  await req.body
-  if(req.body){console.log(req.body)}
-  else{console.log('nothing dey o')}
+  /*if(req.body){console.log(req.body)}
+  else{console.log('nothing dey o')}*/
 
+  for(let i = 0 ;i < productId.length;i++){
   const orderObjectId = new mongoose.Types.ObjectId(orderId)
-  const productObjectId = new mongoose.Types.ObjectId(productId)
+  const productObjectId = new mongoose.Types.ObjectId(productId[i])
  
-  await Order.findOneAndUpdate({'_id':orderObjectId,'orderItems.product':productObjectId},{$set:{'orderItems.$.promisedQty': updatedQty } }, { useFindAndModify: false})
- /*await specificOrder*/
+ const productToUpdate = await Order.find({'_id':orderObjectId,'orderItems.product':productObjectId})
+ console.log(productToUpdate)
+
+if(productToUpdate.length > 0){
+   await Order.findOneAndUpdate({'_id':orderObjectId,'orderItems.product':productObjectId},{$set:{'orderItems.$.promisedQty': updatedQty[i] } }, { useFindAndModify: false})
+  }
+    } 
+ 
+  /*await specificOrder*/
  /*res.json(orders)*/
 })
 

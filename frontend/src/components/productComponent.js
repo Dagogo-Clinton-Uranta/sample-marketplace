@@ -27,7 +27,7 @@ const ProductComponent = ({product}) => {
     </Card.Text>
 
     <Card.Text as='h3'>
-     ₦ {product.price}
+     ₦ {(product.price*1).toFixed(2)}
      </Card.Text>
      
       <Card.Text as='h6'>

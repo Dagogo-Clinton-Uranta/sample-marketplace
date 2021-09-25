@@ -11,7 +11,7 @@ import mongoose from 'mongoose'
 
 const getProducts = asyncHandler(async (req,res)=>{
   res.header("Access-Control-Allow-Origin","*")
-  const pageSize = 3 //i recommend 6 per page
+  const pageSize = 5 //i recommend 6 per page
      const page = Number(req.query.pageNumber) || 1
 
  const vendorName = req.query.vendorName  //if your vendorName logic is messing up, come and change it to resemble that of keyword, with the empty object
@@ -106,7 +106,7 @@ const updateProduct = asyncHandler(async (req,res)=>{
 
    if(product){
       product.name = name
-      product.price  = price
+      product.price  = (price*1).toFixed(2)
       product.description=description
       product.vendor= vendor
       product.vendorAddress = vendorAddress
