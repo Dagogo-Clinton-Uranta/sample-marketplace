@@ -7,7 +7,7 @@ import {Container,Nav,Navbar,NavDropdown} from 'react-bootstrap'
 import {logout,listUsers} from '../actions/userActions.js'
 import {listOrders} from '../actions/orderActions.js'
 import SearchBox from './SearchBox.js'
-import bridgeway from './bridgeway-logo.jpg' 
+import bridgeway from './yes.png' 
 
 
 
@@ -96,7 +96,7 @@ const Header = () => {
   <Container>
   <LinkContainer to="/">
   {/*why cant we wrap this in a link tag?*/}
-  <Navbar.Brand ><img src={bridgeway} alt={'the logo of bridgeway bank'} /></Navbar.Brand>
+  <Navbar.Brand ><img src={bridgeway} alt={'the logo of bridgeway bank'}  className="shrunkenImage"/><span className='red'>HOME</span></Navbar.Brand>
   </LinkContainer>
 
   <Navbar.Toggle aria-controls="basic-navbar-nav" />

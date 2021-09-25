@@ -1,5 +1,8 @@
 import Order from '../models/orderModel.js'
 //const Order = require('../models/orderModel.js')
+
+import Account from '../models/accountModel.js'
+
 //const asyncHandler = require('express-async-handler')
 import asyncHandler from 'express-async-handler'
 
@@ -48,9 +51,9 @@ const getOrderById = asyncHandler(async (req,res)=>{
   res.header("Access-Control-Allow-Origin","*")
    
   const objectId = new mongoose.Types.ObjectId(req.params.id)
-  const order = await Order.findById(objectId).populate('user', 'name email') /*name and email in the same quotation */
+  const order = await Order.findById(objectId).populate('user', 'name email nuban') /*name and email in the same quotation */
   if(order){
-    
+     
     res.json(order)
   }
   else{
@@ -171,6 +174,7 @@ const updateOrderToDelivered = asyncHandler(async (req,res)=>{
 const getUnpaidOrders = asyncHandler(async (req,res)=>{
   res.header("Access-Control-Allow-Origin","*")
   const orders = await Order.find({$or:[{isPaid:false},{$and:[{isPaid:true},{merchantsCredited:false},{paidAt:{$lte:new Date(new Date().getTime() -  /*48 * 60*/1 * 60 * 1000) }}]}]}).sort({createdAt:-1})
+   
   res.json(orders)
 })
 
@@ -195,9 +199,9 @@ const getOrders = asyncHandler(async (req,res)=>{
 
    const vendorName = req.query.vendorName
    vendorName !==''?(
-   orders = await Order.find({'orderItems.vendor':vendorName}).sort({createdAt:-1}).populate('user','id name'))
+   orders = await Order.find({'orderItems.vendor':vendorName}).sort({createdAt:-1}).populate('user','id name nuban'))
    :(
-     orders = await Order.find({}).sort({createdAt:-1}).populate('user','id name')
+     orders = await Order.find({}).sort({createdAt:-1}).populate('user','name')
    )
   res.json(orders)
 })

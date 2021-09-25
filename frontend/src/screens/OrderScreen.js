@@ -21,19 +21,24 @@ const OrderScreen =  ({match,history}) => {
    const dispatch = useDispatch()
   //const cart = useSelector(state => state.cart) come back and check why you commented this out
 
- const [merchantProductsArray,setMerchantProductsArray] = useState([]) /*i never actually change the state of this */
- const [promisedQtyArray,setPromisedQtyArray] = useState([])
- const [committedValue, setCommittedValue] = useState('')
- const [productId,setProductId] = useState('')
- const [highlight,setHighlight] = useState('13px')
- const [colour, setColour] = useState('black')
+
   const orderDetails = useSelector((state) => state.orderDetails )
   const {order,loading,error} = orderDetails
-   /*console.log(order)*/
+  /*the variable below doesnt work out because , order cannot be read at this stage, i assigned the state i needed in the use effect instead */
+  /*const zeroArrayBasedOnOrderLength = Array.apply(null,Array(order.orderItems.length)).map((item)=>(0))*/
   
- 
+  /*console.log(order)*/
 
+
+   const [merchantProductsArray,setMerchantProductsArray] = useState([]) /*i never actually change the state of this */
+   const [promisedQtyArray,setPromisedQtyArray] = useState([])
+   const [committedValue, setCommittedValue] = useState('')
+   const [productId,setProductId] = useState('')
+   const [highlight,setHighlight] = useState('13px')
+   const [colour, setColour] = useState('black')
    
+
+ 
 
    const userLogin = useSelector((state) => state.userLogin )
   const {userInfo} = userLogin
@@ -46,20 +51,23 @@ const OrderScreen =  ({match,history}) => {
 
 if(!loading){
   //calculating the prices for orders
- const addDecimals = (num) => { return(Math.round(num*100)/100).toFixed(2) }
 
+
+  const addDecimals = (num) => { return(Math.round(num*100)/100).toFixed(2) } 
  order.itemsPrice = addDecimals(order.orderItems.reduce((acc, item)=>acc +item.price*item.qty,0))
  order.promisedQtyArray = promisedQtyArray
  order.merchantProductsArray = merchantProductsArray
  /*order.initalState = order.orderItems.filter((item) => (item.vendor === userInfo.name)).map((item) => (item.promisedQty))*/
 }
 
+
+
  const initialState = function(order,item){
   const vendorArray = order.orderItems.filter((item) => (item.vendor === userInfo.name))
   setMerchantProductsArray(vendorArray)
   const promisedArray =  order.orderItems.filter((item) => (item.vendor === userInfo.name)).map((item) => (promisedQtyArray[vendorArray.indexOf(item)]))
   setPromisedQtyArray(promisedArray)
-  console.log(typeof(promisedQtyArray),'then',promisedQtyArray)
+  console.log(typeof(promisedArray),'then',promisedArray)
  }
 
 
@@ -111,8 +119,8 @@ useEffect(()=> {
       
        /*setPromisedQtyArray(order.orderItems.filter((item) => (item.vendor === userInfo.name)).map((item, index) =>(
         0
-      ))) 
-       setMerchantProductsArray(order.orderItems.filter((item) => (item.vendor === userInfo.name)))*/
+      ))) */
+      if(order){ setPromisedQtyArray(Array.apply(null,Array(order.orderItems.length)).map((item)=>(0))) }
 
   const addPayPalScript = async () => {
     const {data:clientId} = await axios.get('/api/config/paypal')
@@ -154,9 +162,9 @@ const deliverHandler = ()=> {
 
 const submitHandler = (e) => {
     e.preventDefault()
-    if( promisedQtyArray==='' ){window.alert('please select a value before committing!')}
-    else if(typeof((promisedQtyArray.reduce((acc, item)=>acc +item,0)))!=='number'){window.alert('You cannot commit zero,please contact admin if you are out of stock')}
-    else{window.alert('Quantity committed successfully!');
+    if( promisedQtyArray.reduce((acc, item)=>acc +item,0) ===0  ){window.alert('please select a value before committing!')}
+    else if(promisedQtyArray.indexOf(0) !== -1 ){window.alert('You cannot commit zero for ANY item,please contact admin if you are out of stock')}
+    else{window.alert('Committed!')
       dispatch(merchantApproveOrder(order._id, productId, committedValue))}
 }
  /*is there a factor of 18/19 to consider for, --yes */
@@ -258,7 +266,7 @@ const submitHandler = (e) => {
                    <Form.Group>
                    <Form.Row>
                    <Col md={2}>
-                   <Form.Control as='select' defaultValue={0} onMouseEnter ={(e)=>{initialState(order,item)}} onChange ={(e)=>{   
+                   <Form.Control as='select' defaultValue={item.promisedQty} onMouseEnter ={(e)=>{initialState(order,item)}} onChange ={(e)=>{   
                                                                    liveUpdate(e,item) 
                                                                    setCommittedValue(Number(e.target.value))
                                                                    setProductId(item.product)
@@ -293,9 +301,10 @@ const submitHandler = (e) => {
               </Form>
               </Col>
                    <Col md={3} style={{fontSize:highlight, color:colour}}>
-                   {promisedQtyArray===''?(item.promisedQty):(typeof(promisedQtyArray[merchantProductsArray.indexOf(item)])!=='number'? 0:promisedQtyArray[merchantProductsArray.indexOf(item)])} x ₦ {item.price} = ₦ {(promisedQtyArray===''?(item.promisedQty):(typeof(promisedQtyArray[merchantProductsArray.indexOf(item)])!=='number'? 0:promisedQtyArray[merchantProductsArray.indexOf(item)]))*item.price}
+                   {promisedQtyArray.reduce((acc, item)=>acc +item,0) ===0 ?(item.promisedQty):(typeof(promisedQtyArray[merchantProductsArray.indexOf(item)])!=='number'? 0:promisedQtyArray[merchantProductsArray.indexOf(item)])} x ₦ {(18/19*item.price).toFixed(2)} = ₦ {((promisedQtyArray.reduce((acc, item)=>acc +item,0) ===0?(item.promisedQty):(typeof(promisedQtyArray[merchantProductsArray.indexOf(item)])!=='number'? 0:promisedQtyArray[merchantProductsArray.indexOf(item)]))*item.price*18/19).toFixed(2)}
                    </Col>
 
+                  
                   </Row>
 
                 </ListGroup.Item>
@@ -405,8 +414,8 @@ const submitHandler = (e) => {
            <ListGroup.Item>
             <Row>
 
-             <Col>Total Payable: </Col>
-             <Col>₦ {(order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.qty),0)).toFixed(2)} </Col> 
+             <Col>For completely fulfilling, you will gain: </Col>
+             <Col>₦ {(18/19*order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.qty),0)).toFixed(2)} </Col> 
                
             </Row>
            </ListGroup.Item>
@@ -414,10 +423,10 @@ const submitHandler = (e) => {
            <ListGroup.Item>   
             <Row>
 
-             <Col> Total for items committed: </Col>
+             <Col> Total gain for items committed: </Col>
              {/*<Col>₦ {(order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.promisedQty),0)).toFixed(2)} </Col> */}
              {/*<Col>{(promisedQtyArray===''?(item.promisedQty):(typeof(promisedQtyArray[merchantProductsArray.indexOf(item)])!=='number'? 0:promisedQtyArray[merchantProductsArray.indexOf(item)]))*item.price}</Col>*/}
-            {<Col>₦ {typeof((promisedQtyArray.reduce((acc, item)=>acc +item,0)))!=='number' ?(order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.promisedQty),0)).toFixed(2):(order.orderItems.filter((item) => (item.vendor === userInfo.name)).map((item,index)=>(item.price*promisedQtyArray[index]/*YOU ARE HERE */)).reduce((acc, item)=>acc +(item),0)).toFixed(2)} </Col> }
+            {<Col>₦ {(promisedQtyArray.reduce((acc, item)=>acc +item,0)) ===0 ?(18/19*order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.promisedQty),0)).toFixed(2):(18/19*order.orderItems.filter((item) => (item.vendor === userInfo.name)).map((item,index)=>(item.price*promisedQtyArray[index]/*YOU ARE HERE */)).reduce((acc, item)=>acc +(item),0)).toFixed(2)} </Col> }
             </Row>
            </ListGroup.Item>
 
@@ -438,7 +447,7 @@ const submitHandler = (e) => {
             <Row>
 
              <Col>Total to recieve :</Col>
-             <Col>₦ {(order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.promisedQty),0)).toFixed(2)} </Col>
+             {<Col>₦ {(promisedQtyArray.reduce((acc, item)=>acc +item,0)) ===0 ?(18/19 * order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.promisedQty),0)).toFixed(2):(18/19*order.orderItems.filter((item) => (item.vendor === userInfo.name)).map((item,index)=>(item.price*promisedQtyArray[index]/*YOU ARE HERE */)).reduce((acc, item)=>acc +(item),0)).toFixed(2)} </Col> }
 
             </Row>
            </ListGroup.Item>

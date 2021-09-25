@@ -49,7 +49,13 @@ const orderSchema =  mongoose.Schema({
           required:true,
           default:0.0 },*/
 
-        deliveryCost:{
+          bridgewayProfitAccount:{
+            type: String,
+            required:true,
+            default:"1200000895" },
+  
+        
+          deliveryCost:{
           type: String,
           required:true,
           default:0.0 },

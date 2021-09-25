@@ -225,16 +225,30 @@ const submitHandler = (e) => {
             </Row>}
            </ListGroup.Item>
 
-          {order.isPaid && <ListGroup.Item>
+          {!order.isPaid && <ListGroup.Item>
+            <p style={{color:'red'}}>NOTE: THESE TRANSACTIONS ARE TO BE CARRIED OUT ON BANK ONE </p>
+            <p>1.) PLEASE PERFORM THE FOLLOWING TRANSACTIONS TO HOLDING ACCOUNT</p>
+            <p>2.) IF THE DEBIT CANNOT BE PERFORMED, PLEASE SELECT 'INSUFFICIENT FUNDS' </p>
+            <p> 3.)   MESSAGE THE ADMIN TO COMMUNICATE THAT THE CLIENT HAD INSUFFICIENT FUNDS</p>
+            <p>4.)  IF THE DEBIT IS SUCCESSFUL, CLICK  'CHANGE PAYMENT STATUS' .</p>
+            <p>5.) YOU MAY CHANGE PAYMENT STATUS AS MUCH AS YOU LIKE, UNTIL YOU ARE READY TO LEAVE THE PAGE.</p>
+            <p>6.) IF YOU LEAVE THIS PAGE WITH THE PAYMENT STATUS SET TO PAID, YOU WILL NOT BE ALLOWED TO RETURN, </p>
+            <p>    AND A SIGNAL WILL BE SENT TO THE ADMIN THAT YOU HAVE SUCCESSFULLY PERFORMED THE ABOVE TRANSACTION(S) </p>
+           </ListGroup.Item>}
+
+
+
+           {order.isPaid && (new Date(order.paidAt) <= new Date(new Date().getTime() - 48*60 * 60 * 1000)) && <ListGroup.Item>
             <p style={{color:'red'}}>NOTE: THESE TRANSACTIONS ARE TO BE CARRIED OUT ON BANK ONE </p>
             
-            <p>1.) IF THE DEBIT CANNOT BE PERFORMED, PLEASE SELECT 'INSUFFICIENT FUNDS' </p>
+            <p>1.) PLEASE PERFORM THE FOLLOWING TRANSACTIONS FROM A HOLDING ACCOUNT</p>
             <p> 2.)   MESSAGE THE ADMIN TO COMMUNICATE THAT THE CLIENT HAD INSUFFICIENT FUNDS</p>
-            <p>3.)  IF THE DEBIT IS SUCCESSFUL, CLICK  'CHANGE PAYMENT STATUS' .</p>
+            <p>3.)  ONCE ALL CREDITS ARE SUCCESSFUL, CLICK  'CHANGE PAYMENT STATUS' .</p>
             <p>4.) YOU MAY CHANGE PAYMENT STATUS AS MUCH AS YOU LIKE, UNTIL YOU ARE READY TO LEAVE THE PAGE.</p>
             <p>5.) IF YOU LEAVE THIS PAGE WITH THE PAYMENT STATUS SET TO PAID, YOU WILL NOT BE ALLOWED TO RETURN, </p>
             <p>    AND A SIGNAL WILL BE SENT TO THE ADMIN THAT YOU HAVE SUCCESSFULLY PERFORMED THE ABOVE TRANSACTION(S) </p>
            </ListGroup.Item>}
+
 
 
            <ListGroup.Item>
@@ -258,7 +272,7 @@ const submitHandler = (e) => {
 
              <Col>{order.user.name} </Col>
              
-             <Col>1200000898 </Col>
+             <Col>{order.user.nuban} </Col>
              <Col>DEBIT </Col>
              <Col>₦ {(order.itemsPrice * (1) ).toFixed(2)} </Col>
              <Col>Purchase of goods from bridgeway co-operative</Col>
@@ -294,12 +308,12 @@ const submitHandler = (e) => {
             </Row>
            </ListGroup.Item>
 
-           {order.isPaid && <ListGroup.Item>
+           {order.isPaid &&  (new Date(order.paidAt) <= new Date(new Date().getTime() - 48*60 * 60 * 1000)) && <ListGroup.Item>
             <Row>
 
              <Col>Bridgeway Co-operative: </Col>
              
-             <Col>1200000898 </Col>
+             <Col>{order.bridgewayProfitAccount} </Col>
              <Col>CREDIT </Col>
              <Col>₦ {(order.itemsPrice -(order.orderItems.reduce((acc, item)=>acc +(item.price*item.qty),0) - order.orderItems.reduce((acc, item)=>acc +(item.price*item.promisedQty),0)) - (18/19 *order.orderItems.reduce((acc, item)=>acc +(item.price*item.promisedQty),0)) ).toFixed(2)} </Col>
              <Col>Percentage on sale of goods from Bridgeway-cooperative</Col>
@@ -307,14 +321,14 @@ const submitHandler = (e) => {
            </ListGroup.Item>}
 
            
-      {order.isPaid && order.orderItems.map((item, index) =>(
+      {order.isPaid && (new Date(order.paidAt) <= new Date(new Date().getTime() - 48*60 * 60 * 1000)) && order.orderItems.map((item, index) =>(
             <ListGroup.Item  key ={index}>
             <Row>
 
              <Col> {index + 1}. {item.vendor}:  </Col>
-             <Col>{'000000000'}</Col>
+             <Col>{item.vendorAccountNumber}</Col>
              <Col>CREDIT</Col>
-             <Col>₦ {((18/19) * item.price).toFixed(2) * item.promisedQty } </Col>
+             <Col>₦ {((18/19) * item.price  * item.promisedQty ).toFixed(2)} </Col>
              <Col> Payment for goods sold on Bridgeway-cooperative.</Col>
             </Row>
            </ListGroup.Item>
@@ -322,12 +336,12 @@ const submitHandler = (e) => {
 
 
 
-{order.isPaid && (order.orderItems.reduce((acc, item)=>acc +(item.price*item.promisedQty),0) !== order.orderItems.reduce((acc, item)=>acc +(item.price*item.qty),0) ) && <ListGroup.Item>
+{order.isPaid && (new Date(order.paidAt) <= new Date(new Date().getTime() - 48*60 * 60 * 1000)) && (order.orderItems.reduce((acc, item)=>acc +(item.price*item.promisedQty),0) !== order.orderItems.reduce((acc, item)=>acc +(item.price*item.qty),0) ) && <ListGroup.Item>
             <Row>
 
              <Col>{order.user.name} </Col>
              
-             <Col>1200000898 </Col>
+             <Col>{order.user.nuban} </Col>
              <Col>CREDIT </Col>
              <Col>₦ {(order.orderItems.reduce((acc, item)=>acc +(item.price*item.qty),0) - order.orderItems.reduce((acc, item)=>acc +(item.price*item.promisedQty),0) ).toFixed(2)} </Col>
              <Col>Refund on goods requested but not delivered.</Col>
@@ -346,7 +360,7 @@ const submitHandler = (e) => {
             </Row>
       </ListGroup.Item>*/}
 
-        {order.isPaid && <ListGroup.Item>
+        {order.isPaid && (new Date(order.paidAt) <= new Date(new Date().getTime() - 48*60 * 60 * 1000)) && <ListGroup.Item>
             <Row style ={{color:'red'}}>
 
              <Col>TOTAL CREDIT: </Col>
@@ -404,7 +418,7 @@ const submitHandler = (e) => {
     </center>)}
 
     
-    {order.isPaid && (new Date(order.paidAt) <= new Date(new Date().getTime() - 10 * 60 * 1000)) && !order.merchantsCredited &&
+    {order.isPaid && (new Date(order.paidAt) <= new Date(new Date().getTime() - 48*60 * 60 * 1000)) && !order.merchantsCredited &&
        
        ( <center>
           <ListGroup > 
@@ -432,11 +446,11 @@ const submitHandler = (e) => {
          <Message variant='danger'>Order NOT Paid</Message>
         )
         }
-        {order && order.isPaid && (new Date(order.paidAt) < new Date(new Date().getTime() - /* 48 * 60*/10 * 60 * 1000))  && !order.merchantsCredited ?(
+        {order && order.isPaid && (new Date(order.paidAt) < new Date(new Date().getTime() - 48 * 60 * 60 * 1000))  && !order.merchantsCredited ?(
         successCredit? <Message variant='success'>All merchants credited.</Message>:
           <Message variant='danger'>transacations not carried out</Message>
       
-         ):(order && order.isPaid && (new Date(order.paidAt) < new Date(new Date().getTime() - /* 48 * 60*/10 * 60 * 1000))  && order.merchantsCredited  && <Message variant='success'>All merchants credited.</Message>)
+         ):(order && order.isPaid && (new Date(order.paidAt) < new Date(new Date().getTime() -  48 * 60  * 60 * 1000))  && order.merchantsCredited  && <Message variant='success'>All merchants credited.</Message>)
           }
         
         {loading && <Loader/>}

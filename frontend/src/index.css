@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@1,700&display=swap');
+
+
 main {
   min-height: 80vh;
 }
@@ -19,6 +22,15 @@ h2 {
   margin: 0.1rem;
 }
 
+/*Home icon*/
+.shrunkenImage {
+  height: 6rem;
+  width:6rem;
+  margin-top:-3rem;
+  margin-bottom: -3rem;
+}
+
+
 /*carousel*/
 
 .carousel-item-next,
@@ -27,20 +39,123 @@ h2 {
   display: flex;
 }
 
+.carousel-main {
+ margin:0 auto;
+  width:100%;
+  border-radius: 4%;
+}
+
+
+
+
 .carousel-caption {
   position: absolute;
-  top: 0;
+  bottom: 3rem;
 }
 
-.carousel-caption h4 {
-  color: #fff;
+
+.carousel-caption-special {
+  position: absolute;
+  bottom: 3rem;
 }
+
+@media only screen and (max-width: 1200px) {
+
+  .carousel-caption-special {
+    position: absolute;
+    top: 3rem;
+  }
+}
+
+.carousel-caption h1 {
+  font-family: 'Noto Serif', serif;
+  font-size: 2rem;
+  font-weight: 1rem;
+  text-shadow: 0px 1px, 1px 0px, 1px 1px;
+  letter-spacing:1px;
+  color: #fff;
+  
+  
+}
+
+.carousel-caption h2 {
+  font-family: 'Noto Serif', serif;
+  font-size:1.5rem;
+  font-weight:bolder;
+  text-shadow: 0px 1px, 1px 0px, 1px 1px;
+  letter-spacing:1px;
+  color: #fff;
+ 
+  
+}
+
+/*highlighting special words in the captions*/
+.red {
+  color:rgb(245, 6, 6);
+}
+
+.bright-blue {
+  color:rgb(3, 40, 250);
+}
+
+
+
+.vanish {
+margin:0 auto;
+}
+
+@media only screen and (max-width: 1200px) {
+
+  .vanish {
+    margin-top: 2rem;
+   }
+}
+
+@media only screen and (max-width: 768px) {
+
+  .vanish {
+    margin-top: 4rem;
+   }
+}
+
+
 
 .carousel img {
-  height: 300px;
-  padding: 30px;
-  margin: 40px;
-  border-radius: 25%;
+  height: 75vh;
+  width:100%;
+  padding: 10px;
+  /*margin: 10px;*/
+  border-radius: 4%;
+  filter: brightness(60%);
+}
+
+@media only screen and (max-width: 1200px) {
+
+  .carousel img {
+    height: 70vh;
+    
+  }
+}
+
+
+
+
+@media only screen and (max-width: 1100px) {
+
+  .carousel img {
+    height: 65vh;
+    
+  }
+}
+
+@media only screen and (max-width: 768px) {
+
+  .carousel img {
+    height: 40vh;
+    
+  }
+
+
 }
 
 .carousel a {

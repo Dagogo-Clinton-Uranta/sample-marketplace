@@ -83,8 +83,8 @@ const TransactionListScreen = ({history}) => { //he is taking location & history
          <thead>
           <tr>
            <th>ID</th>
-           <th>CUSTOMER NAME</th>
-           <th>ACCOUNT NUM</th>
+          
+           <th>TRANSACTION TYPE</th>
            <th>PLACED ON</th>
            {userInfo/*.isTeller*/ ?(<th>CASH TOTAL</th>):(<th>RECEIVABLE</th> )}{/*We want to give tellers a taste of  what transactions to make, so the are eager to press details*/}
            {/*<th>CREDIT (TO BRIDGEWAY)</th>*/}
@@ -105,8 +105,8 @@ const TransactionListScreen = ({history}) => { //he is taking location & history
                                                          :7)if the user is an admin and all merchants have promised something, give it blue it is a fully committed order ready to go  */
             <tr key={order._id} style ={{backgroundColor: !order.isPaid && 'rgba(233, 212, 96, 0.4)'}} >
               <td>{order._id}</td>
-              <td>{order.user && order.user.name}</td>
-              <td> 00001   </td>
+              
+              <td>{order.isPaid ? 'CREDIT':'DEBIT'}  </td>
               <td>{new Date(order.createdAt).toLocaleDateString()}</td>
               <td>₦ {/*userInfo.isAdmin ? (order.totalPrice) :*/ (((order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.qty),0)))).toFixed(2)}</td>
               {/*<td>₦ {/*userInfo.isAdmin ? (order.totalPrice) : (((order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.qty),0)))*1/19).toFixed(2)}</td>*/}

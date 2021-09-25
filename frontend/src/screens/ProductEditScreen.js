@@ -59,7 +59,7 @@ const ProductEditScreen= ({match, history}) => { //he is taking location & histo
         dispatch(listProductDetails(productId))
       }else {
         setName(product.name)
-        setPrice(product.price)
+        setPrice((product.price*20/19).toFixed(2))
         setImage(product.image)
         setBrand(product.brand)
         setCategory(product.category)
@@ -102,7 +102,7 @@ console.log(productDetails)
   dispatch(updateProduct({
     _id:productId,
     name,
-    price,
+    price:product.price !== price ?(price*19/20).toFixed(2):price,
     brand,
     vendor,
     vendorAddress,
@@ -135,12 +135,25 @@ console.log(productDetails)
 
  {/*2*/}        <Form.Group controlId='price'>
 
+         
         <Form.Label>  Price(₦) </Form.Label>
-        <Form.Control type='number' placeholder={ price === product.price? (product.price):"Enter price"} value={price} onChange={(e)=>setPrice(e.target.value)}></Form.Control>
+        <Form.Control type='number' placeholder={ price === product.price? ((price).toFixed(2)):"Enter price"} value={price} onChange={(e)=>setPrice(e.target.value)}></Form.Control>
+         {/*the value of form control is form control from the state. You need to read about form group from react bootstrap*/}
+       </Form.Group>
+        <br/>
+       <p>NOTE: PLEASE ENTER THE PRICE AS YOU WOULD NORMALLY CHARGE, THE PERCENTAGE DISCOUNT (BELOW) WILL BE APPLIED, IN THE MARKETPLACE </p>
+       <br/>
+       {/*3*/}        <Form.Group controlId='discount percentage'>
+
+       <Form.Label>  Percentage discount (as agreed upon with bridgeway MFB) </Form.Label>
+        <Form.Control type='string' readOnly placeholder={ '10%'} value={'10%'} ></Form.Control>
          {/*the value of form control is form control from the state. You need to read about form group from react bootstrap*/}
        </Form.Group>
 
- {/*3*/}      <Form.Group controlId='image'>
+
+
+
+ {/*4*/}      <Form.Group controlId='image'>
 
         <Form.Label>  Image </Form.Label>
         <Form.Control type='text' placeholder= { image === product.image? image:"Enter image url"}  value={image} onChange={(e)=>setImage(e.target.value)}></Form.Control>
@@ -151,7 +164,7 @@ console.log(productDetails)
        </Form.Group>
 
 
-  {/*4*/}      <Form.Group controlId='brand'>
+  {/*5*/}      <Form.Group controlId='brand'>
 
               <Form.Label>  Brand </Form.Label>
               <Form.Control type='text' placeholder={ price === product.brand? (brand):"enter brand"} value={brand} onChange={(e)=>setBrand(e.target.value)}></Form.Control>
@@ -159,21 +172,21 @@ console.log(productDetails)
              </Form.Group>
 
 
- {/*5*/}        <Form.Group controlId='countInStock'>
+ {/*6*/}        <Form.Group controlId='countInStock'>
 
                 <Form.Label>  Count in Stock </Form.Label>
                 <Form.Control type='number' placeholder={ countInStock === product.countInStock? (countInStock):"Enter count in stock"} value={countInStock} onChange={(e)=>setCountInStock(e.target.value)}></Form.Control>
                      {/*the value of form control is form control from the state. You need to read about form group from react bootstrap*/}
              </Form.Group>
 
- {/*6*/}        <Form.Group controlId='category'>
+ {/*7*/}        <Form.Group controlId='category'>
 
                 <Form.Label>  Category </Form.Label>
                 <Form.Control type='text' placeholder={ category === product.category? (category):"Enter category"} value={category} onChange={(e)=>setCategory(e.target.value)}></Form.Control>
                                  {/*the value of form control is form control from the state. You need to read about form group from react bootstrap*/}
                </Form.Group>
 
-{/*7*/}       <Form.Group controlId='description'>
+{/*8*/}       <Form.Group controlId='description'>
 
                   <Form.Label>  Description</Form.Label>
                   <Form.Control as ='textarea' rows={5} placeholder={ description === product.description? (description):"enter description"} value={description} onChange={(e)=>setDescription(e.target.value)}></Form.Control>

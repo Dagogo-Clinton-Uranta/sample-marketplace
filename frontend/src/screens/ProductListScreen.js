@@ -166,7 +166,8 @@ if(window.confirm('Are you sure you want to delete this item ?')){ //window.conf
           <tr>
            <th>ID</th>
            <th>NAME</th>
-           <th>PRICE</th>
+           <th>RETAIL PRICE</th>
+           <th>MARKETPLACE PRICE</th>
            <th>CATEGORY</th>
            {userInfo.isAdmin && <th>VENDOR</th>}
            <th></th>
@@ -177,7 +178,8 @@ if(window.confirm('Are you sure you want to delete this item ?')){ //window.conf
             <tr key={product._id}>
               <td>{product._id}</td>
               <td>{product.name}</td>
-              <td>₦ {product.price}</td>
+              <td>₦ {(product.price*20/19).toFixed(2)}</td>
+              <td>₦ {(product.price).toFixed(2)}</td>
               <td>{product.category}</td>
               {userInfo.isAdmin && <td>{product.vendor}</td>}
               {userInfo.isMerchant && (<td>
