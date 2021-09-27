@@ -95,20 +95,15 @@ const TransactionListScreen = ({history}) => { //he is taking location & history
          </tr>
          </thead>
          <tbody>
-          {orders.map(order => (  /*english translations of my conditionals: 
-                                                          1.) if youre a merchant AND every condition except (all items are zero) AND at least one item has been committed to(i think  i wanna try NOT(all items are fully committed to)), make the bar yellow
-                                                        : 2.) if youre not a merchant and the date now is two(or more) days greater than the day the order was put in, give it a red,it has failed to be attended to by the admin
-                                                         :3.) if youre an admin and the item hasnt been delivered and it has been 4 days or greater since its creation, give it a red, it's past the due date
-                                                         :4.)if all items have no promises, and you're a merchant and it hasnt been up to two days since the order was created, then it's a fresh order, give it green
-                                                         :5) if the user is an admin,and at least one item has been promised AND at least one item has been promised(again ,dodgy logic, try !(all have been fully promised) ),  give it a yellow, it is incomplete
-                                                         :6)if the logged in user is an admin and all items are fully committed to, then give the color a blue, it is a fully completed order.
-                                                         :7)if the user is an admin and all merchants have promised something, give it blue it is a fully committed order ready to go  */
+          {orders.map(order => (  /*english translations of my conditionals for background color below: 
+                                                          1.) if it's a debit, (or teller hasn't clicked order isPaid, mark it yellow, as that is more urgent than  credits to merchants and refunds*/
+                                                       
             <tr key={order._id} style ={{backgroundColor: !order.isPaid && 'rgba(233, 212, 96, 0.4)'}} >
               <td>{order._id}</td>
               
               <td>{order.isPaid ? 'CREDIT':'DEBIT'}  </td>
               <td>{new Date(order.createdAt).toLocaleDateString()}</td>
-              <td>₦ {/*userInfo.isAdmin ? (order.totalPrice) :*/ (((order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.qty),0)))).toFixed(2)}</td>
+              <td>₦ {/*userInfo.isAdmin ? (order.totalPrice) :*/ (((order.orderItems.reduce((acc, item)=>acc +(item.price*item.qty),0)))).toFixed(2)}</td>
               {/*<td>₦ {/*userInfo.isAdmin ? (order.totalPrice) : (((order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.qty),0)))*1/19).toFixed(2)}</td>*/}
 
               {/*<td>{order.isPaid ? (order.paidAt.substring(0,10)):  

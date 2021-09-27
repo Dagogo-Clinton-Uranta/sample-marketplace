@@ -175,14 +175,6 @@ const deliverHandler = ()=> {
   dispatch(deliverOrder(order))
 }
 
-const submitHandler = (e) => {
-    e.preventDefault()
-    if( promisedQtyArray==='' ){window.alert('please select a value before committing!')}
-    else if(typeof((promisedQtyArray.reduce((acc, item)=>acc +item,0)))!=='number'){window.alert('You cannot commit zero,please contact admin if you are out of stock')}
-    else{dispatch(merchantApproveOrder(order._id, productId, committedValue))}
-}
- /*is there a factor of 18/19 to consider for, --yes */
-/*const merchantTotal = order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.qty),0)*/
 
         return loading ?( <Loader/> ):error ?( <Message variant='danger'>{error} </Message>):
 (<>
@@ -228,7 +220,7 @@ const submitHandler = (e) => {
           {!order.isPaid && <ListGroup.Item>
             <p style={{color:'red'}}>NOTE: THESE TRANSACTIONS ARE TO BE CARRIED OUT ON BANK ONE </p>
             <p>1.) PLEASE PERFORM THE FOLLOWING TRANSACTIONS TO HOLDING ACCOUNT</p>
-            <p>2.) IF THE DEBIT CANNOT BE PERFORMED, PLEASE SELECT 'INSUFFICIENT FUNDS' </p>
+            <p>2.) IF THE DEBIT CANNOT BE PERFORMED (on Bank One), PLEASE SELECT 'INSUFFICIENT FUNDS' </p>
             <p> 3.)   MESSAGE THE ADMIN TO COMMUNICATE THAT THE CLIENT HAD INSUFFICIENT FUNDS</p>
             <p>4.)  IF THE DEBIT IS SUCCESSFUL, CLICK  'CHANGE PAYMENT STATUS' .</p>
             <p>5.) YOU MAY CHANGE PAYMENT STATUS AS MUCH AS YOU LIKE, UNTIL YOU ARE READY TO LEAVE THE PAGE.</p>
@@ -242,7 +234,7 @@ const submitHandler = (e) => {
             <p style={{color:'red'}}>NOTE: THESE TRANSACTIONS ARE TO BE CARRIED OUT ON BANK ONE </p>
             
             <p>1.) PLEASE PERFORM THE FOLLOWING TRANSACTIONS FROM A HOLDING ACCOUNT</p>
-            <p> 2.)   MESSAGE THE ADMIN TO COMMUNICATE THAT THE CLIENT HAD INSUFFICIENT FUNDS</p>
+            <p> 2.) AFTER EACH TRANSACITON IS PERFORMED, YOU MAY CLICK THE CHECKBOX UNDER THE 'Done?' COLUMN, TO HELP YOU KEEP TRACK</p>
             <p>3.)  ONCE ALL CREDITS ARE SUCCESSFUL, CLICK  'CHANGE PAYMENT STATUS' .</p>
             <p>4.) YOU MAY CHANGE PAYMENT STATUS AS MUCH AS YOU LIKE, UNTIL YOU ARE READY TO LEAVE THE PAGE.</p>
             <p>5.) IF YOU LEAVE THIS PAGE WITH THE PAYMENT STATUS SET TO PAID, YOU WILL NOT BE ALLOWED TO RETURN, </p>
@@ -294,6 +286,7 @@ const submitHandler = (e) => {
              <Col> </Col>
              <Col> </Col>
              <Col>₦ {(order.totalPrice).toFixed(2)} </Col>
+             <Col></Col>
              <Col></Col>
             </Row>
            </ListGroup.Item>
@@ -395,6 +388,7 @@ const submitHandler = (e) => {
              <Col> </Col>
              <Col> </Col>
              <Col>₦ {(order.totalPrice).toFixed(2)} </Col>
+             <Col></Col>
              <Col></Col>
             </Row>
            </ListGroup.Item>}
