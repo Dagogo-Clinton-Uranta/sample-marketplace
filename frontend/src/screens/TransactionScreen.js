@@ -259,6 +259,7 @@ const submitHandler = (e) => {
              <Col>Transaction Type </Col> 
              <Col>Amount</Col>
              <Col>Description</Col>
+             <Col>Done?</Col>
 
             </Row>
            </ListGroup.Item>
@@ -276,7 +277,13 @@ const submitHandler = (e) => {
              <Col>DEBIT </Col>
              <Col>₦ {(order.itemsPrice * (1) ).toFixed(2)} </Col>
              <Col>Purchase of goods from bridgeway co-operative</Col>
-
+            <Col>
+             <Form.Check 
+              type={'checkbox'}
+              id={`default-checkbox`}
+            
+             />
+             </Col>
             </Row>
            </ListGroup.Item>
 
@@ -317,6 +324,13 @@ const submitHandler = (e) => {
              <Col>CREDIT </Col>
              <Col>₦ {(order.itemsPrice -(order.orderItems.reduce((acc, item)=>acc +(item.price*item.qty),0) - order.orderItems.reduce((acc, item)=>acc +(item.price*item.promisedQty),0)) - (18/19 *order.orderItems.reduce((acc, item)=>acc +(item.price*item.promisedQty),0)) ).toFixed(2)} </Col>
              <Col>Percentage on sale of goods from Bridgeway-cooperative</Col>
+             <Col>
+             <Form.Check 
+              type={'checkbox'}
+              id={`default-checkbox`}
+            
+             />
+             </Col>
             </Row>
            </ListGroup.Item>}
 
@@ -330,6 +344,13 @@ const submitHandler = (e) => {
              <Col>CREDIT</Col>
              <Col>₦ {((18/19) * item.price  * item.promisedQty ).toFixed(2)} </Col>
              <Col> Payment for goods sold on Bridgeway-cooperative.</Col>
+             <Col>
+             <Form.Check 
+              type={'checkbox'}
+              id={`default-checkbox`}
+            
+             />
+             </Col>
             </Row>
            </ListGroup.Item>
            ))}
@@ -345,6 +366,13 @@ const submitHandler = (e) => {
              <Col>CREDIT </Col>
              <Col>₦ {(order.orderItems.reduce((acc, item)=>acc +(item.price*item.qty),0) - order.orderItems.reduce((acc, item)=>acc +(item.price*item.promisedQty),0) ).toFixed(2)} </Col>
              <Col>Refund on goods requested but not delivered.</Col>
+             <Col>
+             <Form.Check 
+              type={'checkbox'}
+              id={`default-checkbox`}
+            
+             />
+             </Col>
             </Row>
            </ListGroup.Item>}
       
