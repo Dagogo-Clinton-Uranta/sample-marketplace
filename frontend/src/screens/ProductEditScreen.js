@@ -179,6 +179,10 @@ console.log(productDetails)
                      {/*the value of form control is form control from the state. You need to read about form group from react bootstrap*/}
              </Form.Group>
 
+             <br/>
+         <p style={{color:'red'}}>NOTE: PLEASE CHECK YOUR STOCK REGULARLY, TO UPDATE IT , AS PRODUCTS THAT HAVE NO STOCK ARE NOT DISPLAYED ON THE MARKETPLACE </p>
+           <br/>
+
  {/*7*/}        <Form.Group controlId='category'>
 
                 <Form.Label>  Category </Form.Label>

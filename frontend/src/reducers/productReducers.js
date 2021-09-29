@@ -18,6 +18,10 @@
          PRODUCT_UPDATE_SUCCESS,
          PRODUCT_UPDATE_FAILURE,
          PRODUCT_UPDATE_RESET,
+         PRODUCT_STOCK_UPDATE_REQUEST,
+         PRODUCT_STOCK_UPDATE_SUCCESS,
+         PRODUCT_STOCK_UPDATE_FAILURE,
+         PRODUCT_STOCK_UPDATE_RESET,
          PRODUCT_CREATE_REVIEW_REQUEST,
          PRODUCT_CREATE_REVIEW_SUCCESS,
          PRODUCT_CREATE_REVIEW_FAILURE,
@@ -94,6 +98,23 @@ export const  productUpdateReducer = (state={ product:{}},action) => {
     case PRODUCT_UPDATE_FAILURE: return{ loading:false, error:action.payload}
 
     case PRODUCT_UPDATE_RESET: return{product:{} }
+
+    default: return state
+
+  }
+}
+
+
+
+export const  productUpdateStockReducer = (state={ product:{}},action) => {
+  switch(action.type){
+    case PRODUCT_STOCK_UPDATE_REQUEST : return {loading:true,...state}
+
+    case PRODUCT_STOCK_UPDATE_SUCCESS: return{ loading:false, success:true, product:action.payload}
+
+    case PRODUCT_STOCK_UPDATE_FAILURE: return{ loading:false, error:action.payload}
+
+    case PRODUCT_STOCK_UPDATE_RESET: return{product:{} }
 
     default: return state
 

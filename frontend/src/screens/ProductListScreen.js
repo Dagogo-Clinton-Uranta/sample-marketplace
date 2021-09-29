@@ -133,10 +133,22 @@ if(window.confirm('Are you sure you want to delete this item ?')){ //window.conf
         </Row>
         <Row>
           
-       This is a list of all products on the marketplace. You may edit, create or delete them here. Simply Click the 'edit' button to
-       make changes to a product, or 'delete' to remove it from the list of products you sell on this platform
+       This is a list of all products on the marketplace. You may edit ,create or delete them here.You may also change product stock here. Simply Click the 'edit' button to
+       make changes to a product(including updating it's stock), or 'delete' to remove it from the list of products you sell on this platform
        </Row>
        </ListGroup.Item>
+
+      
+
+
+       <ListGroup.Item>
+         
+        <Row  style={{backgroundColor:'rgba(255, 0, 0, 0.2)'}} >
+          
+      Items in red are products that are out of stock , please click edit and change the number for "count in stock". Also ensure that you are able to commit this number to our customers.
+      </Row> 
+       </ListGroup.Item>
+
        </ListGroup>
        </Card>
      
@@ -175,7 +187,7 @@ if(window.confirm('Are you sure you want to delete this item ?')){ //window.conf
          </thead>
          <tbody>
           {products.map(product => (
-            <tr key={product._id}>
+            <tr key={product._id} style={{backgroundColor:product.countInStock===0 && 'rgba(255, 0, 0, 0.2)'}}>
               <td>{product._id}</td>
               <td>{product.name}</td>
               <td>₦ {(product.price*20/19).toFixed(2)}</td>

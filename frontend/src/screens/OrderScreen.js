@@ -215,8 +215,16 @@ const submitHandler = (e) => {
          
       </> }
 
-         {order.isDelivered ?<Message variant='success'>Dispatched on {order.deliveredAt.substring(0,10)}</Message> :
-                        <Message variant='danger'> Not dispatched.</Message> }
+      {order.isDelivered && <Message variant='success'>Dispatched on {order.deliveredAt.substring(0,10)}</Message> }
+                        
+
+         {!order.isPaid  &&
+                        <Message variant='warning'> Processing...</Message> }
+
+{order.insufficientFunds && <Message variant='danger'>Insufficient funds , please put money in your account and indicate by clicking the button below</Message> }
+                         
+
+
 
           </ListGroup.Item>
 

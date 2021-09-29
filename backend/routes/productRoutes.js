@@ -1,7 +1,7 @@
 import express from 'express'
 //const express= require('express')
 
-import {getProducts, getProductById,deleteProduct,createProduct, updateProduct,getTopProducts,createProductReview} from '../controllers/productControllers.js'
+import {getProducts, getProductById,deleteProduct,createProduct, updateProduct,getTopProducts,createProductReview, updateProductStockCount} from '../controllers/productControllers.js'
 //const {getProducts, getProductById,deleteProduct,createProduct, updateProduct,getTopProducts,createProductReview}= require('../controllers/productControllers.js')
 
 import {protect,admin} from '../Middleware/authMiddleware.js'
@@ -13,6 +13,7 @@ const router = express.Router()
 //@GET api/products/
 //@Public access
 //@this is good commenting syntax,leting others know the routes
+router.route('/ordermade').put(protect/*,admin*/,updateProductStockCount)
 router.route('/').get(getProducts).post(protect,createProduct)
 router.route('/:id/reviews').post(protect,createProductReview)
 router.get('/top',getTopProducts)
@@ -22,6 +23,7 @@ router.get('/top',getTopProducts)
 //@Fetch single product
 //@GET api/products/:id
 //@@Public access
+
 
 router.route('/:id').get(getProductById).delete(protect,admin,deleteProduct).put(protect/*,admin*/,updateProduct)
                        /*the admin you commented out above is your defence against casual

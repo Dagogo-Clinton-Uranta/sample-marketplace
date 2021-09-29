@@ -230,7 +230,7 @@ const deliverHandler = ()=> {
 
 
 
-           {order.isPaid && (new Date(order.paidAt) <= new Date(new Date().getTime() - 48*60 * 60 * 1000)) && <ListGroup.Item>
+           {order.isPaid && (new Date(order.paidAt) <= new Date(new Date().getTime() - /*48*60 * */60 * 1000)) && <ListGroup.Item>
             <p style={{color:'red'}}>NOTE: THESE TRANSACTIONS ARE TO BE CARRIED OUT ON BANK ONE </p>
             
             <p>1.) PLEASE PERFORM THE FOLLOWING TRANSACTIONS FROM A HOLDING ACCOUNT</p>
@@ -308,7 +308,7 @@ const deliverHandler = ()=> {
             </Row>
            </ListGroup.Item>
 
-           {order.isPaid &&  (new Date(order.paidAt) <= new Date(new Date().getTime() - 48*60 * 60 * 1000)) && <ListGroup.Item>
+           {order.isPaid &&  (new Date(order.paidAt) <= new Date(new Date().getTime() -/* 48*60 **/ 60 * 1000)) && <ListGroup.Item>
             <Row>
 
              <Col>Bridgeway Co-operative: </Col>
@@ -328,7 +328,7 @@ const deliverHandler = ()=> {
            </ListGroup.Item>}
 
            
-      {order.isPaid && (new Date(order.paidAt) <= new Date(new Date().getTime() - 48*60 * 60 * 1000)) && order.orderItems.map((item, index) =>(
+      {order.isPaid && (new Date(order.paidAt) <= new Date(new Date().getTime() - /*48*60 **/ 60 * 1000)) && order.orderItems.map((item, index) =>(
             <ListGroup.Item  key ={index}>
             <Row>
 
@@ -350,7 +350,7 @@ const deliverHandler = ()=> {
 
 
 
-{order.isPaid && (new Date(order.paidAt) <= new Date(new Date().getTime() - 48*60 * 60 * 1000)) && (order.orderItems.reduce((acc, item)=>acc +(item.price*item.promisedQty),0) !== order.orderItems.reduce((acc, item)=>acc +(item.price*item.qty),0) ) && <ListGroup.Item>
+{order.isPaid && (new Date(order.paidAt) <= new Date(new Date().getTime() - /*48*60 **/ 60 * 1000)) && (order.orderItems.reduce((acc, item)=>acc +(item.price*item.promisedQty),0) !== order.orderItems.reduce((acc, item)=>acc +(item.price*item.qty),0) ) && <ListGroup.Item>
             <Row>
 
              <Col>{order.user.name} </Col>
@@ -381,7 +381,7 @@ const deliverHandler = ()=> {
             </Row>
       </ListGroup.Item>*/}
 
-        {order.isPaid && (new Date(order.paidAt) <= new Date(new Date().getTime() - 48*60 * 60 * 1000)) && <ListGroup.Item>
+        {order.isPaid && (new Date(order.paidAt) <= new Date(new Date().getTime() - /*48*60 * */60 * 1000)) && <ListGroup.Item>
             <Row style ={{color:'red'}}>
 
              <Col>TOTAL CREDIT: </Col>
@@ -440,7 +440,7 @@ const deliverHandler = ()=> {
     </center>)}
 
     
-    {order.isPaid && (new Date(order.paidAt) <= new Date(new Date().getTime() - 48*60 * 60 * 1000)) && !order.merchantsCredited &&
+    {order.isPaid && (new Date(order.paidAt) <= new Date(new Date().getTime() - /*48*60 **/ 60 * 1000)) && !order.merchantsCredited &&
        
        ( <center>
           <ListGroup > 
@@ -468,7 +468,7 @@ const deliverHandler = ()=> {
          <Message variant='danger'>Order NOT Paid</Message>
         )
         }
-        {order && order.isPaid && (new Date(order.paidAt) < new Date(new Date().getTime() - 48 * 60 * 60 * 1000))  && !order.merchantsCredited ?(
+        {order && order.isPaid && (new Date(order.paidAt) < new Date(new Date().getTime() - /*48 * 60 **/ 60 * 1000))  && !order.merchantsCredited ?(
         successCredit? <Message variant='success'>All merchants credited.</Message>:
           <Message variant='danger'>transacations not carried out</Message>
       

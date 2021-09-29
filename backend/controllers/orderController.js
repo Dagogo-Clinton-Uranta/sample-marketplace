@@ -36,7 +36,7 @@ const addOrderItems = asyncHandler(async (req,res)=>{
    
    const createdOrder = await Order.create(order)
     
-   console.log(createdOrder)
+   /*console.log(createdOrder)*/
      
     res.status(201).json(createdOrder)
  }

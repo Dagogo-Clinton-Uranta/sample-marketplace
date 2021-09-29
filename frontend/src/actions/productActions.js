@@ -16,6 +16,9 @@ import {PRODUCT_LIST_REQUEST,
         PRODUCT_UPDATE_REQUEST,
         PRODUCT_UPDATE_SUCCESS,
         PRODUCT_UPDATE_FAILURE,
+        PRODUCT_STOCK_UPDATE_REQUEST,
+        PRODUCT_STOCK_UPDATE_SUCCESS,
+        PRODUCT_STOCK_UPDATE_FAILURE,
         PRODUCT_CREATE_REVIEW_REQUEST,
         PRODUCT_CREATE_REVIEW_SUCCESS,
         PRODUCT_CREATE_REVIEW_FAILURE,
@@ -194,6 +197,42 @@ export const updateProduct  = (product) => async (dispatch,getState)=> {
   }
    catch(error){
      dispatch({type:PRODUCT_UPDATE_FAILURE,
+               payload: error.response && error.response.data.message?
+                error.response.data.message:error.message })
+   }
+}
+
+
+export const updateCountInStock  = (productIdArray,qtyArray) => async (dispatch,getState)=> {
+
+  try {
+    dispatch({
+      type: PRODUCT_STOCK_UPDATE_REQUEST
+
+    })
+
+     const {userLogin:{userInfo}} = getState()
+    //we do config cus we wanna send he headers a content type of application/json
+    const config = {
+      headers:{
+        'Content-Type':'application/json',
+        Authorization:`Bearer ${userInfo.token}`
+      }
+    }
+   const{data} = await axios.put(`/api/products/ordermade`,{productIdArray,qtyArray},config) 
+    //i'm gonna take a stab here and say that the third argument for axios is for setting header property
+
+    dispatch({
+              type: PRODUCT_STOCK_UPDATE_SUCCESS,
+              payload:data
+            })
+               /*this data variable is file specific*/
+
+
+
+  }
+   catch(error){
+     dispatch({type:PRODUCT_STOCK_UPDATE_FAILURE,
                payload: error.response && error.response.data.message?
                 error.response.data.message:error.message })
    }

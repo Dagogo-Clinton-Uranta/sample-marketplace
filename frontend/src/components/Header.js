@@ -31,10 +31,16 @@ const Header = () => {
 
   const orderList = useSelector(state => state.orderList);
   const {loading:loadingOrders, error:errorOrders,orders } = orderList
+
+  const productList = useSelector(state => state.productList);
+  const {loading:loadingProducts, error:errorProducts,products,page,pages} = productList
  
   const newOrders =orders && orders.some((order)=>{return order.isDelivered ===false})?true:false
   const numberOfOrders = orders? orders.filter((order)=>{return order.isDelivered ===false}).length:''
   const newVendorOrders = orders && orders.filter((order)=>(order.orderItems.filter((item) => (item.vendor === userInfo.name)).some((item) => (item.promisedQty !== item.qty)))).length ===0? false :true
+
+  const lowStock = products && products.filter((product) =>(product.countInStock === 0)).length === 0 ? false :true
+  const numberOfLowStock = products? products.filter((product) =>(product.countInStock === 0)).length :''
 
   //THE LOGIC FOR SOME ORDERS, THAT WORKED, THE ONE ABOVE FAILED .
   /*const newVendorOrders = orders && (orders.filter((order)=>(order.orderItems.filter((item) => (item.vendor === userInfo.name)).every((item) => (item.promisedQty !== item.qty))?        ))):"DIDNT LOAD ORDERS"*/
@@ -138,12 +144,12 @@ const Header = () => {
 
 {userInfo && userInfo.isMerchant && (
   <>
-    <span>{(userInfo && userInfo.isMerchant && (newVendorOrders)) && <i className='fas fa-circle' style={{color:'red', fontSize:'8px', marginLeft:'15px' , marginRight:'-1px', marginTop:'14px'}}></i>}</span>
+    <span>{userInfo && userInfo.isMerchant && (newVendorOrders||lowStock) && <i className='fas fa-circle' style={{color:'red', fontSize:'8px', marginLeft:'15px' , marginRight:'-1px', marginTop:'14px'}}></i>}</span>
     <NavDropdown title ={'Merchant Functions'} id='username'>
 
 {/*i need to make a merchant token, so that merchants have access to a productlist distinct of admins*/}
 {/*1*/}      <LinkContainer to='/admin/productlist'>
-            <NavDropdown.Item >Products</NavDropdown.Item>
+            <NavDropdown.Item >Products { (userInfo && userInfo.isMerchant && numberOfLowStock > 0) && `(${numberOfLowStock})`}</NavDropdown.Item>
            </LinkContainer> 
 
 {/*2*/}      <LinkContainer to='/admin/orderlist'>
@@ -166,7 +172,7 @@ const Header = () => {
           </LinkContainer>
 
 {/*2*/}      <LinkContainer to='/admin/productlist'>
-            <NavDropdown.Item >Products</NavDropdown.Item> 
+            <NavDropdown.Item >Products </NavDropdown.Item> 
            </LinkContainer>
 
 {/*3*/}      <LinkContainer to='/admin/orderlist'>

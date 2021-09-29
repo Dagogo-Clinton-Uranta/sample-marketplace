@@ -27,7 +27,7 @@ let products;
  }:{}
  
  // I am instructing my getProducts controller to tune it's search, based on if there's a vendor name or not 
- vendorName !==''?(
+ vendorName !==''?( /* YOU ARE HERE -- I WANT TO PUT WHERE COUNT IN STOCK IS GREATER THAN ZERO  */
    count = await Product.countDocuments({...keyword, vendor:vendorName}), 
   products = await Product.find({...keyword, vendor:vendorName}).limit(pageSize).skip(pageSize *(page-1))) :
 (count = await Product.countDocuments({...keyword}),
@@ -126,6 +126,28 @@ const updateProduct = asyncHandler(async (req,res)=>{
 })
 
 
+//@desc  update a products' count in stock because an order was made
+//@route PUT /api/products/ordermade
+//@access Public
+const updateProductStockCount = asyncHandler(async (req,res)=>{
+  res.header("Access-Control-Allow-Origin","*")
+  const {productIdArray,qtyArray} = req.body
+    
+  console.log(productIdArray,qtyArray)
+
+ for(let i= 0;i < productIdArray.length;i++){
+  const objectId = new mongoose.Types.ObjectId(productIdArray[i])
+  const product = await Product.findById(objectId)
+  
+   await Product.findOneAndUpdate({_id:objectId},{$set:{countInStock: product.countInStock-qtyArray[i] }}, { useFindAndModify: false})
+   console.log('looping')
+     } 
+   
+
+})
+
+
+
 
 
 //@desc  Create new review
@@ -198,7 +220,7 @@ const getTopProducts = asyncHandler(async (req,res)=>{
 })
 
 
-export {getProducts, getProductById,deleteProduct, createProduct, updateProduct, createProductReview ,getTopProducts}
+export {getProducts, getProductById,deleteProduct, createProduct, updateProduct, updateProductStockCount, createProductReview ,getTopProducts}
 //exports.getProducts = getProducts
 //exports.getProductById = getProductById
 //exports.deleteProduct = deleteProduct

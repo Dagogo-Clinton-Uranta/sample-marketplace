@@ -98,6 +98,59 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
 
       
 
+{userInfo.isAdmin && 
+        <>
+        <Card>
+         <ListGroup>
+           <ListGroup.Item>
+            <Row> <h5>INSTRUCTIONS:</h5></Row>
+            
+             <Row>
+         <p>1.) Please prompt the teller to debit the customer so that the merchant and delivery deadlines may be recieved</p>      
+       <p>2.) Check the merchant's deadline and arrange for a dispatch rider to pick up items from the merchants' various addresses, after the deadline, for each order. </p>
+        <p>3.)Ensure a dispatch rider is sent to the customer who made the order on , or before each delivery deadline.  </p>
+        <p>4.) If you are unsure of what to do, please refer to the comprehensive instructions in your profile section</p>
+        <p> 5.) Click on 'details' for each order,to view order items and the respective merchants' committment to fulfill. You may print the  order list for dispatch riders and customers after clicking details. </p>
+         <p>6.)Please note the colour code below: </p>
+            </Row>
+            
+            <hr/>
+            
+            <Row><h5>Colour code:</h5></Row>
+         </ListGroup.Item>
+          
+         <ListGroup.Item>
+           <Row>
+        <Col style={{backgroundColor:'rgba(0, 255, 0, 0.2)'}}>   Green - New orders, please ensure they have been paid for by the teller, so that merchants may begin processing them.  </Col>
+        <Col style={{backgroundColor:'rgba(233, 212, 96, 0.4)'}} > Yellow - Some Merchants have viewed and committed to providing their items, the order may still be put forth for delivery, but customers should be informed on missing items. </Col>
+          </Row>
+       </ListGroup.Item>
+
+
+       <ListGroup.Item>
+           <Row>
+        <Col style={{backgroundColor:'rgba(255, 0, 0, 0.2)'}}>   Red - Administrator (You) have not dispatched the order before the expected delivery date.  </Col>
+        <Col style={{backgroundColor:'rgba(0, 0, 255, 0.2)'}}>Blue - All Merchants have committed to providing  their items to the dispatch rider, upon his arrival  </Col>
+          </Row>
+       </ListGroup.Item>
+
+
+
+       <ListGroup.Item>
+           <Row>
+        
+        <Col style={{backgroundColor:'none'}} >If the order has no colour associated with it then you have committed to fulfilling all items,and have done so before the deadline. No further action needs to be taken. The order will be removed from the list after the deadline.</Col>
+          </Row>
+       </ListGroup.Item>
+        
+         </ListGroup>
+
+         
+         </Card>
+          <br/>
+          <br/>
+          </>
+        }
 
 
 
@@ -106,14 +159,8 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
 
 
 
-
-        {userInfo.isAdmin && <h5> The colour codes below indicate
-           the status of the order. They will change based on merchant/administrator actions </h5>}
-        {userInfo.isAdmin && <p  style={{backgroundColor:'rgba(0, 255, 0, 0.2)', width:'50%'}}> Green - New orders, not checked by respective merchants </p>}
-        {userInfo.isAdmin && <p style={{backgroundColor:'rgba(233, 212, 96, 0.4)',width:'50%'}}> Yellow - Some Merchants have viewed and committed to delivering their items, the order may still be put forth for delivery, but customers should be informed on missing items </p>}
-        {userInfo.isAdmin && <p style={{backgroundColor:'rgba(0, 0, 255, 0.2)',width:'50%'}}> Blue - All Merchants have committed to delivering their items </p>}
-        {userInfo.isAdmin && <p > No Colour - Order has been dealt with and delivered, it may be deleted now </p>}
-        {userInfo.isAdmin && <p style={{backgroundColor:'rgba(255, 0, 0, 0.2)',width:'50%'}}> Red - Administrator has not dispatched the order before the expected delivery date </p>}
+        {userInfo.isAdmin && <h2> Today's Date: {new Date().toLocaleDateString()}</h2>}
+        
         {loading ? <Loader/>:error ? <Message variant='danger'>{error}</Message>:(
 
         <Table striped border hover responsive className ='table-sm'>
@@ -122,8 +169,10 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
            <th>ID</th>
            <th>USER</th>
            <th>PLACED ON</th>
+           {userInfo.isAdmin && <th>MERCHANTS' DEADLINE</th>}
+           {userInfo.isAdmin && <th>DELIVERY DEADLINE</th>}
            {userInfo.isAdmin ?(<th>TOTAL</th>):(<th>RECEIVABLE</th> )}{/*AS PER TOTAL PRICE*/}
-           {/*<th>PAID</th>*/}
+           {userInfo.isAdmin && <th>PAID</th>}
            <th>DELIVERED</th>
            <th></th>
          </tr>
@@ -147,11 +196,13 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
               <td>{order._id}</td>
               <td>{order.user && order.user.name}</td>
               <td>{new Date(order.createdAt).toLocaleDateString()}</td>
+              {userInfo.isAdmin && <td style = {{color: new Date() >= new Date(new Date(order.paidAt).getTime() + 24 * 60 * 60 * 1000)  &&'rgba(255, 0, 0,1)'}}>{order.isPaid? new Date(new Date(order.paidAt).getTime() + 48*60*60*1000).toLocaleDateString():'contact Teller'}</td>}
+              {userInfo.isAdmin && <td style = {{color: new Date() >= new Date(new Date(order.paidAt).getTime() + 72 * 60 * 60 * 1000) &&'rgba(255, 0, 0,1)'}}>{order.isPaid? new Date(new Date(order.paidAt).getTime() + 96*60*60*1000).toLocaleDateString():'contact Teller'}</td>}
               <td>₦ {userInfo.isAdmin ? (order.totalPrice) : (((order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.qty),0)))*18/19).toFixed(2)}</td>
 
-              {/*<td>{order.isPaid ? (order.paidAt.substring(0,10)): there used to be curly braces around order.paidAt 
+              {userInfo.isAdmin && <td>{order.isPaid ? (<i className='fas fa-check' style={{color:'green'}}></i>): 
                 (<i className='fas fa-times' style={{color:'red'}}></i>)}
-              </td>*/}
+              </td>}
 
               <td>
                 {order.isDelivered ? (order.deliveredAt.substring(0,10)): /*there used to be curly braces around order.deliveredAt */

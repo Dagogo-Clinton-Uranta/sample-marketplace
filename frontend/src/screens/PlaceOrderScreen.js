@@ -6,6 +6,7 @@ import { Button, Row ,Col, Form , ListGroup, Image, Card, FormControl} from 'rea
 import {useDispatch, useSelector} from 'react-redux'
 import Message from '../components/Message.js'
 
+import {updateCountInStock} from '../actions/productActions.js'
 import {createOrder} from '../actions/orderActions.js'
 import {answerVerify} from '../actions/userActions.js'
 import CheckoutSteps from '../components/CheckoutSteps.js'
@@ -15,10 +16,12 @@ import CheckoutSteps from '../components/CheckoutSteps.js'
 const PlaceOrderScreen =  ({history}) => {
    const dispatch = useDispatch()
    const cart = useSelector(state => state.cart)
+   
+
    const userLogin = useSelector(state => state.userLogin)
    const {loading,error:error2,userInfo} = userLogin
    
-  console.log(cart)
+  
 
    const clientId = userInfo._id
    const userVerify = useSelector(state => state.userVerify)
@@ -30,6 +33,8 @@ const PlaceOrderScreen =  ({history}) => {
 // confirmedStates.confirmedStates is initially empty and that breaks the whole thing -confirmedState that you just extracted, is an object mind you, so its confirmedState.confirmedState
 
   //STATE REGARDING USER CONFIRMATION
+  const [productsOrderedArray,setProductsOrderedArray ] = useState([])
+ const  [productQuantitiesArray,setProductQuantitiesArray ] = useState([])
   const [consentQuestion, setConsentQuestion] =useState('hidden') 
   const [confirmQuestion ,setConfirmQuestion]=useState('')
   const [confirmedStates,setConfirmedStates] = useState('')
@@ -40,6 +45,8 @@ const PlaceOrderScreen =  ({history}) => {
   const [proceed,setProceed] = useState('')
   /*THE FACE OF THE BUTTON UNDER THE CONFIRM SECTION 
   i have put this in the use effect, lets see if it works well*/
+  console.log(productsOrderedArray, productQuantitiesArray)
+
 
   let buttonLabel = 'Send'
   if(confirmedStates === 'true'){
@@ -68,12 +75,18 @@ const PlaceOrderScreen =  ({history}) => {
   useEffect(()=>{  
     if(!userInfo){
     history.push(`/login`)
+    }
 
     if(userInfo && userInfo.isTeller){
       history.push('/teller/transactionlist')
    }
-    }
-      
+    
+   
+   if(cart){
+    setProductsOrderedArray(cart.cartItems.map((item)=>(item.product))) 
+    setProductQuantitiesArray(cart.cartItems.map((item)=>(item.qty)))
+   }
+   
      
     if( confirmedState && confirmedState.confirmedState === 'true'){ 
     /*dispatch(createOrder({
@@ -179,7 +192,7 @@ const submitHandler = (e) => {
       totalPrice:cart.totalPrice
       
     }))
-      
+      dispatch(updateCountInStock(productsOrderedArray,productQuantitiesArray))  
       
    }
   else if(confirmedStates === 'false'){
