@@ -18,7 +18,7 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
   const [password,setPassword] = useState('')
   const [confirmPassword,setConfirmPassword] = useState('')
   const [isMerchant,setIsMerchant] = useState(false)
-  const [pickupAddress, setPickupAddress] =useState('')
+  const [pickupAddress,setPickupAddress] =useState('hello')
   const [momFirstName,setMomFirstName] = useState('is a merchant')
   const [shoeSize,setShoeSize] = useState('is a merchant')
   const [closestFriend,setClosestFriend] = useState('is a merchant')
@@ -45,7 +45,7 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
      console.log(isMerchant)
      console.log(momFirstName,shoeSize,closestFriend,childhoodStreet,firstEmployment)
     if(isMerchant===true ){
-       setPickupAddress('') 
+       /*setPickupAddress('') */
    setMomFirstName('is a merchant') 
    setShoeSize('is a merchant') 
    setClosestFriend('is a merchant') 
@@ -74,8 +74,8 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
         setMessage('Please Make sure to fill in all entries!')
        }
        else{
-         //this is where we want to to call our action to dispatch login
-       dispatch(register(name,nuban, email,password, momFirstName,shoeSize,closestFriend,childhoodStreet,firstEmployment, pickupAddress,isMerchant)) /* follow the trail of this register dispatch to see where it leads  */
+         //the order in which these things are sent is IMPORTANT
+       dispatch(register(name,email,nuban, password, momFirstName,shoeSize,closestFriend,childhoodStreet,firstEmployment, pickupAddress,isMerchant)) /* follow the trail of this register dispatch to see where it leads  */
        }
 
   }
@@ -111,7 +111,7 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
          </Form.Group>
          </fieldset>
 
-           {/*4*/ isMerchant &&  
+           {/*4*/ isMerchant && 
            
               <ListGroup>
               <ListGroup.Item>
@@ -119,7 +119,7 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
            <Form.Group controlId='pickup-address'>
 
           <Form.Label> What is your address (for pickup of goods)? </Form.Label>
-          <Form.Control type='input' placeholder="enter pickup location" value={pickupAddress} onChange={(e)=>setPickupAddress(e.target.value)}></Form.Control>
+          <Form.Control type='input' placeholder="enter pick up location" value={pickupAddress} onChange={(e)=>setPickupAddress(e.target.value)}></Form.Control>
            
          </Form.Group> 
           </ListGroup.Item>

@@ -273,13 +273,17 @@ const registerUser = asyncHandler(async (req, res) => {
      password}) */ //res.send accepts an object i think and not just variables, take note...hese are part of the things that you have to research on yor own
 
   const userExists = await User.findOne({ email: email })
-  if (userExists) {
+  const accountInUse = await User.findOne({nuban:nuban})
+
+  if (userExists || accountInUse) {
     res.status(400)
-    throw new Error('user already exists!')
+    throw new Error('This user already exists! Check your details and enter them correctly.')
   }
 
   const account = await Account.findOne({},{details:{$elemMatch:{Nubanno:nuban}},createdAt:1,time:1}/*,{createdAt:1}*/,{ useFindAndModify: false})
-  
+     
+  console.log(nuban)
+
   const accountNumberCheck = account.details.length
 
 
