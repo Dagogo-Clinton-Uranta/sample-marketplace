@@ -22,7 +22,7 @@ const ProductComponent = ({product}) => {
 
 
     <Card.Text as='div'>
-    <span style={{ fontSize:'0.8rem'}}><Rating value={product.rating} text={`${product.numReviews} reviews`} color='#f8e825'/></span>
+    <span style={{ fontSize:'0.8rem'}}><Rating value={product.rating} text={`${product.numReviews} review(s)`} color='#f8e825'/></span>
      {/*theres gonna be a rating component eventually, and its there now*/}
     </Card.Text>
 
@@ -31,7 +31,7 @@ const ProductComponent = ({product}) => {
      </Card.Text>
      
       <Card.Text as='h6'>
-      Vendor: {product.vendor}
+      Vendor: {'Bridgeway'}
   </Card.Text> 
 
   </Card.Body>

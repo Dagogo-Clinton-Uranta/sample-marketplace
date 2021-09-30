@@ -292,7 +292,7 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error('THE ACCOUNT NUMBER YOU ENTERED DOES NOT EXIST. PLEASE CHECK YOUR INPUT AND TRY AGAIN !')
   }
 
-  const user = User.create({ //apparently create is syntactic sugar for the save method, since creating entails saving i guess
+  const user = await User.create({ //apparently create is syntactic sugar for the save method, since creating entails saving i guess
     name: name,
     email: email,
     password: password,
@@ -312,27 +312,29 @@ const registerUser = asyncHandler(async (req, res) => {
 
   console.log(user)
 
-  if (user) {
+     const user2 = await User.findOne({email:email ,nuban:nuban}) 
+
+  if (user2) {
     res.status(201).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      nuban:user.nuban,
-      userMessage: user.userMessage,
-      adminMessage: user.adminMessage,
-      isAdmin: user.isAdmin,
-      isTeller:user.isTeller,
-      userMessageNotification:user.userMessageNotification,
-      adminMessageNotification:user.adminMessageNotification,
-      isMerchant: user.isMerchant,
-      token: generateToken(user._id),
-      pickupAddress:user.pickupAddress,
-      momFirstName:user.momFirstName,
-      shoeSize:user.shoeSize,
-      closestFriend:user.closestFriend,
-      childhoodStreet:user.childhoodStreet,
-      firstEmployment:user.firstEmployment,
-      notes:user.notes
+      _id: user2._id,
+      name: user2.name,
+      email: user2.email,
+      nuban:user2.nuban,
+      userMessage: user2.userMessage,
+      adminMessage: user2.adminMessage,
+      isAdmin: user2.isAdmin,
+      isTeller:user2.isTeller,
+      userMessageNotification:user2.userMessageNotification,
+      adminMessageNotification:user2.adminMessageNotification,
+      isMerchant: user2.isMerchant,
+      token: generateToken(user2._id),
+      pickupAddress:user2.pickupAddress,
+      momFirstName:user2.momFirstName,
+      shoeSize:user2.shoeSize,
+      closestFriend:user2.closestFriend,
+      childhoodStreet:user2.childhoodStreet,
+      firstEmployment:user2.firstEmployment,
+      notes:user2.notes
     })
   } else {
     res.status(400)

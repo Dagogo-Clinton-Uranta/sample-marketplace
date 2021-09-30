@@ -12,10 +12,11 @@ const ProductCarousel = () => {
    const productTopRated = useSelector(state => state.productTopRated)
    const {loading,error,products } = productTopRated
 
-     useEffect(()=>{
+    /* useEffect(()=>{
       dispatch(listTopProducts())
-    },[dispatch])  //useEffect takes a function as it's first argument, don't forget
+    },[dispatch])*/ 
 
+    
     return loading ? <Loader/>:error?<Message variant='danger'>{error}</Message> :(
       <>
        <Carousel variant="dark" fade pause='hover' className="bg-dark carousel-main">

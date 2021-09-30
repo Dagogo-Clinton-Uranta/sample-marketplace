@@ -28,8 +28,8 @@ let products;
  
  // I am instructing my getProducts controller to tune it's search, based on if there's a vendor name or not 
  vendorName !==''?( /* YOU ARE HERE -- I WANT TO PUT WHERE COUNT IN STOCK IS GREATER THAN ZERO  */
-   count = await Product.countDocuments({...keyword, vendor:vendorName,countInStock:{$gt:0}}), 
-  products = await Product.find({...keyword, vendor:vendorName,countInStock:{$gt:0}}).limit(pageSize).skip(pageSize *(page-1))) :
+   count = await Product.countDocuments({...keyword, vendor:vendorName}), 
+  products = await Product.find({...keyword, vendor:vendorName}).limit(pageSize).skip(pageSize *(page-1))) :
 (count = await Product.countDocuments({...keyword,countInStock:{$gt:0}}),
 products = await Product.find({...keyword, countInStock:{$gt:0}}).limit(pageSize).skip(pageSize *(page-1)))
 

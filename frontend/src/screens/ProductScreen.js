@@ -70,11 +70,13 @@ const previousPageHandler = () => {
 
 
 const submitHandler =(e) =>{
-  e.preventDefault() //since submit handler is being called inside a form
-  dispatch(createProductReview(match.params.id,{
+  e.preventDefault() //since submit handler is being called inside a form and the default is to refresh the page
+ 
+  if(userInfo.isMerchant||userInfo.isAdmin){window.alert('Only customers may write reviews!')}
+  else{dispatch(createProductReview(match.params.id,{
     rating,
     comment //both rating and comment are coming from local/comment state
-  }))
+  }))}
 }
 
   
@@ -119,7 +121,7 @@ const submitHandler =(e) =>{
                  <Row>
                    <Col>Vendor:</Col>
                    <Col>
-                    <strong> {product.vendor}</strong>
+                    <strong> {'Bridgeway'}</strong>
                    </Col>
                  </Row>
                </ListGroup.Item>
@@ -137,7 +139,7 @@ const submitHandler =(e) =>{
                  <Row>
                    <Col>Status:</Col>
                    <Col>
-                    <strong>{product.countInStock > 4 ?'In Stock':product.countInStock <= 3 ?'Few Left !!':product.countInStock === 0 ? 'Out of Stock':'Currently being restocked' /*this currenty being restocked is not the right thing, you just put it there as filler, till the need comes to fix it */}</strong>
+                    <strong>{product.countInStock >= 4 ?'In Stock': (product.countInStock <=3 && product.countInStock >0  )?'Few Left !!':product.countInStock === 0 ? 'Out of Stock':'Currently being restocked' /*this currenty being restocked is not the right thing, you just put it there as filler, till the need comes to fix it */}</strong>
 
                    </Col>
                  </Row>
@@ -176,7 +178,7 @@ const submitHandler =(e) =>{
               <h2>Reviews</h2>
               {product.reviews.length === 0 && <Message>No Reviews </Message>}
               <ListGroup variant="flush">
-               {product.reviews.map(review =>( /*i changed products to product, come bacck here if you're having probs */
+               {product.reviews.map(review =>( /*i changed products to product, come back here if you're having probs */
                  <ListGroup.Item key={review._id}>
                   <strong>{review.name}</strong>
                    <Rating value={review.rating} />

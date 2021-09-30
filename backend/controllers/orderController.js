@@ -52,6 +52,7 @@ const getOrderById = asyncHandler(async (req,res)=>{
    
   const objectId = new mongoose.Types.ObjectId(req.params.id)
   const order = await Order.findById(objectId).populate('user', 'name email nuban') /*name and email in the same quotation */
+ 
   if(order){
      
     res.json(order)
@@ -173,7 +174,7 @@ const updateOrderToDelivered = asyncHandler(async (req,res)=>{
 //@access Private
 const getUnpaidOrders = asyncHandler(async (req,res)=>{
   res.header("Access-Control-Allow-Origin","*")
-  const orders = await Order.find({$or:[{isPaid:false},{$and:[{isPaid:true},{merchantsCredited:false},{paidAt:{$lte:new Date(new Date().getTime() -  /*48 * 60*/1 * 60 * 1000) }}]}]}).sort({createdAt:-1})
+  const orders = await Order.find({$or:[{isPaid:false},{$and:[{isPaid:true},{merchantsCredited:false},{paidAt:{$lte:new Date(new Date().getTime() -  48 * 60 * 60 * 1000) }}]}]}).sort({createdAt:-1})
    
   res.json(orders)
 })
@@ -196,14 +197,25 @@ const getOrders = asyncHandler(async (req,res)=>{
   res.header("Access-Control-Allow-Origin","*")
 
   let orders
+  let vendorName = 'ADMIN IS REQUESTING'
 
-   const vendorName = req.query.vendorName
-   vendorName !==''?(
-   orders = await Order.find({'orderItems.vendor':vendorName}).sort({createdAt:-1}).populate('user','id name nuban'))
-   :(
-     orders = await Order.find({}).sort({createdAt:-1}).populate('user','id name nuban')
+   if(req.query.vendorName !== '' ){ 
+     vendorName = req.query.vendorName 
+    console.log(vendorName)}
+  
+    
+   
+   vendorName === req.query.vendorName ?(
+   orders = await Order.find({ createdAt:{$gte:new Date(new Date().getTime()-96 * 60 * 60 * 1000)}, 'orderItems.vendor':vendorName, isPaid:true }).sort({createdAt:-1}).populate('user','id name nuban')
+  
+   
    )
+   :(vendorName === 'ADMIN IS REQUESTING' &&
+     (orders = await Order.find({createdAt:{$gte:new Date(new Date().getTime()-144 * 60 * 60 * 1000)}}).sort({createdAt:-1}).populate('user','id name nuban'))
+   )
+   
   res.json(orders)
+   
 })
 
 //@desc  update the merchant's quantity they can deliver

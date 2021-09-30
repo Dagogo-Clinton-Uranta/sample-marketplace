@@ -18,7 +18,7 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
   const [password,setPassword] = useState('')
   const [confirmPassword,setConfirmPassword] = useState('')
   const [isMerchant,setIsMerchant] = useState(false)
-  const [pickupAddress,setPickupAddress] =useState('hello')
+  const [pickupAddress,setPickupAddress] =useState('')
   const [momFirstName,setMomFirstName] = useState('is a merchant')
   const [shoeSize,setShoeSize] = useState('is a merchant')
   const [closestFriend,setClosestFriend] = useState('is a merchant')
