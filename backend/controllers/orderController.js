@@ -201,7 +201,7 @@ const getOrders = asyncHandler(async (req,res)=>{
    vendorName !==''?(
    orders = await Order.find({'orderItems.vendor':vendorName}).sort({createdAt:-1}).populate('user','id name nuban'))
    :(
-     orders = await Order.find({}).sort({createdAt:-1}).populate('user','name')
+     orders = await Order.find({}).sort({createdAt:-1}).populate('user','id name nuban')
    )
   res.json(orders)
 })
