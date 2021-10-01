@@ -140,7 +140,7 @@ const updateProductStockCount = asyncHandler(async (req,res)=>{
   const product = await Product.findById(objectId)
   
    await Product.findOneAndUpdate({_id:objectId},{$set:{countInStock: product.countInStock-qtyArray[i] }}, { useFindAndModify: false})
-   console.log('looping')
+  
      } 
    
 

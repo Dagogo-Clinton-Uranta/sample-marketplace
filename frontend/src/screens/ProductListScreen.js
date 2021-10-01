@@ -187,7 +187,7 @@ if(window.confirm('Are you sure you want to delete this item ?')){ //window.conf
          </thead>
          <tbody>
           {products.map(product => (
-            <tr key={product._id} style={{backgroundColor:product.countInStock===0 && 'rgba(255, 0, 0, 0.2)'}}>
+            <tr key={product._id} style={{backgroundColor:product.countInStock<1 && 'rgba(255, 0, 0, 0.2)'}}>
               <td>{product._id}</td>
               <td>{product.name}</td>
               <td>₦ {(product.price*20/19).toFixed(2)}</td>

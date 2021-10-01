@@ -3,6 +3,8 @@ import User from '../models/userModel.js'
 
 import Account from '../models/accountModel.js'
 
+import Product from '../models/productModel.js'
+
 import asyncHandler from 'express-async-handler'
 //const asyncHandler = require('express-async-handler')
 
@@ -188,7 +190,7 @@ const presentAdminMessage = asyncHandler(async (req, res) => {
 
 const verifyUser = asyncHandler(async (req, res) => {
   res.header("Access-Control-Allow-Origin","*")
-  const {clientId ,personalIdQuery, personalIdAnswer, orderTotal } = req.body
+  const {clientId ,personalIdQuery, personalIdAnswer, orderTotal, productIdArray, qtyArray } = req.body
   const objectId = new mongoose.Types.ObjectId(clientId)
   const user = await User.findById(objectId) 
   
@@ -199,7 +201,32 @@ const verifyUser = asyncHandler(async (req, res) => {
     
  const Withdrawablebalance = account.details[0].Withdrawablebalance
 
+ let outOfStockProductsArray = []
 
+
+    
+ 
+
+for(let i= 0;i < productIdArray.length;i++){
+ const productId = new mongoose.Types.ObjectId(productIdArray[i])
+ const product = await Product.findById(productId)
+ 
+ if  (product.countInStock < 1){
+    outOfStockProductsArray.push(product)
+ }
+
+ 
+    } 
+
+    console.log(outOfStockProductsArray[0].name)
+
+
+if(outOfStockProductsArray.length > 0){
+    const outOfStockProduct = outOfStockProductsArray[0].name /*just using the first product in the array is fine, since we need just one to be out of stock before we send it */
+  console.log('it works, we are able to check stock before end')
+  res.send({confirmedState:`We are sorry but ${outOfStockProduct} in your order is now OUT OF STOCK, you must remove it from your cart before you continue `})
+
+}else{
 
  if(Number(Withdrawablebalance) < Number(orderTotal)){
   console.log('it works, there are insufficient funds')
@@ -257,6 +284,7 @@ const verifyUser = asyncHandler(async (req, res) => {
   
 }
  }
+   }
   
 })
 

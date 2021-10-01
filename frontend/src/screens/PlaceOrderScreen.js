@@ -53,7 +53,11 @@ const PlaceOrderScreen =  ({history}) => {
    buttonLabel = 'PLACE ORDER'
   }else if(confirmedStates === 'false'){
      buttonLabel = 'TRY AGAIN'
-  }else if(proceed === 'true'){
+  }else if(confirmedStates === 'no stock'){
+    buttonLabel = 'GO TO CART'
+  }
+  
+  else if(proceed === 'true'){
     buttonLabel = 'ORDER DETAILS'
  }
   else{buttonLabel='Send'}
@@ -71,7 +75,13 @@ const PlaceOrderScreen =  ({history}) => {
    //if your total price is looking funny, just unwrap addDecimals and wrap in .toFixed(2)
     const orderTotal = cart.totalPrice
   
-    
+   
+  /* useEffect(()=>{
+    window.location.reload()
+   },[dispatch])*/ 
+
+
+
   useEffect(()=>{  
     if(!userInfo){
     history.push(`/login`)
@@ -109,6 +119,10 @@ const PlaceOrderScreen =  ({history}) => {
     }else if(confirmedState && confirmedState.confirmedState === 'insufficientFunds'){
       setConfirmedStates('insufficient')
       setConfirmedMessage('insufficient banner')
+    }else if(confirmedState && confirmedState.confirmedState.substring(0,6) === 'We are'){
+      setConfirmedStates('no stock')
+      setConfirmedMessage(confirmedState.confirmedState)
+
     }
    
   
@@ -179,7 +193,7 @@ const submitHandler = (e) => {
   e.preventDefault()
 
   /*I WANT THIS BUTTON TO SERVE MULTIPLE FUNCTIONS, FIRST OF WHICH IS TO CHECK IF THE PERSONS ANSWER MATCHES UP, VIA THE DISPATCH BELOW */
-  if(confirmedStates === ''){dispatch(answerVerify(clientId,personalIdQuery, personalIdAnswer,orderTotal))
+  if(confirmedStates === ''){dispatch(answerVerify(clientId,personalIdQuery, personalIdAnswer,orderTotal,productsOrderedArray,productQuantitiesArray))
   
   }else if(confirmedStates === 'true'){
     dispatch(createOrder({
@@ -211,6 +225,8 @@ const submitHandler = (e) => {
    confirmedState.confirmedState = '' /*you gotta dispatch something here that'll make confirmedState.confirmedState === '' */
   setConfirmedMessage('')
   setConfirmedStates('')
+  }else if(confirmedStates === 'no stock'){
+    history.push('/cart')
   }
 
   /*if(proceed==='true'){
@@ -392,12 +408,18 @@ const submitHandler = (e) => {
               confirmedMessage=== 'insufficient banner'?
               (<Message variant='danger'>Insufficient Balance, please fund your account and try again.</Message>)
               :(
+                confirmedMessage.substring(0,6)=== 'We are'?
+              ( <>
+              <Message variant='danger'>{confirmedMessage}</Message>
+              <Message variant='primary'>{`If you still see this message after doing so, please reload the screen`}</Message>
+              </>)
+                :(
               proceed==='true'?(<Message variant='success'>Order Placed!</Message>):(
                 confirmedMessage === 'red banner'?
             (<Message variant='danger'>Not verified. </Message>):
               (<Form.Control as ="textarea" variant='danger' rows={1} plaintext value = {personalIdAnswer} onChange ={(e)=>{setpersonalIdAnswer(e.target.value)}}></Form.Control>)
             )
-            ))
+        )))
             }
             {proceed==='true' &&(<Message variant='success'>Order Placed!</Message>)}
               
