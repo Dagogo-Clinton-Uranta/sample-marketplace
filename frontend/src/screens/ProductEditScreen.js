@@ -15,12 +15,14 @@ import {PRODUCT_UPDATE_RESET} from '../constants/productConstants.js'
 const ProductEditScreen= ({match, history}) => { //he is taking location & history out of the props, normally it is props.location
     const productId = match.params.id
 
-  const [name,setName] = useState('')
+  const [stageName,setStageName] = useState('')
   //const [email,setEmail] = useState('')
-  const [price,setPrice] = useState('')  //component level state right here, not application level state
+  const [outsidePrice,setOutsidePrice] = useState('')
+  const [agreedPrice,setAgreedPrice] = useState('')
+  const [price,setPrice] = useState('')  
   const [image,setImage] = useState('')
   const [brand,setBrand] = useState('')
-  const [category,setCategory] = useState('')
+  const [size,setSize] = useState('')
   const [countInStock,setCountInStock] = useState('')
   const [description,setDescription] = useState('')
   const [uploading,setUploading] = useState(false)
@@ -58,13 +60,16 @@ const ProductEditScreen= ({match, history}) => { //he is taking location & histo
       if(product && !product.name ){ //we are just checking if the product has a name here to see if user object exists
         dispatch(listProductDetails(productId))
       }else {
-        setName(product.name)
-        setPrice((product.price*20/19).toFixed(2))
+        setStageName(product.stageName)
+        setPrice((product.price).toFixed(2))
+        setOutsidePrice(product.outsidePrice)
+        setAgreedPrice(product.agreedPrice)
         setImage(product.image)
         setBrand(product.brand)
-        setCategory(product.category)
+        setSize(product.size)
         setCountInStock(product.countInStock)
         setDescription(product.description)
+        /*I NEED THIS VENDOR INFORMATION WHEN IT COMES TO DISTRIBUTING MONEY PER PRODUCT AND PICKUP ADDRESSES */
         setVendor(userInfo.name)
         setVendorAddress(userInfo.merchantAddress)
         setVendorAccountNumber(userInfo.nuban)
@@ -101,13 +106,16 @@ console.log(productDetails)
           e.preventDefault()
   dispatch(updateProduct({
     _id:productId,
-    name,
-    price:product.price !== price ?(price*19/20).toFixed(2):price,
+    name:`${stageName} ${size} (${brand})`,
+    stageName,
+    agreedPrice,
+    outsidePrice,
+    price:agreedPrice*((outsidePrice+agreedPrice)/(2*agreedPrice)),
     brand,
     vendor,
     vendorAddress,
     vendorAccountNumber,
-    category,
+    size,
     image,
     description,
     countInStock
@@ -129,27 +137,40 @@ console.log(productDetails)
  {/*1*/}      <Form.Group controlId='name'>
 
        <Form.Label>  Name</Form.Label>
-       <Form.Control type='name' placeholder={ name === product.name? (product.name):"Enter name"} value={name} onChange={(e)=>setName(e.target.value)}></Form.Control>
+       <Form.Control type='name' placeholder={ stageName === product.stageName? (product.stageName):"Enter name"} value={stageName} onChange={(e)=>setStageName(e.target.value)}></Form.Control>
         {/*the value of form control is form control from the state. You need to read about form group from react bootstrap*/}
       </Form.Group>
+
+      <br/>
+         <p >NOTE: PLEASE AVOID ENTERING SIZES IN THE ENTRY ABOVE, E.G "33CL" OR "50KG", THERE IS AN ENTRY FOR THAT BELOW.</p>
+           <br/>
 
  {/*2*/}        <Form.Group controlId='price'>
 
          
-        <Form.Label>  Price(₦) </Form.Label>
-        <Form.Control type='number' placeholder={ price === product.price? ((price).toFixed(2)):"Enter price"} value={price} onChange={(e)=>setPrice(e.target.value)}></Form.Control>
+        <Form.Label> Agreed Price(₦) </Form.Label>
+        <Form.Control type='number' placeholder={ agreedPrice === product.agreedPrice? ((agreedPrice*1).toFixed(2)):"Enter price"} value={agreedPrice} onChange={(e)=>setAgreedPrice(e.target.value)}></Form.Control>
          {/*the value of form control is form control from the state. You need to read about form group from react bootstrap*/}
        </Form.Group>
         <br/>
-       <p>NOTE: PLEASE ENTER THE PRICE AS YOU WOULD NORMALLY CHARGE, THE PERCENTAGE DISCOUNT (BELOW) WILL BE APPLIED, IN THE MARKETPLACE </p>
+       <p>NOTE: PLEASE ENTER THE PRICE YOU AGREED TO SELL THIS PRODUCT TO BRIDGEWAY</p>
        <br/>
-       {/*3*/}        <Form.Group controlId='discount percentage'>
+       {/*3*/}        {/*<Form.Group controlId='discount percentage'>
 
+        IN CASE I NEED TO REVERT BACK TO PERCENTAGES
        <Form.Label>  Percentage discount (as agreed upon with bridgeway MFB) </Form.Label>
         <Form.Control type='string' readOnly placeholder={ '10%'} value={'10%'} ></Form.Control>
-         {/*the value of form control is form control from the state. You need to read about form group from react bootstrap*/}
-       </Form.Group>
+         
+    </Form.Group>*/}
 
+       <Form.Group controlId='discount percentage'>
+<Form.Label> Regular Price (₦) </Form.Label>
+        <Form.Control type='number' placeholder={ outsidePrice === product.outsidePrice? ((outsidePrice*1).toFixed(2)):"Enter price"} value={outsidePrice} onChange={(e)=>setOutsidePrice(e.target.value)} ></Form.Control>
+         
+       </Form.Group>
+       <br/>
+       <p>NOTE: PLEASE ENTER THE PRICE YOUR PRODUCT IS NORMALLY SOLD FOR</p>
+       <br/>
 
 
 
@@ -170,7 +191,9 @@ console.log(productDetails)
               <Form.Control type='text' placeholder={ price === product.brand? (brand):"enter brand"} value={brand} onChange={(e)=>setBrand(e.target.value)}></Form.Control>
                {/*the value of form control is form control from the state. You need to read about form group from react bootstrap*/}
              </Form.Group>
-
+             <br/>
+         <p>NOTE: PLEASE ENTER ONLY THE BRAND NAME E.G PEAK MILK AS "PEAK" AND DANO MILK AS "DANO" </p>
+           <br/>
 
  {/*6*/}        <Form.Group controlId='countInStock'>
 
@@ -183,12 +206,17 @@ console.log(productDetails)
          <p style={{color:'red'}}>NOTE: PLEASE CHECK YOUR STOCK REGULARLY, TO UPDATE IT , AS PRODUCTS THAT HAVE NO STOCK ARE NOT DISPLAYED ON THE MARKETPLACE </p>
            <br/>
 
- {/*7*/}        <Form.Group controlId='category'>
+ {/*7*/}        <Form.Group controlId='size'>
 
-                <Form.Label>  Category </Form.Label>
-                <Form.Control type='text' placeholder={ category === product.category? (category):"Enter category"} value={category} onChange={(e)=>setCategory(e.target.value)}></Form.Control>
+                <Form.Label>  Size  </Form.Label>
+                
+                <Form.Control type='text' placeholder={ size === product.size? (size):"Enter size"} value={size} onChange={(e)=>setSize(e.target.value)}></Form.Control>
                                  {/*the value of form control is form control from the state. You need to read about form group from react bootstrap*/}
                </Form.Group>
+
+               <br/>
+         <p >NOTE: IF YOUR PRODUCT COMES IN A PACK, STATE THE INDIVIDUAL ITEM, THEN THE NUMBER IN THE PACK, E.G <span style={{color:'red'}}>"33CL 12 PACK"</span> FOR A PACK OF 12 33CL CANS, OTHERWISE JUST STATE THE SIZE OF THE ITEM E.G "50KG"</p>
+           <br/>
 
 {/*8*/}       <Form.Group controlId='description'>
 
@@ -199,7 +227,7 @@ console.log(productDetails)
 
 
 
-        <Button type='submit' variant='primary'>Register Item</Button>
+        <Button type='submit' variant='primary'>Register On Marketplace</Button>
       </Form>
     )}
 

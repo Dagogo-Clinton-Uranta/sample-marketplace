@@ -2,10 +2,18 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import {Card} from 'react-bootstrap'
 import Rating from './Rating'
-
+import {useDispatch, useSelector} from 'react-redux'
 
 
 const ProductComponent = ({product}) => {
+
+  const userLogin = useSelector(state => state.userLogin)
+  const {userInfo} = userLogin
+  
+
+
+
+
   return (
 <Card className='my-3 p-3 rounded'>
       <Link to={`/product/${product._id}`}>
@@ -16,7 +24,7 @@ const ProductComponent = ({product}) => {
   <Card.Body>
      <Link to={`/product/${product._id}`}>
       <Card.Title as='div'>
-       <strong>{product.name}</strong>
+       <strong>{product.stageName}</strong>
       </Card.Title>
      </Link>
 
@@ -31,7 +39,7 @@ const ProductComponent = ({product}) => {
      </Card.Text>
      
       <Card.Text as='h6'>
-      Vendor: {'Bridgeway'}
+      Vendor: {userInfo && userInfo.isMerchant ?userInfo.name:'Bridgeway'}
   </Card.Text> 
 
   </Card.Body>

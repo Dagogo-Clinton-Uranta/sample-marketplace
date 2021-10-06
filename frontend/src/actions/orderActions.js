@@ -160,7 +160,7 @@ export const merchantCreditOrder  = (orderId) => async (dispatch,getState) =>{
 
 
 
-export const insufficientFundsOrder  = (orderId) => async (dispatch,getState) =>{
+export const insufficientFundsOrder  = (orderId,userType) => async (dispatch,getState) =>{
   //form of async (dispatch) above
     try {
       dispatch({type: ORDER_INSUFFICIENT_REQUEST})
@@ -173,7 +173,7 @@ export const insufficientFundsOrder  = (orderId) => async (dispatch,getState) =>
           Authorization:`Bearer ${userInfo.token}`
         }
       }
-      const {data} = await axios.put(`/api/orders/${orderId}/funds`,{},config)
+      const {data} = await axios.put(`/api/orders/${orderId}/funds`,{userType},config)
       //i'm gonna take a stab here and say that the third argument for axios is for setting header property
   
       dispatch({

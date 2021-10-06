@@ -76,6 +76,8 @@ const createProduct = asyncHandler(async (req,res)=>{
    const product = new Product({
      name: 'Sample name',
      price: 0,
+     outsidePrice:0,
+     agreedPrice:0,
      user:req.user._id,
      image:'/images/sample.jpeg',
      brand:"Sample brand",
@@ -99,19 +101,22 @@ const createProduct = asyncHandler(async (req,res)=>{
 //@access Private/Admin
 const updateProduct = asyncHandler(async (req,res)=>{
   res.header("Access-Control-Allow-Origin","*")
-  const {name,price,description,brand,image,category,countInStock,vendor,vendorAddress, vendorAccountNumber} = req.body
+  const {name,stageName,outsidePrice,agreedPrice,price,description,brand,image,size,countInStock,vendor,vendorAddress, vendorAccountNumber} = req.body
 
   const objectId = new mongoose.Types.ObjectId(req.params.id)
   const product= await Product.findById(objectId)
 
    if(product){
       product.name = name
+      product.stageName = stageName
+      product.outsidePrice = outsidePrice
+      product.agreedPrice = agreedPrice
       product.price  = (price*1).toFixed(2)
       product.description=description
       product.vendor= vendor
       product.vendorAddress = vendorAddress
       product.vendorAccountNumber = vendorAccountNumber
-      product.category = category
+      product.size = size
       product.brand = brand
       product.countInStock = countInStock
       product.image = image

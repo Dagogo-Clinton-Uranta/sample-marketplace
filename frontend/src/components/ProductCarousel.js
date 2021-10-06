@@ -53,7 +53,7 @@ const ProductCarousel = () => {
              <h1><span className="red">Bridgeway</span> <span className="bright-blue">Co-operative</span> </h1>
               <center>
              <h2 className="vanish">
-              Pick your products below
+              Search or pick your products.
              </h2>
              </center>
              

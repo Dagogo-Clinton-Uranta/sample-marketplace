@@ -11,12 +11,16 @@ const reviewSchema = mongoose.Schema({
 
 const productSchema =  mongoose.Schema({
         user:{type:mongoose.Schema.Types.ObjectId,required:true, ref:'User'},
+        stageName:{type: String ,required:true},
         name:{type: String ,required:true},
+        brand:{type:String, required:true},
+        outsidePrice: {type: Number ,required:true},
+        agreedPrice: {type: Number ,required:true},
         image:{type: String ,required:true},
         vendor:{type: String ,required:true},
         vendorAddress:{type: String,required:true},
         vendorAccountNumber: {type: String,required:true},
-        category:{type:String ,required:true}, /*considering removing this category field */
+        size:{type:String ,required:true}, /*this was formerly the category field, i named it size now */
         description:{type:String ,required:true},
         reviews:[reviewSchema],
         rating:{type:Number ,required:true ,default:0},

@@ -72,18 +72,15 @@ const updateOrderToPaid = asyncHandler(async (req,res)=>{
  
   const objectId = new mongoose.Types.ObjectId(req.params.id)
   const order = await Order.findById(objectId)
+  const paidStatus = !order.isPaid
+  console.log(paidStatus)
+ 
   if(order){
-    console.log(order.isPaid)
-     order.isPaid = !order.isPaid
-     if(order.isPaid = true){
-       order.insufficientFunds=false
-      }
-       else{order.insufficientFunds=true}
-     
-       order.paidAt = Date.now()
-     
-     
-     const updatedOrder = await order.save()
+                                 /*IT DOESNT HAVE SERIOUS CONSEQUENCES FOR NOW, BUT IF YOU ALLOW THEM TO MAKE PAID AT FALSE, THE DATE SHOULD BE DELETED OR STH, NOT RE UPDATED */
+    const updatedOrder = await Order.findOneAndUpdate({_id:objectId},{$set:{isPaid:paidStatus,insufficientFunds:false,paidAt:Date.now() }}, { useFindAndModify: false},{new:true})
+    console.log('i am still working at this point')
+    
+    
 
      res.json(updatedOrder)
   }
@@ -104,12 +101,9 @@ const updateMerchantsToCredited = asyncHandler(async (req,res)=>{
   const objectId = new mongoose.Types.ObjectId(req.params.id)
   const order = await Order.findById(objectId)
   if(order){
-    console.log(order.merchantsCredited)
-     order.merchantsCredited = !order.merchantsCredited
-     order.merchantsCreditedAt = Date.now()
-     
-     
-     const updatedOrder = await order.save()
+
+    const updatedOrder = await Order.findOneAndUpdate({_id:objectId},{$set:{merchantsCredited:!order.merchantsCredited,merchantsCreditedAt:Date.now() }}, { useFindAndModify: false},{new:true})
+    console.log('i am still working at this point')
 
      res.json(updatedOrder)
   }
@@ -125,21 +119,33 @@ const updateMerchantsToCredited = asyncHandler(async (req,res)=>{
 //@access Private/Teller
 const updateOrderToInsufficientFunds = asyncHandler(async (req,res)=>{
   res.header("Access-Control-Allow-Origin","*")
- 
+  
   const objectId = new mongoose.Types.ObjectId(req.params.id)
-  const order = await Order.findById(objectId)
+ 
+  const isTeller = req.body.userType?req.body.userType :false
+  
+  const order = await Order.findById(objectId)  
+  console.log('I havent started any of the functions')
+  
+ 
   if(order){
-    console.log(order.insufficientFunds)
-     if(!order.isPaid){
-      order.insufficientFunds = true
+    console.log('hello')
 
-     }
+    if(isTeller===true){
+      if(!order.isPaid){
+        const updatedOrder = await Order.findOneAndUpdate({_id:objectId},{$set:{insufficientFunds:!order.insufficientFunds }},{new:true} )
+        console.log('I am A TELLER and still working at this point')
+        res.json(updatedOrder)
+       }
+  
 
-     
-     
-     const updatedOrder = await order.save()
+    }else{
+      const updatedOrder = await Order.findOneAndUpdate({_id:objectId},{$set:{insufficientFunds:false }} ,{useFindAndModify:false},{new:true})
+      console.log('I am a USER, am still working at this point')
+      res.json(updatedOrder)
 
-     res.json(updatedOrder)
+    }
+        
   }
   else{
     res.status(404)

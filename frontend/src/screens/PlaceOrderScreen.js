@@ -35,6 +35,7 @@ const PlaceOrderScreen =  ({history}) => {
   //STATE REGARDING USER CONFIRMATION
   const [productsOrderedArray,setProductsOrderedArray ] = useState([])
  const  [productQuantitiesArray,setProductQuantitiesArray ] = useState([])
+ const  [productNamesArray,setProductNamesArray ] = useState([])
   const [consentQuestion, setConsentQuestion] =useState('hidden') 
   const [confirmQuestion ,setConfirmQuestion]=useState('')
   const [confirmedStates,setConfirmedStates] = useState('')
@@ -95,6 +96,7 @@ const PlaceOrderScreen =  ({history}) => {
    if(cart){
     setProductsOrderedArray(cart.cartItems.map((item)=>(item.product))) 
     setProductQuantitiesArray(cart.cartItems.map((item)=>(item.qty)))
+    setProductNamesArray(cart.cartItems.map((item)=>(item.name)))
    }
    
      
@@ -193,7 +195,7 @@ const submitHandler = (e) => {
   e.preventDefault()
 
   /*I WANT THIS BUTTON TO SERVE MULTIPLE FUNCTIONS, FIRST OF WHICH IS TO CHECK IF THE PERSONS ANSWER MATCHES UP, VIA THE DISPATCH BELOW */
-  if(confirmedStates === ''){dispatch(answerVerify(clientId,personalIdQuery, personalIdAnswer,orderTotal,productsOrderedArray,productQuantitiesArray))
+  if(confirmedStates === ''){dispatch(answerVerify(clientId,personalIdQuery, personalIdAnswer,orderTotal,productsOrderedArray,productNamesArray))
   
   }else if(confirmedStates === 'true'){
     dispatch(createOrder({

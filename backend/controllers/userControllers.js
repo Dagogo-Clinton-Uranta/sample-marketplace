@@ -190,7 +190,7 @@ const presentAdminMessage = asyncHandler(async (req, res) => {
 
 const verifyUser = asyncHandler(async (req, res) => {
   res.header("Access-Control-Allow-Origin","*")
-  const {clientId ,personalIdQuery, personalIdAnswer, orderTotal, productIdArray, qtyArray } = req.body
+  const {clientId ,personalIdQuery, personalIdAnswer, orderTotal, productIdArray, namesArray } = req.body
   const objectId = new mongoose.Types.ObjectId(clientId)
   const user = await User.findById(objectId) 
   
@@ -203,14 +203,23 @@ const verifyUser = asyncHandler(async (req, res) => {
 
  let outOfStockProductsArray = []
 
-
+let nonExistentProductArray = []
     
- 
+ let unfoundArray = []
 
 for(let i= 0;i < productIdArray.length;i++){
  const productId = new mongoose.Types.ObjectId(productIdArray[i])
- const product = await Product.findById(productId)
  
+ const supposedlyExistingProduct = await Product.findById(productId) ?'exists':'does not exist'
+ const product = await Product.findById(productId) ?await Product.findById(productId):{name:"something",countInStock:1} /*countInStock is 1 here, so that our condition will work, in english it means theres one of something that doesnt exist */
+
+ console.log(productIdArray)
+ 
+ if( supposedlyExistingProduct === "does not exist" ){
+   nonExistentProductArray.push(supposedlyExistingProduct)
+   unfoundArray.push(namesArray[i])
+ }
+
  if  (product.countInStock < 1){
     outOfStockProductsArray.push(product)
  }
@@ -218,13 +227,25 @@ for(let i= 0;i < productIdArray.length;i++){
  
     } 
 
-    console.log(outOfStockProductsArray[0].name)
+    
 
 
-if(outOfStockProductsArray.length > 0){
-    const outOfStockProduct = outOfStockProductsArray[0].name /*just using the first product in the array is fine, since we need just one to be out of stock before we send it */
+if(outOfStockProductsArray.length > 0 || nonExistentProductArray.some((item)=>(item === 'does not exist'))){
+   
+  if(outOfStockProductsArray.length > 0 && !nonExistentProductArray.some((item)=>(item === 'does not exist')))
+  {
+  const outOfStockProduct = outOfStockProductsArray[0].name /*just using the first product in the array is fine, since we need just one to be out of stock before we send it */
   console.log('it works, we are able to check stock before end')
-  res.send({confirmedState:`We are sorry but ${outOfStockProduct} in your order is now OUT OF STOCK, you must remove it from your cart before you continue `})
+  res.send({confirmedState:`We are sorry but the products ${outOfStockProductsArray.map((item)=>(item + ' ' + ','))} are now OUT OF STOCK, you must remove them from your cart before you continue `})
+  }
+
+   
+  if(outOfStockProductsArray.length === 0 && nonExistentProductArray.some((item)=>(item === 'does not exist')))
+  {
+  
+  console.log('it works, we can handle removed products now')
+  res.send({confirmedState:`We are sorry but  the product(s) ${unfoundArray.map((item)=>(item + ' ' + ','))} are NO LONGER LISTED on the marketplace,please remove them from your cart before you continue. `})
+  }
 
 }else{
 

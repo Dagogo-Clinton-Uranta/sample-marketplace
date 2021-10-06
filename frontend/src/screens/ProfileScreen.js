@@ -98,7 +98,7 @@ console.log(user)
       
      <center><p style={{color:'black', maxWidth:'600px', fontSize:'1.3rem' }}>Welcome to your profile! Here you may update your username and password.
      { !userInfo.isAdmin && ' You may also send and reply to messages.'} 
-     { (userInfo.isAdmin || userInfo.isMerchant) && ' You can write notes which you\'ll refer to later, for your operation on this platform. Finally you may view istructions regarding how to operate, while on this platform '}
+     { (userInfo.isAdmin || userInfo.isMerchant) && ' You can write notes which you\'ll refer to later, for your operation on this platform. Finally you may view instructions regarding how to operate, while on this platform '}
      
      </p></center>
      
@@ -180,6 +180,38 @@ console.log(user)
 
       <Col md={9}>
       <h2>{!userInfo.isAdmin && !userInfo.isMerchant ? 'My Orders':''}</h2>
+
+
+
+{!(userInfo.isAdmin||userInfo.isMerchant) && 
+        <>
+        <Card>
+         <ListGroup>
+         <ListGroup.Item>
+           <Row>
+        <Col ><p>All orders you have made on this platform are in the list below, click on "DETAILS" for each order to view more information about it. It will also tell you whether that order has been dispatched or not. </p> </Col>
+       
+          </Row>
+       </ListGroup.Item>
+           <ListGroup.Item>
+            
+            <Row><h5>Colour code:</h5></Row>
+         </ListGroup.Item>
+       <ListGroup.Item>
+           <Row>
+        <Col style={{backgroundColor:'rgba(255, 0, 0, 0.2)'}}>   Red - If the order is in red ,it could not be processed due to insufficient funds. If you still want the order, fund your account, click 'DETAILS' and then click 'I HAVE FUNDED MY ACCOUNT', so that we may continue with it's  processing. </Col>
+       
+          </Row>
+       </ListGroup.Item>
+        
+         </ListGroup>
+
+         
+         </Card>
+          <br/>
+          <br/>
+          </>
+        }
       {loadingOrders ? <Loader/>:errorOrders? <Message variant='danger'>{errorOrders}</Message>:(
         
         !(userInfo.isAdmin || userInfo.isMerchant) ?
@@ -187,7 +219,7 @@ console.log(user)
          <thead>
           <tr>
            <th>ID</th>
-           <th>DATE</th>
+           <th>PLACED ON</th>
            <th>TOTAL(₦)</th>
            <th>PAID</th>
            <th>DELIVERED</th>
@@ -196,11 +228,11 @@ console.log(user)
          </thead>
          <tbody>
           {orders.map(order =>(
-            <tr key={order._id}>
+            <tr key={order._id} style = {{backgroundColor: order.insufficientFunds && !order.isDelivered?'rgba(255, 0, 0,0.2)':'none' }}>
              <td>{order._id}</td>
              <td>{order.createdAt.substring(0,10)}</td>
-             <td>{order.totalPrice}</td>
-             <td>{order.isPaid ? order.paidAt.substring(0,10):(<i className='fas fa-times'style={{color:'red'}}></i>)} </td>
+             <td>{(order.totalPrice*1).toFixed(2)}</td>
+             <td>{order.isPaid ? <i className='fas fa-check'style={{color:'green'}}></i>:(<i className='fas fa-times'style={{color:'red'}}></i>)} </td>
 
              <td>{order.isDelivered ? order.deliveredAt.substring(0,10):(<i className='fas fa-times'style={{color:'red'}}></i>)} </td>
                  

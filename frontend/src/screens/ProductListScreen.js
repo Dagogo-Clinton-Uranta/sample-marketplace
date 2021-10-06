@@ -138,14 +138,20 @@ if(window.confirm('Are you sure you want to delete this item ?')){ //window.conf
        </Row>
        </ListGroup.Item>
 
-      
+       <ListGroup.Item>
+         
+         <Row  style={{backgroundColor:'rgba(233, 212, 96, 0.4)'}} >
+           
+       Items in Yellow are products that are ALMOST out of stock (less than 10 items) , please click edit and change the number for "count in stock". Also ensure that you are able to commit this number to our customers.
+       </Row> 
+        </ListGroup.Item>
 
 
        <ListGroup.Item>
          
         <Row  style={{backgroundColor:'rgba(255, 0, 0, 0.2)'}} >
           
-      Items in red are products that are out of stock , please click edit and change the number for "count in stock". Also ensure that you are able to commit this number to our customers.
+      Items in red are products that are out of stock,THEY ARE NOT VISIBLE ON THE MARKET PLACE FOR SALE, please click edit and change the number for "count in stock". Also ensure that you are able to commit this number to our customers.
       </Row> 
        </ListGroup.Item>
 
@@ -178,21 +184,21 @@ if(window.confirm('Are you sure you want to delete this item ?')){ //window.conf
           <tr>
            <th>ID</th>
            <th>NAME</th>
-           <th>RETAIL PRICE</th>
+           <th>AGREED PRICE</th>
            <th>MARKETPLACE PRICE</th>
-           <th>CATEGORY</th>
+           <th>SIZE</th>
            {userInfo.isAdmin && <th>VENDOR</th>}
            <th></th>
          </tr>
          </thead>
          <tbody>
           {products.map(product => (
-            <tr key={product._id} style={{backgroundColor:product.countInStock<1 && 'rgba(255, 0, 0, 0.2)'}}>
+            <tr key={product._id} style={{backgroundColor:product.countInStock<10 && product.countInStock>0 ? 'rgba(233, 212, 96, 0.4)':(product.countInStock<1 && 'rgba(255, 0, 0, 0.2)')}}>
               <td>{product._id}</td>
               <td>{product.name}</td>
-              <td>₦ {(product.price*20/19).toFixed(2)}</td>
+              <td>₦ {(product.agreedPrice*1).toFixed(2)}</td>
               <td>₦ {(product.price).toFixed(2)}</td>
-              <td>{product.category}</td>
+              <td>{product.size}</td>
               {userInfo.isAdmin && <td>{product.vendor}</td>}
               {userInfo.isMerchant && (<td>
                <LinkContainer to={`/admin/product/${product._id}/edit`}>

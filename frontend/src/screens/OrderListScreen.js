@@ -31,7 +31,7 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
   //THE LOGIC FOR CALCULATING THE TOTAL PRICE OF ITEMS THAT IS SPECIFIC TO EACH VENDOR
   /*const addDecimals = (num) => { return(Math.round(num*100)/100).toFixed(2) }
       
-    cart.itemsPrice = addDecimals(cart.cartItems.reduce((acc, item)=>acc +item.price*item.qty,0))*/
+    cart.itemsPrice = addDecimals(cart.cartItems.reduce((acc, item)=>acc +item.agreedPrice*item.qty,0))*/
 
     console.log(orders)
    
@@ -65,7 +65,7 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
             <Row> <h5>INSTRUCTIONS:</h5></Row>
              
              <Row>
-        Here you may view new orders. Click on each order to view details and confirm whether you are able to fulfill them. Please note the colour code below.
+        Here you may view new orders. Click on each order to view details and confirm whether you are able to fulfill them before the given deadline. Please note the colour code below.
          
             </Row>
             
@@ -159,7 +159,7 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
 
 
 
-        {userInfo.isAdmin && <h2> Today's Date: {new Date().toLocaleDateString()}</h2>}
+        {(userInfo.isAdmin||userInfo.isMerchant) && <h2> Today's Date: {new Date().toLocaleDateString()}</h2>}
         
         {loading ? <Loader/>:error ? <Message variant='danger'>{error}</Message>:(
 
@@ -170,6 +170,7 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
            <th>USER</th>
            <th>PLACED ON</th>
            {userInfo.isAdmin && <th>MERCHANTS' DEADLINE</th>}
+           {userInfo.isMerchant && <th>YOUR DEADLINE</th>}
            {userInfo.isAdmin && <th>DELIVERY DEADLINE</th>}
            {userInfo.isAdmin ?(<th>TOTAL</th>):(<th>RECEIVABLE</th> )}{/*AS PER TOTAL PRICE*/}
            {userInfo.isAdmin && <th>PAID</th>}
@@ -178,7 +179,7 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
          </tr>
          </thead>
          <tbody>
-          {orders.map(order => (  /*english translations of my conditionals: 
+          {userInfo.isAdmin && orders.map(order => (  /*english translations of my conditionals: 
                                                           1.) if youre a merchant AND every condition except (all items are zero) AND at least one item has been committed to(i think  i wanna try NOT(all items are fully committed to)), make the bar yellow
                                                         : 2.) if youre not a merchant and the date now is two(or more) days greater than the day the order was put in, give it a red,it has failed to be attended to by the admin
                                                          :3.) if youre an admin and the item hasnt been delivered and it has been 4 days or greater since its creation, give it a red, it's past the due date
@@ -198,7 +199,50 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
               <td>{new Date(order.createdAt).toLocaleDateString()}</td>
               {userInfo.isAdmin && <td style = {{color: new Date() >= new Date(new Date(order.paidAt).getTime() + 24 * 60 * 60 * 1000)  &&'rgba(255, 0, 0,1)'}}>{order.isPaid? new Date(new Date(order.paidAt).getTime() + 48*60*60*1000).toLocaleDateString():'contact Teller'}</td>}
               {userInfo.isAdmin && <td style = {{color: new Date() >= new Date(new Date(order.paidAt).getTime() + 72 * 60 * 60 * 1000) &&'rgba(255, 0, 0,1)'}}>{order.isPaid? new Date(new Date(order.paidAt).getTime() + 96*60*60*1000).toLocaleDateString():'contact Teller'}</td>}
-              <td>₦ {userInfo.isAdmin ? (order.totalPrice) : (((order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.qty),0)))*18/19).toFixed(2)}</td>
+              <td>₦ {userInfo.isAdmin ? (order.totalPrice) : (((order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.agreedPrice*item.qty),0)))).toFixed(2)}</td>
+
+              {userInfo.isAdmin && <td>{order.isPaid ? (<i className='fas fa-check' style={{color:'green'}}></i>): 
+                (<i className='fas fa-times' style={{color:'red'}}></i>)}
+              </td>}
+
+              <td>
+                {order.isDelivered ? (order.deliveredAt.substring(0,10)): /*there used to be curly braces around order.deliveredAt */
+                (<i className='fas fa-times' style={{color:'red'}}></i>)}
+              </td>
+
+              <td>
+               <LinkContainer to={`/order/${order._id}`}>
+                <Button variant='light' className='btn-sm'>
+                   Details
+                </Button>
+               </LinkContainer>
+
+              </td>
+            </tr>
+          ))}
+
+          { userInfo.isMerchant && orders.filter((order)=>(order.isPaid ===true)).map(order => (  /*english translations of my conditionals: 
+                                                          1.) if youre a merchant AND every condition except (all items are zero) AND at least one item has been committed to(i think  i wanna try NOT(all items are fully committed to)), make the bar yellow
+                                                        : 2.) if youre not a merchant and the date now is two(or more) days greater than the day the order was put in, give it a red,it has failed to be attended to by the admin
+                                                         :3.) if youre an admin and the item hasnt been delivered and it has been 4 days or greater since its creation, give it a red, it's past the due date
+                                                         :4.)if all items have no promises, and you're a merchant and it hasnt been up to two days since the order was created, then it's a fresh order, give it green
+                                                         :5) if the user is an admin,and at least one item has been promised AND at least one item has been promised(again ,dodgy logic, try !(all have been fully promised) ),  give it a yellow, it is incomplete
+                                                         :6)if the logged in user is an admin and all items are fully committed to, then give the color a blue, it is a fully completed order.
+                                                         :7)if the user is an admin and all merchants have promised something, give it blue it is a fully committed order ready to go  */
+            <tr key={order._id} style={{backgroundColor:/*1*/ userInfo.isMerchant && !(order.orderItems.filter((item) => (item.vendor === userInfo.name)).every((item) => (item.promisedQty === 0))) && !(order.orderItems.filter((item) => (item.vendor === userInfo.name)).every((item) => (item.promisedQty === item.qty))) /*order.orderItems.filter((item) => (item.vendor === userInfo.name)).some((item) => (item.promisedQty !== 0))*/?'rgba(233, 212, 96, 0.4)'
+                                                        /*2*/ :(userInfo.isMerchant && (order.orderItems.filter((item) => (item.vendor === userInfo.name)).every((item) => (item.promisedQty === 0))) &&  new Date() > new Date(new Date(order.createdAt).getTime() + 48 * 60 * 60 * 1000)  ?'rgba(255,0,0,0.2)'
+                                                        /*3*/  :(!order.isDelivered && userInfo.isAdmin && new Date() > new Date(new Date(order.createdAt).getTime() + 96 * 60 * 60 * 1000) ?  'rgba(255,0,0,0.2)'
+                                                        /*4*/ :(order.orderItems.every((item) => (item.promisedQty === 0)) && userInfo.isMerchant && new Date() < new Date(new Date(order.createdAt).getTime() + 48 * 60 * 60 * 1000) ? 'rgba(0, 255, 0, 0.2)'
+                                                        /*5*/  :(userInfo.isAdmin && order.orderItems.some((item) => (item.promisedQty !== 0)) && !(order.orderItems.every((item) => (item.promisedQty === 0)))?'rgba(233, 212, 96, 0.4)'
+                                                        /*6*/ :(userInfo.isAdmin && order.orderItems.every((item) => (item.promisedQty === item.qty))  ? 'rgba(0, 0, 255, 0.2)'
+                                                        /*7*/  :(order.orderItems.every((item) => (item.promisedQty === 0)) && userInfo.isAdmin && (new Date() < new Date(new Date(order.createdAt).getTime() +  96* 60 * 60 * 1000)) && 'rgba(0, 255, 0, 0.2)')))))) }} >
+              <td>{order._id}</td>
+              <td>{order.user && order.user.name}</td>
+              <td>{new Date(order.createdAt).toLocaleDateString()}</td>
+              {userInfo.isAdmin && <td style = {{color: new Date() >= new Date(new Date(order.paidAt).getTime() + 24 * 60 * 60 * 1000)  &&'rgba(255, 0, 0,1)'}}>{order.isPaid? new Date(new Date(order.paidAt).getTime() + 48*60*60*1000).toLocaleDateString():'contact Teller'}</td>}
+              {userInfo.isMerchant && <td style = {{color: new Date() >= new Date(new Date(order.paidAt).getTime() + 24 * 60 * 60 * 1000)  &&'rgba(255, 0, 0,1)'}}>{order.isPaid? new Date(new Date(order.paidAt).getTime() + 48*60*60*1000).toLocaleDateString():'ignore order'}</td>}
+              {userInfo.isAdmin && <td style = {{color: new Date() >= new Date(new Date(order.paidAt).getTime() + 72 * 60 * 60 * 1000) &&'rgba(255, 0, 0,1)'}}>{order.isPaid? new Date(new Date(order.paidAt).getTime() + 96*60*60*1000).toLocaleDateString():'contact Teller'}</td>}
+              <td>₦ {userInfo.isAdmin ? (order.totalPrice) : (((order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.agreedPrice*item.qty),0)))).toFixed(2)}</td>
 
               {userInfo.isAdmin && <td>{order.isPaid ? (<i className='fas fa-check' style={{color:'green'}}></i>): 
                 (<i className='fas fa-times' style={{color:'red'}}></i>)}

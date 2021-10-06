@@ -173,7 +173,7 @@ const riderPrepHandler = ()=> {
 
 
  /*is there a factor of 18/19 to consider for, --yes */
-/*const merchantTotal = order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.qty),0)*/
+/*const merchantTotal = order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.agreedPrice*item.qty),0)*/
 
         return loading ?( <Loader/> ):error ?( <Message variant='danger'>{error} </Message>):
 (<>
@@ -330,7 +330,7 @@ const riderPrepHandler = ()=> {
                    </Col>}
 
                    <Col md={2}>
-                   {/*{item.promisedQty} x ₦ {item.price} =*/} ₦ {(18/19*item.promisedQty*item.price).toFixed(2)}
+                   {/*{item.promisedQty} x ₦ {item.price} =*/} ₦ {(item.promisedQty*item.agreedPrice).toFixed(2)}
                    </Col>
 
                   </Row>

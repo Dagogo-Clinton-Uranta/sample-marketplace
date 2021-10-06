@@ -115,7 +115,7 @@ export const adminSaid = (bossMessage, clientId,clientEmail,clientName) => async
  }
 }
 
-export const answerVerify = (clientId, personalIdQuery,personalIdAnswer,orderTotal,productIdArray,qtyArray) => async(dispatch) => {
+export const answerVerify = (clientId, personalIdQuery,personalIdAnswer,orderTotal,productIdArray,namesArray) => async(dispatch) => {
   try{
     dispatch({type: USER_VERIFY_REQUEST})
     
@@ -125,7 +125,7 @@ export const answerVerify = (clientId, personalIdQuery,personalIdAnswer,orderTot
       }
     }
 
-    const {data} = await axios.post('api/users/verify',{clientId,personalIdQuery,personalIdAnswer,orderTotal,productIdArray,qtyArray},config)
+    const {data} = await axios.post('api/users/verify',{clientId,personalIdQuery,personalIdAnswer,orderTotal,productIdArray,namesArray},config)
       
     /*can you send stuff in the second argument of your get request? - no, thats not the agreed upon convention */
     dispatch({type:USER_VERIFY_SUCCESS,

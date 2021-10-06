@@ -10,6 +10,7 @@ const orderSchema =  mongoose.Schema({
              {name:{type: String ,required:true},
              qty:{type: Number,required:true},
              image:{type: String ,required:true},
+             agreedPrice:{type: Number ,required:true},
              price:{type: Number ,required:true},
              vendor:{type: String , required:true},
              vendorAddress:{type: String , required:true},

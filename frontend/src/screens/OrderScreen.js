@@ -7,7 +7,7 @@ import { Button, Row ,Col ,Form, ListGroup, Image, Card, ListGroupItem} from 're
 import {useDispatch, useSelector} from 'react-redux'
 import Message from '../components/Message.js'
 //import {getUserDetails, updateUserProfile} from '../actions/userActions.js'
-import {getOrderDetails,payOrder,deliverOrder,merchantApproveOrder/*,merchantLockOrder*/} from '../actions/orderActions.js'
+import {getOrderDetails,payOrder,deliverOrder,merchantApproveOrder,insufficientFundsOrder/*,merchantLockOrder*/} from '../actions/orderActions.js'
 import Loader from '../components/Loader.js'
 import {ORDER_PAY_RESET,ORDER_DELIVER_RESET } from '../constants/orderConstants.js'  //HE MADE AN EXCEPTION HERE DISPATCHING STRAIGHT FROM CONSTANTS WITHOUT CALLING ACTIONS, TO MAKE THINGS FASTER
 
@@ -27,7 +27,7 @@ const OrderScreen =  ({match,history}) => {
   /*the variable below doesnt work out because , order cannot be read at this stage, i assigned the state i needed in the use effect instead */
   /*const zeroArrayBasedOnOrderLength = Array.apply(null,Array(order.orderItems.length)).map((item)=>(0))*/
   
-  /*console.log(order)*/
+  console.log(order)
 
 
    const [merchantProductsArray,setMerchantProductsArray] = useState([]) /*i never actually change the state of this */
@@ -48,6 +48,9 @@ const OrderScreen =  ({match,history}) => {
 
   const orderDeliver = useSelector((state) => state.orderDeliver )
   const {loading:loadingDeliver, success:successDeliver} = orderDeliver
+
+  const orderInsufficientFunds = useSelector((state) => state.insufficientFundsOrder )
+  const {loading:loadingInsufficient, success:successInsufficient} = orderInsufficientFunds
 
 if(!loading){
   //calculating the prices for orders
@@ -160,6 +163,11 @@ const successPaymentHandler = (paymentResult) => {
 
 }
 
+const insufficientFundsHandler = (e)=> {
+  e.preventDefault()
+dispatch(insufficientFundsOrder(order._id,userInfo.isTeller))
+}
+
 const deliverHandler = ()=> {
   dispatch(deliverOrder(order))
 }
@@ -168,11 +176,12 @@ const submitHandler = (e) => {
     e.preventDefault()
     if( promisedQtyArray.reduce((acc, item)=>acc +item,0) ===0  ){window.alert('please select a value before committing!')}
     else if(promisedQtyArray.indexOf(0) !== -1 ){window.alert('You cannot commit zero for ANY item,please contact admin if you are out of stock')}
+    else if(promisedQtyArray.reduce((acc, item)=>(acc +item,0)) !== (order.orderItems.map((item)=>(item.qty)).reduce((acc, item)=>acc +item,0)) ){window.alert('All numbers you selected must be equal to what has been requested for each item. Please do that or contact the admin ')}
     else{window.alert('Committed!')
       dispatch(merchantApproveOrder(order._id, productId, promisedQtyArray))}
 }
  /*is there a factor of 18/19 to consider for, --yes */
-/*const merchantTotal = order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.qty),0)*/
+/*const merchantTotal = order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.agreedPrice*item.qty),0)*/
 
         return loading ?( <Loader/> ):error ?( <Message variant='danger'>{error} </Message>):
 (<>
@@ -218,13 +227,22 @@ const submitHandler = (e) => {
       {order.isDelivered && <Message variant='success'>Dispatched on {order.deliveredAt.substring(0,10)}</Message> }
                         
 
-         {!order.isPaid  &&
+         {((!order.isPaid  && !order.insufficientFunds)||successInsufficient) &&
                         <Message variant='warning'> Processing...</Message> }
 
-{order.insufficientFunds && <Message variant='danger'>Insufficient funds , please put money in your account and indicate by clicking the button below</Message> }
+{order.insufficientFunds && !order.isPaid  && !(userInfo.isTeller||userInfo.isMerchant) && !successInsufficient && <Message variant='danger'>Insufficient funds , please put money in your account and indicate by clicking the button below</Message> }
                          
 
-
+              
+            {order && !order.isPaid && order.insufficientFunds &&  !successInsufficient &&
+            
+            <Row>
+              <Col md ={4}>
+               
+                <Button type='button' variant='primary' onClick={insufficientFundsHandler}> I HAVE FUNDED MY ACCOUNT </Button>
+               
+             </Col>
+       </Row>}
 
           </ListGroup.Item>
 
@@ -245,7 +263,7 @@ const submitHandler = (e) => {
           <Col md={2}>Item</Col>
           {userInfo.isMerchant?<Col md={2}>To Fulfill</Col>:<Col md={2}>Vendor</Col>}
           {userInfo.isAdmin && <Col md={2}>Requested Quantity</Col>}
-          {userInfo.isMerchant?(<Col md={4}>How many can you fulfill?</Col>):(userInfo.isAdmin && <Col md={2}>Merchant's promised amount</Col>)}
+          {userInfo.isMerchant?(<Col md={4}>Select the number equal to the requested. </Col>):(userInfo.isAdmin && <Col md={2}>Merchant's promised amount</Col>)}
           {userInfo.isMerchant && <Col md={2}>Item Total</Col>}
           
           {!userInfo.isMerchant && <Col md={2}>Total</Col>}
@@ -281,6 +299,9 @@ const submitHandler = (e) => {
                    <Form.Row>
                    <Col md={2}>
                    <Form.Control as='select' defaultValue={item.promisedQty} onMouseEnter ={(e)=>{initialState(order,item)}} onChange ={(e)=>{   
+                                                                   
+                                                                   
+                                                                   
                                                                    liveUpdate(e,item) 
                                                                    setCommittedValue(Number(e.target.value))
                                                                    
@@ -293,7 +314,7 @@ const submitHandler = (e) => {
                                                                      dummyArray[merchantProductsArray.indexOf(item)] = item.product
                                                                     
                                                                     setProductId(dummyArray)}
-                                                                     
+                                                                  
                                                                                 
                                                                                 }}>
           {[...Array(item.qty+1).keys()].map((x) =>(
@@ -326,7 +347,7 @@ const submitHandler = (e) => {
               </Form>
               </Col>
                    <Col md={3} style={{fontSize:highlight, color:colour}}>
-                   {promisedQtyArray.reduce((acc, item)=>acc +item,0) ===0 ?(item.promisedQty):(typeof(promisedQtyArray[merchantProductsArray.indexOf(item)])!=='number'? 0:promisedQtyArray[merchantProductsArray.indexOf(item)])} x ₦ {(18/19*item.price).toFixed(2)} = ₦ {((promisedQtyArray.reduce((acc, item)=>acc +item,0) ===0?(item.promisedQty):(typeof(promisedQtyArray[merchantProductsArray.indexOf(item)])!=='number'? 0:promisedQtyArray[merchantProductsArray.indexOf(item)]))*item.price*18/19).toFixed(2)}
+                   {promisedQtyArray.reduce((acc, item)=>acc +item,0) ===0 ?(item.promisedQty):(typeof(promisedQtyArray[merchantProductsArray.indexOf(item)])!=='number'? 0:promisedQtyArray[merchantProductsArray.indexOf(item)])} x ₦ {(1*item.agreedPrice).toFixed(2)} = ₦ {((promisedQtyArray.reduce((acc, item)=>acc +item,0) ===0?(item.promisedQty):(typeof(promisedQtyArray[merchantProductsArray.indexOf(item)])!=='number'? 0:promisedQtyArray[merchantProductsArray.indexOf(item)]))*item.agreedPrice*1).toFixed(2)}
                    </Col>
 
                   
@@ -369,7 +390,7 @@ const submitHandler = (e) => {
                   </Link>
                   </Col>
                   <Col md={2}>
-                   {item.vendor}
+                   {userInfo.isAdmin?item.vendor:'BRIDGEWAY MFB'}
                    </Col>
 
                    {userInfo.isAdmin && <Col md={2}>
@@ -459,7 +480,7 @@ const submitHandler = (e) => {
             <Row>
 
              <Col>For completely fulfilling, you will gain: </Col>
-             <Col>₦ {(18/19*order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.qty),0)).toFixed(2)} </Col> 
+             <Col>₦ {(1*order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.agreedPrice*item.qty),0)).toFixed(2)} </Col> 
                
             </Row>
            </ListGroup.Item>
@@ -468,9 +489,9 @@ const submitHandler = (e) => {
             <Row>
 
              <Col> Current gain for items committed: </Col>
-             {/*<Col>₦ {(order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.promisedQty),0)).toFixed(2)} </Col> */}
-             {/*<Col>{(promisedQtyArray===''?(item.promisedQty):(typeof(promisedQtyArray[merchantProductsArray.indexOf(item)])!=='number'? 0:promisedQtyArray[merchantProductsArray.indexOf(item)]))*item.price}</Col>*/}
-            {<Col>₦ {(promisedQtyArray.reduce((acc, item)=>acc +item,0)) ===0 ?(18/19*order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.promisedQty),0)).toFixed(2):(18/19*order.orderItems.filter((item) => (item.vendor === userInfo.name)).map((item,index)=>(item.price*promisedQtyArray[index]/*YOU ARE HERE */)).reduce((acc, item)=>acc +(item),0)).toFixed(2)} </Col> }
+             {/*<Col>₦ {(order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.agreedPrice*item.promisedQty),0)).toFixed(2)} </Col> */}
+             {/*<Col>{(promisedQtyArray===''?(item.promisedQty):(typeof(promisedQtyArray[merchantProductsArray.indexOf(item)])!=='number'? 0:promisedQtyArray[merchantProductsArray.indexOf(item)]))*item.agreedPrice}</Col>*/}
+            {<Col>₦ {(promisedQtyArray.reduce((acc, item)=>acc +item,0)) ===0 ?(1*order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.agreedPrice*item.promisedQty),0)).toFixed(2):(1*order.orderItems.filter((item) => (item.vendor === userInfo.name)).map((item,index)=>(item.agreedPrice*promisedQtyArray[index])).reduce((acc, item)=>acc +(item),0)).toFixed(2)} </Col> }
             </Row>
            </ListGroup.Item>
 
@@ -491,7 +512,7 @@ const submitHandler = (e) => {
             <Row>
 
              <Col>Total to recieve :</Col>
-             {<Col>₦ {(promisedQtyArray.reduce((acc, item)=>acc +item,0)) ===0 ?(18/19 * order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.price*item.promisedQty),0)).toFixed(2):(18/19*order.orderItems.filter((item) => (item.vendor === userInfo.name)).map((item,index)=>(item.price*promisedQtyArray[index]/*YOU ARE HERE */)).reduce((acc, item)=>acc +(item),0)).toFixed(2)} </Col> }
+             {<Col>₦ {(promisedQtyArray.reduce((acc, item)=>acc +item,0)) ===0 ?(1 * order.orderItems.filter((item) => (item.vendor === userInfo.name)).reduce((acc, item)=>acc +(item.agreedPrice*item.promisedQty),0)).toFixed(2):(1*order.orderItems.filter((item) => (item.vendor === userInfo.name)).map((item,index)=>(item.agreedPrice*promisedQtyArray[index])).reduce((acc, item)=>acc +(item),0)).toFixed(2)} </Col> }
 
             </Row>
            </ListGroup.Item>
@@ -542,7 +563,7 @@ const submitHandler = (e) => {
             <Row>
 
              <Col>To BridgeWay Co-operative Account: </Col>
-             <Col>₦ {(order.itemsPrice -(order.orderItems.reduce((acc, item)=>acc +(item.price*item.qty),0) - order.orderItems.reduce((acc, item)=>acc +(item.price*item.promisedQty),0)) - (18/19 *order.orderItems.reduce((acc, item)=>acc +(item.price*item.promisedQty),0)) ).toFixed(2)} </Col>
+             <Col>₦ {(order.itemsPrice -(order.orderItems.reduce((acc, item)=>acc +(item.price*item.qty),0) - order.orderItems.reduce((acc, item)=>acc +(item.price*item.promisedQty),0)) - (1 *order.orderItems.reduce((acc, item)=>acc +(item.agreedPrice*item.promisedQty),0)) ).toFixed(2)} </Col>
 
             </Row>
            </ListGroup.Item>
@@ -551,7 +572,7 @@ const submitHandler = (e) => {
             <Row>
 
              <Col> {index + 1}. TO {item.vendor} account:  </Col>
-             <Col>₦ {((18/19) * item.price).toFixed(2) * item.promisedQty } </Col>
+             <Col>₦ {(1 * item.agreedPrice* item.promisedQty ).toFixed(2) } </Col>
 
             </Row>
            </ListGroup.Item>
