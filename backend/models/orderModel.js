@@ -13,6 +13,7 @@ const orderSchema =  mongoose.Schema({
              agreedPrice:{type: Number ,required:true},
              price:{type: Number ,required:true},
              vendor:{type: String , required:true},
+             vendorId:{type: String , required:true},
              vendorAddress:{type: String , required:true},
              vendorAccountNumber:{type: String , required:true},
              /*the vendors address, you'll put it here */

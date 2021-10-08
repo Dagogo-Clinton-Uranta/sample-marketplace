@@ -13,7 +13,15 @@ import FormContainer from '../components/FormContainer.js'
 
 const AdminComScreen = ({location, match,history}) => { //he is taking location & history out of the props, normally it is props.location
   const userId = match.params.id
-  const [bossMessage,setBossMessage] = useState('')  
+
+  const re = /=(.*?)&/;
+  const productName = location.search && location.search.split(re)[3];
+
+  const orderId = location.search ? location.search.split(re)[1] : false
+     const requestedAmount  = location.search ? location.search.split('=')[3] : false
+     const  itemName= productName.replace(/%20/g, " ")
+  
+    
   
   const dispatch = useDispatch() 
   const userLogin = useSelector(state => state.userLogin);
@@ -33,7 +41,7 @@ const AdminComScreen = ({location, match,history}) => { //he is taking location 
      const clientId = user._id
      const clientEmail = user.email
      const clientName = user.name
-
+     
   /* const {loading, error,userInfo } = userLogin */
    /*at least i think it's this -youre right, it is this */
 
@@ -43,6 +51,9 @@ const AdminComScreen = ({location, match,history}) => { //he is taking location 
 //because we dont want to able to come into the login screen ONCE WE ARE ALREADY LOGGED IN, effect this in the useEffect below
 
 
+//finally, I had to declare the state for the admins meassage HERE, after all the variables it uses have been declared
+const [bossMessage,setBossMessage] = useState((orderId && itemName && requestedAmount && clientName)?` Dear, ${clientName},This message is regarding the order with ID of ${orderId}. The customer requested for ${requestedAmount} of ${itemName} but you have not promised us the full amount, and the deadline has passed. Please let us know any issues you are having fulfilling this order. `:'')
+console.log(itemName)
 
   useEffect(()=>{  
     if(!userInfo){
@@ -51,7 +62,10 @@ const AdminComScreen = ({location, match,history}) => { //he is taking location 
     if(userInfo && userInfo.isTeller){
       history.push('/teller/transactionlist')
    }
-  })
+   if(orderId && itemName && requestedAmount && clientName){
+   setBossMessage( ` Dear, ${clientName},This message is regarding the order with ID of ${orderId}. The customer requested for ${requestedAmount} of ${itemName} but you have not promised us the full amount, and the deadline has passed. Please let us know any issues you are having fulfilling this order. `)
+  }
+  },[history,orderId,itemName,requestedAmount,clientName])
 
 
   useEffect( () => {
@@ -112,7 +126,7 @@ const AdminComScreen = ({location, match,history}) => { //he is taking location 
          <Form.Group controlId='reply-message'>
 
           <Form.Label> Client/Merchant Message: </Form.Label>
-          <Form.Control as ="textarea" rows={6} plaintext readOnly value={user.userMessage} defaultValue={`No message from client ${user.name} , ID - ${user._id}`}></Form.Control>
+          <Form.Control as ="textarea" rows={6} plaintext readOnly value={user.userMessage} style={{border:'solid 1px'}} defaultValue={`No message from client ${user.name} , ID - ${user._id}`}></Form.Control>
 
          </Form.Group>
          
@@ -121,8 +135,8 @@ const AdminComScreen = ({location, match,history}) => { //he is taking location 
 
           <Form.Group controlId='reply-message'>
 
-          <Form.Label>  Send Your Message Below: </Form.Label>
-          <Form.Control as ="textarea" rows={6} placeholder='type message here' value={bossMessage} onChange={(e)=>{setBossMessage(e.target.value)}}></Form.Control>
+          <Form.Label>  Send Your Message Below:{location.search && '(You may use the sample message below)'}</Form.Label>
+          <Form.Control as ="textarea" rows={6} placeholder='type message here' value={bossMessage}  style={{border:'solid 1px'}} onChange={(e)=>{setBossMessage(e.target.value)}}></Form.Control>
 
          </Form.Group>
 

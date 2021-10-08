@@ -91,6 +91,26 @@ const Header = () => {
      
     
   }
+
+  const marketplaceHandler = () => {
+    
+    if(window.location.pathname !== "/"){
+     console.log(window.location.pathname)
+      window.location.assign('/')
+      window.scroll({
+        top: 2000,
+        left: 0,
+        behavior: 'smooth'
+      });
+    }else{
+      window.scroll({
+        top: 800,
+        left: 0,
+        behavior: 'smooth'
+      });
+    }
+    
+  }
   
   
 
@@ -123,11 +143,31 @@ const Header = () => {
    {userInfo?(
      <>
      <span>{userInfo && userInfo.isMerchant && userInfo.userMessageNotification && <i className='fas fa-circle' style={{color:'red', fontSize:'8px', marginLeft:'15px' , marginRight:'-1px', marginTop:'14px'}}></i>}</span>
-     <NavDropdown title ={userInfo.name + `${(userInfo && userInfo.userMessageNotification)? ' (1)':''}`} id='username'>
-     <LinkContainer to='/profile'>
-          <NavDropdown.Item >Profile { userInfo && userInfo.userMessageNotification &&<i className='fas fa-circle' style={{color:'red', fontSize:'7px'}}></i>} </NavDropdown.Item>
+     <NavDropdown title ={'Click To View Options' /*+ userInfo.name*/ + `${(userInfo && userInfo.userMessageNotification)? ' (1)':''}`} id='username'>
+    
+     <LinkContainer to='/'>
+          <NavDropdown.Item onClick={marketplaceHandler} >Go to marketplace </NavDropdown.Item>
           
      </LinkContainer>
+
+    
+     <LinkContainer to='/profile'>
+          <NavDropdown.Item >View your profile{ /*userInfo && userInfo.userMessageNotification &&<i className='fas fa-circle' style={{color:'red', fontSize:'7px'}}></i>*/} </NavDropdown.Item>
+          
+     </LinkContainer>
+
+     {!(userInfo.isAdmin ||userInfo.isTeller) && <LinkContainer to='/communications'>
+          <NavDropdown.Item >Send an Enquiry{ userInfo && userInfo.userMessageNotification &&'(1)'/*<i className='fas fa-circle' style={{color:'red', fontSize:'7px'}}></i>*/} </NavDropdown.Item>
+          
+     </LinkContainer>}
+
+     {!(userInfo.isAdmin ||userInfo.isTeller||userInfo.isMerchant) && <LinkContainer to='/profile'>
+          <NavDropdown.Item >Check your orders </NavDropdown.Item>
+          
+     </LinkContainer>}
+
+
+     
 
        <NavDropdown.Item onClick={logoutHandler} >Logout </NavDropdown.Item>
      </NavDropdown>

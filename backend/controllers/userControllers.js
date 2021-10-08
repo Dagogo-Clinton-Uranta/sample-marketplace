@@ -21,6 +21,7 @@ import nodemailer from 'nodemailer'
 import dotenv from 'dotenv'
 
 import mongoose from 'mongoose'
+/*import { gmail } from 'googleapis/build/src/apis/gmail' THIS SHOULDNT BE HERE*/
 
 //I'm using this bit of code to  convert my strings to object Id
 
@@ -103,7 +104,7 @@ const presentClientMessage = asyncHandler(async (req, res) => {
     //what i actually want to send to the user/client 
     let mailOptions = {
       from: process.env.EMAIL,
-      to: 'smartsoft_mikeo@yahoo.com',
+      to: 'dagogouranta@gmail.com'/*'odubanjoadijat@bridgewaymfb.com'*/,
       subject: `Message from client: ${clientName}, --ID: ${clientId}`, 
       text: `${clientMessage}` 
     }

@@ -27,6 +27,7 @@ const ProductEditScreen= ({match, history}) => { //he is taking location & histo
   const [description,setDescription] = useState('')
   const [uploading,setUploading] = useState(false)
   const [vendor, setVendor] = useState('')
+  const [vendorId, setVendorId] = useState('')
   const [vendorAddress,setVendorAddress] = useState('')
   const [vendorAccountNumber,setVendorAccountNumber] = useState('')
 
@@ -71,6 +72,7 @@ const ProductEditScreen= ({match, history}) => { //he is taking location & histo
         setDescription(product.description)
         /*I NEED THIS VENDOR INFORMATION WHEN IT COMES TO DISTRIBUTING MONEY PER PRODUCT AND PICKUP ADDRESSES */
         setVendor(userInfo.name)
+        setVendorId(userInfo._id)
         setVendorAddress(userInfo.merchantAddress)
         setVendorAccountNumber(userInfo.nuban)
       }
@@ -113,6 +115,7 @@ console.log(productDetails)
     price:agreedPrice*((outsidePrice+agreedPrice)/(2*agreedPrice)),
     brand,
     vendor,
+    vendorId,
     vendorAddress,
     vendorAccountNumber,
     size,

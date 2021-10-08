@@ -108,10 +108,11 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
              <Row>
          <p>1.) Please prompt the teller to debit the customer so that the merchant and delivery deadlines may be recieved</p>      
        <p>2.) Check the merchant's deadline and arrange for a dispatch rider to pick up items from the merchants' various addresses, after the deadline, for each order. </p>
-        <p>3.)Ensure a dispatch rider is sent to the customer who made the order on , or before each delivery deadline.  </p>
-        <p>4.) If you are unsure of what to do, please refer to the comprehensive instructions in your profile section</p>
-        <p> 5.) Click on 'details' for each order,to view order items and the respective merchants' committment to fulfill. You may print the  order list for dispatch riders and customers after clicking details. </p>
-         <p>6.)Please note the colour code below: </p>
+       <p>3.)If the order has any issues (e.g some merchants cannot deliver the requested products before the given deadline) please message the customer by clicking 'chat' for that order</p> 
+        <p>4.)Ensure a dispatch rider is sent to the customer who made the order on , or before each delivery deadline.  </p>
+        <p>5.) If you are unsure of what to do, please refer to the comprehensive instructions in your profile section</p>
+        <p> 6.) Click on 'details' for each order,to view order items and the respective merchants' committment to fulfill. You may print the  order list for dispatch riders and customers after clicking details. </p>
+         <p>7.)Please note the colour code below: </p>
             </Row>
             
             <hr/>
@@ -168,6 +169,7 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
           <tr>
            <th>ID</th>
            <th>USER</th>
+           {userInfo.isAdmin  && <th></th>}
            <th>PLACED ON</th>
            {userInfo.isAdmin && <th>MERCHANTS' DEADLINE</th>}
            {userInfo.isMerchant && <th>YOUR DEADLINE</th>}
@@ -196,6 +198,13 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
                                                         /*7*/  :(order.orderItems.every((item) => (item.promisedQty === 0)) && userInfo.isAdmin && (new Date() < new Date(new Date(order.createdAt).getTime() +  96* 60 * 60 * 1000)) && 'rgba(0, 255, 0, 0.2)')))))) }} >
               <td>{order._id}</td>
               <td>{order.user && order.user.name}</td>
+              {userInfo.isAdmin && order.user && <td>
+              <LinkContainer to={`/admin/user/${order.user._id}/communications`}>
+                <Button variant='light' className='btn-sm'>
+                   <i className='fas fa-paper-plane'></i> Chat
+                </Button>
+               </LinkContainer>
+              </td>}
               <td>{new Date(order.createdAt).toLocaleDateString()}</td>
               {userInfo.isAdmin && <td style = {{color: new Date() >= new Date(new Date(order.paidAt).getTime() + 24 * 60 * 60 * 1000)  &&'rgba(255, 0, 0,1)'}}>{order.isPaid? new Date(new Date(order.paidAt).getTime() + 48*60*60*1000).toLocaleDateString():'contact Teller'}</td>}
               {userInfo.isAdmin && <td style = {{color: new Date() >= new Date(new Date(order.paidAt).getTime() + 72 * 60 * 60 * 1000) &&'rgba(255, 0, 0,1)'}}>{order.isPaid? new Date(new Date(order.paidAt).getTime() + 96*60*60*1000).toLocaleDateString():'contact Teller'}</td>}
@@ -238,6 +247,7 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
                                                         /*7*/  :(order.orderItems.every((item) => (item.promisedQty === 0)) && userInfo.isAdmin && (new Date() < new Date(new Date(order.createdAt).getTime() +  96* 60 * 60 * 1000)) && 'rgba(0, 255, 0, 0.2)')))))) }} >
               <td>{order._id}</td>
               <td>{order.user && order.user.name}</td>
+              
               <td>{new Date(order.createdAt).toLocaleDateString()}</td>
               {userInfo.isAdmin && <td style = {{color: new Date() >= new Date(new Date(order.paidAt).getTime() + 24 * 60 * 60 * 1000)  &&'rgba(255, 0, 0,1)'}}>{order.isPaid? new Date(new Date(order.paidAt).getTime() + 48*60*60*1000).toLocaleDateString():'contact Teller'}</td>}
               {userInfo.isMerchant && <td style = {{color: new Date() >= new Date(new Date(order.paidAt).getTime() + 24 * 60 * 60 * 1000)  &&'rgba(255, 0, 0,1)'}}>{order.isPaid? new Date(new Date(order.paidAt).getTime() + 48*60*60*1000).toLocaleDateString():'ignore order'}</td>}

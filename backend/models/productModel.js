@@ -18,6 +18,7 @@ const productSchema =  mongoose.Schema({
         agreedPrice: {type: Number ,required:true},
         image:{type: String ,required:true},
         vendor:{type: String ,required:true},
+        vendorId:{type: String ,required:true},
         vendorAddress:{type: String,required:true},
         vendorAccountNumber: {type: String,required:true},
         size:{type:String ,required:true}, /*this was formerly the category field, i named it size now */

@@ -77,7 +77,7 @@ const updateOrderToPaid = asyncHandler(async (req,res)=>{
  
   if(order){
                                  /*IT DOESNT HAVE SERIOUS CONSEQUENCES FOR NOW, BUT IF YOU ALLOW THEM TO MAKE PAID AT FALSE, THE DATE SHOULD BE DELETED OR STH, NOT RE UPDATED */
-    const updatedOrder = await Order.findOneAndUpdate({_id:objectId},{$set:{isPaid:paidStatus,insufficientFunds:false,paidAt:Date.now() }}, { useFindAndModify: false},{new:true})
+    const updatedOrder = await Order.findOneAndUpdate({_id:objectId},{$set:{isPaid:paidStatus,insufficientFunds:false,paidAt:Date.now() }}, {new:true})
     console.log('i am still working at this point')
     
     
@@ -102,7 +102,7 @@ const updateMerchantsToCredited = asyncHandler(async (req,res)=>{
   const order = await Order.findById(objectId)
   if(order){
 
-    const updatedOrder = await Order.findOneAndUpdate({_id:objectId},{$set:{merchantsCredited:!order.merchantsCredited,merchantsCreditedAt:Date.now() }}, { useFindAndModify: false},{new:true})
+    const updatedOrder = await Order.findOneAndUpdate({_id:objectId},{$set:{merchantsCredited:!order.merchantsCredited,merchantsCreditedAt:Date.now() }}, {new:true})
     console.log('i am still working at this point')
 
      res.json(updatedOrder)
@@ -125,7 +125,7 @@ const updateOrderToInsufficientFunds = asyncHandler(async (req,res)=>{
   const isTeller = req.body.userType?req.body.userType :false
   
   const order = await Order.findById(objectId)  
-  console.log('I havent started any of the functions')
+  console.log(isTeller)
   
  
   if(order){
@@ -140,7 +140,7 @@ const updateOrderToInsufficientFunds = asyncHandler(async (req,res)=>{
   
 
     }else{
-      const updatedOrder = await Order.findOneAndUpdate({_id:objectId},{$set:{insufficientFunds:false }} ,{useFindAndModify:false},{new:true})
+      const updatedOrder = await Order.findOneAndUpdate({_id:objectId},{$set:{insufficientFunds:false }} ,{new:true})
       console.log('I am a USER, am still working at this point')
       res.json(updatedOrder)
 

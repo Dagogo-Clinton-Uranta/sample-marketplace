@@ -96,7 +96,7 @@ console.log(user)
       <hr/>
       <br/>
       
-     <center><p style={{color:'black', maxWidth:'600px', fontSize:'1.3rem' }}>Welcome to your profile! Here you may update your username and password.
+     <center><p style={{color:'black', maxWidth:'600px', fontSize:'1.3rem' }}><span style={{color:'red' , fontSize:'1.8rem' }}>{userInfo.name}</span>, Welcome to your profile! Here you may update your username and password.
      { !userInfo.isAdmin && ' You may also send and reply to messages.'} 
      { (userInfo.isAdmin || userInfo.isMerchant) && ' You can write notes which you\'ll refer to later, for your operation on this platform. Finally you may view instructions regarding how to operate, while on this platform '}
      
@@ -111,31 +111,32 @@ console.log(user)
        
       <Col md={3}>
       <h2>User Profile</h2>
+      <p>This is your profile information, if you click update, it will take the information you entered and use it as your new profile info.</p>
       <Form onSubmit={submitHandler}>
 {/*1*/}      <Form.Group controlId='name'>
 
-       <Form.Label>  Name</Form.Label>
+       <Form.Label>Enter New Name</Form.Label>
        <Form.Control type='name' placeholder="enter name" value={name} onChange={(e)=>setName(e.target.value)}></Form.Control>
        {/*the value of form control is form control from the state. You need to read about form group from react bootstrap*/}
       </Form.Group>
 
 {/*2*/}       <Form.Group controlId='email'>
 
-        <Form.Label>  Email Address </Form.Label>
+        <Form.Label>Enter New Email Address </Form.Label>
         <Form.Control type='email' placeholder="enter email" value={email} onChange={(e)=>setEmail(e.target.value)}></Form.Control>
         {/*the value of form control is form control from the state. You need to read about form group from react bootstrap*/}
        </Form.Group>
 
 {/*3*/}      <Form.Group controlId='password'>
 
-        <Form.Label>  Password  </Form.Label>
+        <Form.Label> Enter New Password  </Form.Label>
         <Form.Control type='password' placeholder="enter password" value={password} onChange={(e)=>setPassword(e.target.value)}></Form.Control>
 
        </Form.Group>
 
 {/*4*/}     <Form.Group controlId='confirmPassword'>
 
-               <Form.Label>  Confirm password  </Form.Label>
+               <Form.Label>  Confirm New password  </Form.Label>
                <Form.Control type='password' placeholder="confirm password" value={confirmPassword} onChange={(e)=>setConfirmPassword(e.target.value)}></Form.Control>
 
               </Form.Group>

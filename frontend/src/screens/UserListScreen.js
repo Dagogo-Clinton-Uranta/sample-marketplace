@@ -56,7 +56,7 @@ const UserListScreen = ({history}) => { //he is taking location & history out of
 
 
  const deleteHandler = (id) => {
-if(window.confirm('Are you sure you want to delete this item ?')){ 
+if(window.confirm('Are you sure you want to delete this user ?')){ 
   dispatch(deleteUser(id))
 }
 
@@ -85,7 +85,7 @@ if(window.confirm('Are you sure you want to delete this item ?')){
          </thead>
          <tbody>
           {users.map(user => (
-            <tr key={user._id}  /*style={{backgroundColor: user.messageNotification && 'rgba(0, 255, 0, 0.2)'}}*/>
+            <tr key={user._id}  style={{backgroundColor:user.adminMessageNotification ? 'rgba(0, 255, 0, 0.2)':'none'}}>
               <td>{user._id}</td>
               <td>{user.name}</td>
               <td><a href={`mailto:${user.email}`}>{user.email}</a></td>

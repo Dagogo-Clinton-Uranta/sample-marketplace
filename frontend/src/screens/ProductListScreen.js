@@ -103,25 +103,7 @@ if(window.confirm('Are you sure you want to delete this item ?')){ //window.conf
        <br/>
        <h1>Products</h1>
        <center><p style={{color:'black'}}>
-     { userInfo.isAdmin && 
-     <>
-    <Card>
-   <ListGroup>
-       <ListGroup.Item>
-         <Row>
-       <h5>INSTRUCTIONS:</h5>
-        </Row>
-        <Row>
-     <p>This is a list of all products on the marketplace, you may view them here, and track which items are sold by a particular vendor. 
-     If you want to message a vendor regarding a particular product , please keep note of the ID and message the vendor from your profile, using the product ID</p>
-        </Row>
-     </ListGroup.Item>
-     </ListGroup>
-     </Card>
-     <br/>
-     <br/>
-     </>
-     } 
+     
 
      { userInfo.isMerchant &&
      
@@ -152,6 +134,43 @@ if(window.confirm('Are you sure you want to delete this item ?')){ //window.conf
         <Row  style={{backgroundColor:'rgba(255, 0, 0, 0.2)'}} >
           
       Items in red are products that are out of stock,THEY ARE NOT VISIBLE ON THE MARKET PLACE FOR SALE, please click edit and change the number for "count in stock". Also ensure that you are able to commit this number to our customers.
+      </Row> 
+       </ListGroup.Item>
+
+       </ListGroup>
+       </Card>
+     
+     }
+
+{ userInfo.isAdmin &&
+     
+     <Card>
+     <ListGroup>
+         <ListGroup.Item>
+         <Row>
+       <h5>INSTRUCTIONS:</h5>
+        </Row>
+        <Row>
+          
+       This is a list of all products on the marketplace. You may edit ,create or delete them here.You may also change product stock here. Simply Click the 'edit' button to
+       make changes to a product(including updating it's stock), or 'delete' to remove it from the list of products you sell on this platform
+       </Row>
+       </ListGroup.Item>
+
+       <ListGroup.Item>
+         
+         <Row  style={{backgroundColor:'rgba(233, 212, 96, 0.4)'}} >
+           
+       Items in Yellow are products that are ALMOST out of stock (less than 10 items) ,You may remind admins to restock their products.
+       </Row> 
+        </ListGroup.Item>
+
+
+       <ListGroup.Item>
+         
+        <Row  style={{backgroundColor:'rgba(255, 0, 0, 0.2)'}} >
+          
+      Items in red are products that are out of stock,THEY ARE NOT VISIBLE ON THE MARKET PLACE FOR SALE, You may remind admins to restock their products.
       </Row> 
        </ListGroup.Item>
 
@@ -193,7 +212,7 @@ if(window.confirm('Are you sure you want to delete this item ?')){ //window.conf
          </thead>
          <tbody>
           {products.map(product => (
-            <tr key={product._id} style={{backgroundColor:product.countInStock<10 && product.countInStock>0 ? 'rgba(233, 212, 96, 0.4)':(product.countInStock<1 && 'rgba(255, 0, 0, 0.2)')}}>
+            <tr key={product._id} style={{backgroundColor:(product.countInStock<10 && product.countInStock>0)? 'rgba(233, 212, 96, 0.4)':( product.countInStock<1 && 'rgba(255, 0, 0, 0.2)')}}>
               <td>{product._id}</td>
               <td>{product.name}</td>
               <td>₦ {(product.agreedPrice*1).toFixed(2)}</td>

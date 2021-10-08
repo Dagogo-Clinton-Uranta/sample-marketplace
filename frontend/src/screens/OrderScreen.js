@@ -230,11 +230,12 @@ const submitHandler = (e) => {
          {((!order.isPaid  && !order.insufficientFunds)||successInsufficient) &&
                         <Message variant='warning'> Processing...</Message> }
 
-{order.insufficientFunds && !order.isPaid  && !(userInfo.isTeller||userInfo.isMerchant) && !successInsufficient && <Message variant='danger'>Insufficient funds , please put money in your account and indicate by clicking the button below</Message> }
-                         
+{order.insufficientFunds && !order.isPaid  && !(userInfo.isTeller||userInfo.isMerchant||userInfo.isAdmin) && !successInsufficient && <Message variant='danger'>Insufficient funds , please put money in your account and indicate by clicking the button below</Message> }
+
+       {order.insufficientFunds && !order.isPaid  && userInfo.isAdmin && !successInsufficient && <Message variant='danger'>Insufficient funds in the customer's account, DO NOT PROCEED FURTHER </Message> }                  
 
               
-            {order && !order.isPaid && order.insufficientFunds &&  !successInsufficient &&
+            {order && !order.isPaid && order.insufficientFunds &&  !successInsufficient && !(userInfo.isTeller||userInfo.isMerchant||userInfo.isAdmin) &&
             
             <Row>
               <Col md ={4}>
@@ -251,7 +252,7 @@ const submitHandler = (e) => {
 
             
         {order.isPaid ?(<Message variant='success'>Paid on {new Date(order.paidAt).toLocaleDateString()}</Message> ):
-                      (<Message variant='danger'> Not paid, please contact the teller to request for the customer to be debited.</Message>)}
+                      (!order.isPaid && !order.insufficientFunds && <Message variant='danger'> Not paid, please contact the teller to request for the customer to be debited.</Message>)}
            </ListGroup.Item>}
 
            <ListGroup.Item>
@@ -266,8 +267,8 @@ const submitHandler = (e) => {
           {userInfo.isMerchant?(<Col md={4}>Select the number equal to the requested. </Col>):(userInfo.isAdmin && <Col md={2}>Merchant's promised amount</Col>)}
           {userInfo.isMerchant && <Col md={2}>Item Total</Col>}
           
-          {!userInfo.isMerchant && <Col md={2}>Total</Col>}
-          
+          {!userInfo.isMerchant && <Col md={1}>Total</Col>}
+          {userInfo.isAdmin && <Col md={2}></Col>}
           </Row>
           </ListGroupItem>
           </ListGroup>
@@ -401,10 +402,17 @@ const submitHandler = (e) => {
                    {item.promisedQty}
                    </Col>}
 
-                   {<Col md={3}>
-                   {item.qty} x ₦ {(item.price*1).toFixed(2)} = ₦ {(item.qty*item.price).toFixed(2)}
+                   {<Col md={2}>
+                   {item.qty} x{(item.price*1).toFixed(2)} = {(item.qty*item.price).toFixed(2)}
                    </Col>}
 
+                   {userInfo.isAdmin && <Col md={2}>
+                   <LinkContainer to={`/admin/user/${item.vendorId/*'614878302a5e063200c8beb7'*/}/communications?orderId=${item._id}&itemName=${item.name}&requestedAmount=${item.qty}`}>
+                <Button  className='btn-sm'>
+                   Chat
+                </Button>
+               </LinkContainer>
+                   </Col>}
 
                   </Row>
 
@@ -608,7 +616,8 @@ const submitHandler = (e) => {
 
             </Row>
            </ListGroup.Item>
-      
+
+           
            
           {/*!order.isPaid && (
             <ListGroup.Item>

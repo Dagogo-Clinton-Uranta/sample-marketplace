@@ -16,7 +16,7 @@ const CommunicationScreen = ({location, history}) => { //he is taking location &
   
   const orderId = location.search ? location.search.split('=')[1] : false
 
-  const [clientMessage,setClientMessage] = useState(orderId ?`Good day Admin, I am writing to tell you about order number ${orderId} `:'')  //component level state right here, not application level state
+  const [clientMessage,setClientMessage] = useState(orderId ?`Good day Admin, I am writing to tell you about the order with ID of ${orderId} `:'')  //component level state right here, not application level state
   
   const dispatch = useDispatch() //dont forget that real dispatches only take place in action creators, you are only calling useDispatch here
   const userLogin = useSelector(state => state.userLogin);
@@ -71,7 +71,7 @@ const CommunicationScreen = ({location, history}) => { //he is taking location &
          <Form.Group controlId='reply-message'>
 
           <Form.Label> Customer Service: </Form.Label>
-          <Form.Control as ="textarea" rows={6} plaintext readOnly value={userInfo.adminMessage} defaultValue={`Good day ${userInfo.name},how may we help you?`}></Form.Control>
+          <Form.Control as ="textarea" rows={6} plaintext readOnly value={userInfo.adminMessage}  style={{border:'solid 1px'}} defaultValue={`Good day ${userInfo.name},how may we help you?`}></Form.Control>
 
          </Form.Group>
          
@@ -80,7 +80,7 @@ const CommunicationScreen = ({location, history}) => { //he is taking location &
           <Form.Group controlId='reply-message'>
 
           <Form.Label>  Send Your Message Below: </Form.Label>
-          <Form.Control as ="textarea" rows={6} placeholder='type message here' value={clientMessage} onChange={(e)=>{setClientMessage(e.target.value)}}></Form.Control>
+          <Form.Control as ="textarea" rows={6} placeholder='type message here' value={clientMessage} style={{border:'solid 1px'}} onChange={(e)=>{setClientMessage(e.target.value)}}></Form.Control>
 
          </Form.Group>
 

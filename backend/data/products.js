@@ -7,6 +7,7 @@ const products = [
     description:
       'Enjoy an easy to cook, easy to eat meal with golden penny pasta that does not stick. This pack serves 3',
     vendor: 'OKOLI LTD',
+    vendorId: '1',
     vendorAddress:'abeokuta way',
       vendorAccountNumber:'1200000898',
     
@@ -28,6 +29,7 @@ const products = [
     description:
       ' Kings pure vegetable oil for your cooking needs. Now with lower calories and lower trans-fats than before!',
       vendor: 'CONFIRM FOODS',
+      vendorId: '1',
       vendorAddress: 'lekki peninsula',
       vendorAccountNumber:'1200000899',
       brand: 'Kings',
@@ -47,6 +49,7 @@ const products = [
     description:
       'Powdered milk from peak. two for one offer coming soon',
       vendor: 'OKOLI LTD',
+      vendorId: '1',
        vendorAddress:'abeokuta way',
       vendorAccountNumber:'1200000898',
       brand: 'Peak',
@@ -67,6 +70,7 @@ const products = [
       'stallion rice is the way to go if you want delicious rice all the time! With less preservatives than before, you can ensure you are eating healthier with the same great taste',
       vendor: 'OKOLI LTD',
       vendorAddress:'abeokuta way',
+      vendorId: '1',
       vendorAccountNumber:'1200000898',
       brand: 'Royal Stallion',
       size:'25kg',
@@ -85,6 +89,7 @@ const products = [
     description:
       'The long serving brand titus never dissapoints! try titus with bread or eat it on your own. Now with reduced salt.',
     vendor: 'CONFIRM FOODS',
+    vendorId: '1',
     vendorAddress: 'lekki peninsula',
       vendorAccountNumber:'1200000899',
       brand: 'Titus',
@@ -104,6 +109,7 @@ const products = [
     description:
       'Currently the most in demand spaghetti brand in Nigeria, dangote spaghetti has a texture like no other. With absolutely no stick, this is the brand to go for, and will keep you coming back every time!',
       vendor: 'CONFIRM FOODS',
+      vendorId: '1',
       vendorAddress: 'lekki peninsula',
       vendorAccountNumber:'1200000899',
       brand: 'Dangote',
@@ -123,6 +129,7 @@ const products = [
     description:
       'Instant mix 500g semovita, just add (hot) water and mix! Contains wheat granules',
       vendor: 'CONFIRM FOODS',
+      vendorId: '1',
       vendorAddress: 'lekki peninsula',
       vendorAccountNumber:'1200000899',
       brand: 'Golden Penny',

@@ -36,7 +36,7 @@ const importData = async()=> {
 
   try{
      await Order.deleteMany()
-       /*await Product.deleteMany()*/
+      /* await Product.deleteMany()*/
       /*await User.deleteMany()*/
 
     /*const createdUsers=  await  User.insertMany(users)*/
@@ -48,7 +48,7 @@ const importData = async()=> {
        return {...product, user:adminUser}
     })
        await Product.insertMany(sampleProducts) 
-
+    
        console.log('Data Imported'.green.inverse)
        process.exit() 
   }
