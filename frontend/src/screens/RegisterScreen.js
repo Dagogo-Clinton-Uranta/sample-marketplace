@@ -138,7 +138,7 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
 
   {/*6*/}      <Form.Group controlId='password'>
 
-          <Form.Label>  Password  </Form.Label>
+          <Form.Label>  Password (Please use your phone number if you're not sure you will remember your password next time.)  </Form.Label>
           <Form.Control type='password' placeholder="enter password" value={password} onChange={(e)=>setPassword(e.target.value)}></Form.Control>
 
          </Form.Group>

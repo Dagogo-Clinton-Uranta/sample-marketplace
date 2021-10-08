@@ -15,13 +15,14 @@ const AdminComScreen = ({location, match,history}) => { //he is taking location 
   const userId = match.params.id
 
   const re = /=(.*?)&/;
-  const productName = location.search && location.search.split(re)[3];
+  const productName = location.search ? location.search.split(re)[3]:false
 
   const orderId = location.search ? location.search.split(re)[1] : false
      const requestedAmount  = location.search ? location.search.split('=')[3] : false
-     const  itemName= productName.replace(/%20/g, " ")
+     const  itemName= productName ?  productName.replace(/%20/g, " "):false
   
-    
+    const customerOrderId= location.search ? location.search.split('=')[1] : false
+  console.log(customerOrderId)  
   
   const dispatch = useDispatch() 
   const userLogin = useSelector(state => state.userLogin);
@@ -64,6 +65,8 @@ console.log(itemName)
    }
    if(orderId && itemName && requestedAmount && clientName){
    setBossMessage( ` Dear, ${clientName},This message is regarding the order with ID of ${orderId}. The customer requested for ${requestedAmount} of ${itemName} but you have not promised us the full amount, and the deadline has passed. Please let us know any issues you are having fulfilling this order. `)
+  }else if(customerOrderId && !orderId && !itemName && !requestedAmount  ){
+    setBossMessage( ` Dear, ${clientName},This message is regarding the order with ID of ${customerOrderId}.`)
   }
   },[history,orderId,itemName,requestedAmount,clientName])
 

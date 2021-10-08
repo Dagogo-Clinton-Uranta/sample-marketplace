@@ -80,7 +80,8 @@ const presentClientMessage = asyncHandler(async (req, res) => {
   
   oAuth75Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
   const accessToken = oAuth75Client.getAccessToken().catch(console.error)
-     console.log(oAuth75Client)
+     /*console.log(oAuth75Client)*/
+     
   try{
     
 
@@ -113,8 +114,10 @@ const presentClientMessage = asyncHandler(async (req, res) => {
       transporter.sendMail(mailOptions , function (err, data) {
       if (err) {
         console.log('Error Occured:', err);
+        console.log(accessToken)
       } else {
         console.log('Email sent!');
+        console.log(accessToken)
       }
 
     })

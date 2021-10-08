@@ -141,7 +141,7 @@ console.log(user)
 
               </Form.Group>
 
-        <Button type='submit' variant='primary'> Update </Button>
+        <Button type='submit' variant='primary'> Update Your Info </Button>
       </Form>
        
        
@@ -298,12 +298,10 @@ console.log(user)
             <hr/>
             <Row><h5>FOR USERS AND MERCHANTS:</h5></Row>
              <Row>
-         <p>1.) Please prompt the teller to debit the customer so that the merchant and delivery deadlines may be recieved</p>      
-       <p>2.) Check the merchant's deadline and arrange for a dispatch rider to pick up items from the merchants' various addresses, after the deadline, for each order. </p>
-        <p>3.)Ensure a dispatch rider is sent to the customer who made the order on , or before each delivery deadline.  </p>
-        <p>4.) If you are unsure of what to do, please refer to the comprehensive instructions in your profile section</p>
-        <p> 5.) Click on 'details' for each order,to view order items and the respective merchants' committment to fulfill. You may print the order list for dispatch riders and customers after clicking details. </p>
-         <p>6.)Please note the colour code below: </p>
+         <p>1.)Respond to any new messages they may have, this is accessed by clicking 'ADMIN FUNCTIONS' in the navigation bar above, and then 'users' in that menu. </p>      
+       <p>2.) Change the status of a user if need be (i.e from a customer to an Admin,if you want to have additional admin).this can also be accessed by clicking 'ADMIN FUNCTIONS', clicking 'users, and finally clicking 'edit'.  </p>
+        <p>3.)If the user forgets their password, assist them , call the developer to resolve this issue.</p>
+        
             </Row>
             
             <hr/>
@@ -311,6 +309,30 @@ console.log(user)
             <Row><h5> FOR ORDERS:</h5></Row>
          </ListGroup.Item>
           
+         <ListGroup.Item>
+           
+           
+             <Row>
+         <p style={{fontSize:'1.2rem'}}>1.)Oversee the process of fulfilling orders AS FOLLOWS: </p>      
+       <p>2.)When an order comes in ,the teller debits the customer and that gives the merchants the signal to start preparing their goods. Prompt the Teller to debit the customer, if they have not done so already, so that the merchants may begin.  </p>
+       
+       <p style={{color:'rgba(255, 0, 255'}}>3.) The merchants then have a period of two days (after the teller debits the customer) to confirm that they can provide the goods. If a merchant has sent a message that they cannot fulfill an order, please let the customer know, and make arrangements for a refund</p>
+        <p>4.)In the list of orders, if you see an order in colour blue, you can make arrangements for a dispatch rider(EVEN BEFORE THE DEADLINE REACHES), as it means all merchants can fully fulfill all items in that order.  </p> 
+        <p style={{color:'rgba(255, 0, 255'}}> 5.) Once the deadline for merchants is reached, you should call a dispatch rider to collect all goods from the merchants that promised items, (WHETHER COMPLETE OR NOT) and deliver them to the customer. This must be done before your deadline reaches. </p>
+        <p >6.)When the deadline reaches (or all merchants have agreed to completely fulfill all items), the print button will appear, when you click 'details' in an order, click it and print two separate copies for both the customer and the dispatch rider </p>
+        <p style={{color:'rgba(255, 0, 255'}}>7.)The print out for dispatch riders contains addresses and item quantities for the dispatch rider to follow </p>
+        <p>8.)The printout for customers is a receipt of the goods they bought, the two printouts should not be mixed up.</p>
+         
+            </Row>
+            
+            <hr/>
+            
+            <Row><h5> COLOUR CODE FOR ORDERS:</h5></Row>
+         </ListGroup.Item>
+
+
+
+
          <ListGroup.Item>
            <Row>
         <Col style={{backgroundColor:'rgba(0, 255, 0, 0.2)'}}>   Green - New orders, please ensure they have been paid for by the teller, so that merchants may begin processing them.  </Col>
@@ -338,9 +360,8 @@ console.log(user)
          <ListGroup.Item>
          <Row><h5>FOR PRODUCTS:</h5></Row>
              <Row>
-         <p>1.) Please prompt the teller to debit the customer so that the merchant and delivery deadlines may be recieved</p>      
-       <p>2.) Check the merchant's deadline and arrange for a dispatch rider to pick up items from the merchants' various addresses, after the deadline, for each order. </p>
-        <p>3.)Ensure a dispatch rider is sent to the customer who made the order on , or before each delivery deadline.  </p>
+         <p>1.)Check Product descriptions occasionally, making sure there are no inappropriate products or descriptions on the marketplace. Contact merchants if products are unsuitable for the marketplace, or contact the developer to delete the product if the merchant has refused.</p>      
+       
        
             </Row>
 
@@ -362,58 +383,55 @@ console.log(user)
         <>
         <Card>
          <ListGroup>
-           <ListGroup.Item>
+         <ListGroup.Item>
             <Row> <h5>YOUR DUTIES ON THIS PLATFORM ARE AS FOLLOWS:</h5></Row>
-            <hr/>
-            <Row><h5>FOR USERS AND MERCHANTS:</h5></Row>
+            
+         </ListGroup.Item>
+
+         <ListGroup.Item>
+            
+            <Row><h5>FOR PRODUCTS:</h5></Row>
              <Row>
-         <p>1.) Please prompt the teller to debit the customer so that the merchant and delivery deadlines may be recieved</p>      
-       <p>2.) Check the merchant's deadline and arrange for a dispatch rider to pick up items from the merchants' various addresses, after the deadline, for each order. </p>
-        <p>3.)Ensure a dispatch rider is sent to the customer who made the order on , or before each delivery deadline.  </p>
-        <p>4.) If you are unsure of what to do, please refer to the comprehensive instructions in your profile section</p>
-        <p> 5.) Click on 'details' for each order,to view order items and the respective merchants' committment to fulfill. You may print the order list for dispatch riders and customers after clicking details. </p>
-         <p>6.)Please note the colour code below: </p>
+         <p>1.) Upload products unto the marketplace by clicking "Products" under merchant functions. Please confirm the 'agreed upon' amount that bridgeway is to pay you for each product before putting it into the system.   </p>      
+         <p>2.) Please use a relevant image of the product when uploading so that customers will not be confused(e.g do not use the picture of 100g peak milk when the product is 50g)  </p>
+       <p>3.) Check the stock of your products in the product list. Products that are out of stock will NOT show up on the marketplace and you will lose sales.</p>
+       <p>4.) Inspect your products from the main page, as that is how they will look in the marketplace.</p>
+        
+            </Row>
+            
+  
+         </ListGroup.Item>
+
+
+           <ListGroup.Item>
+            <Row><h5>FOR ORDERS:</h5></Row>
+             <Row>
+         <p>1.) Check your orders regularly by clicking 'MERCHANT FUNCTIONS' and then 'orders'. click 'details' on each order to view the fulfillment screen</p>      
+       <p>2.) In the order fulfillment screen, select the number equal to the requested number, an click "commit your items" once this is done for all items in that order</p>
+        <p>3.) If you are unable to fulfill the requested items for some reason, please message the admin to report this.  </p>
             </Row>
             
             <hr/>
             
-            <Row><h5> FOR ORDERS:</h5></Row>
+            <Row><h5> COLOR CODES FOR ORDERS:</h5></Row>
          </ListGroup.Item>
           
          <ListGroup.Item>
            <Row>
-        <Col style={{backgroundColor:'rgba(0, 255, 0, 0.2)'}}>   Green - New orders, please ensure they have been paid for by the teller, so that merchants may begin processing them.  </Col>
-        <Col style={{backgroundColor:'rgba(233, 212, 96, 0.4)'}} > Yellow - Some Merchants have viewed and committed to providing their items, the order may still be put forth for delivery, but customers should be informed on missing items. </Col>
+        <Col style={{backgroundColor:'rgba(0, 255, 0, 0.2)'}}>   Green -Orders in green are newly placed orders from customers, please attend to them before the deadline(stated on the order page of each order).  </Col>
+        <Col style={{backgroundColor:'rgba(233, 212, 96, 0.4)'}} > Yellow - Orders in yellow have been partially attended to. You have committed to delivering some items but not all. Please endeavor to commit to all items before the deadline rolls by. </Col>
           </Row>
        </ListGroup.Item>
 
 
        <ListGroup.Item>
            <Row>
-        <Col style={{backgroundColor:'rgba(255, 0, 0, 0.2)'}}>   Red - Administrator (You) have not dispatched the order before the expected delivery date.  </Col>
-        <Col style={{backgroundColor:'rgba(0, 0, 255, 0.2)'}}>Blue - All Merchants have committed to providing  their items to the dispatch rider, upon his arrival  </Col>
-          </Row>
-       </ListGroup.Item>
-
-
-
-       <ListGroup.Item>
-           <Row>
-        
+        <Col style={{backgroundColor:'rgba(255, 0, 0, 0.2)'}}>   Red - Orders in red were not attended to before the deadline, the customer's request has gone unfulfilled.  </Col>
         <Col style={{backgroundColor:'none'}} >If the order has no colour associated with it then you have committed to fulfilling all items,and have done so before the deadline. No further action needs to be taken. The order will be removed from the list after the deadline.</Col>
           </Row>
        </ListGroup.Item>
-       <hr/>
-         <ListGroup.Item>
-         <Row><h5>FOR PRODUCTS:</h5></Row>
-             <Row>
-         <p>1.) Please prompt the teller to debit the customer so that the merchant and delivery deadlines may be recieved</p>      
-       <p>2.) Check the merchant's deadline and arrange for a dispatch rider to pick up items from the merchants' various addresses, after the deadline, for each order. </p>
-        <p>3.)Ensure a dispatch rider is sent to the customer who made the order on , or before each delivery deadline.  </p>
-       
-            </Row>
 
-         </ListGroup.Item>
+
 
 
          </ListGroup>

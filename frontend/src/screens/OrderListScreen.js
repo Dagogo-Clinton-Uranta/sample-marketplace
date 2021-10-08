@@ -199,7 +199,7 @@ const OrderListScreen = ({history}) => { //he is taking location & history out o
               <td>{order._id}</td>
               <td>{order.user && order.user.name}</td>
               {userInfo.isAdmin && order.user && <td>
-              <LinkContainer to={`/admin/user/${order.user._id}/communications`}>
+              <LinkContainer to={`/admin/user/${order.user._id}/communications?customerOrderId=${order._id}`}>
                 <Button variant='light' className='btn-sm'>
                    <i className='fas fa-paper-plane'></i> Chat
                 </Button>

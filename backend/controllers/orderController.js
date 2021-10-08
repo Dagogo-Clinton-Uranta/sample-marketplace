@@ -9,6 +9,13 @@ import asyncHandler from 'express-async-handler'
 //const colors  = require('colors')
 import mongoose from 'mongoose'
 
+import {google} from 'googleapis';
+
+import nodemailer from 'nodemailer'
+//const nodemailer = require('nodemailer')
+
+import dotenv from 'dotenv'
+
 //@desc  create new order
 //@route POST /api/orders
 //@access Private
@@ -36,7 +43,55 @@ const addOrderItems = asyncHandler(async (req,res)=>{
    
    const createdOrder = await Order.create(order)
     
-   /*console.log(createdOrder)*/
+   const oAuth75Client = new google.auth.OAuth2( process.env.GOOGLE_CLIENT_ID,  process.env.GOOGLE_CLIENT_SECRET, process.env.REDIRECT_URI)
+  
+  oAuth75Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
+  const accessToken = oAuth75Client.getAccessToken().catch(console.error)
+     /*console.log(oAuth75Client)*/
+     
+  try{
+    
+
+    //setup of email for nodemailer
+    let transporter =   nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      service: 'gmail',
+      secure: true,
+      debug: false,
+      logger: true,
+      auth: {
+        type: 'OAuth2',
+        user: process.env.EMAIL,
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        refreshToken: process.env.REFRESH_TOKEN,
+        accessToken: accessToken.token
+      }
+    })
+    //what i actually want to send to the user/client 
+    let mailOptions = {
+      from: process.env.EMAIL,
+      to: 'odubanjoadijat@bridgewaymfb.com',
+      subject: `NEW TRANSACTION TO PERFORM!`, 
+      text: `A NEW ORDER HAS BEEN PLACED , AND THE CUSTOMER NEEDS TO BE DEBITED, PLEASE LOG INTO www.bridgewayco-op.com.` 
+    }
+
+    //actually sending the mail
+      transporter.sendMail(mailOptions , function (err, data) {
+      if (err) {
+        console.log('Error Occured:', err);
+        console.log(accessToken)
+      } else {
+        console.log('Email sent!');
+        console.log(accessToken)
+      }
+
+    })
+  }
+   catch(error){
+    console.log(error)
+  }
      
     res.status(201).json(createdOrder)
  }
@@ -165,6 +220,58 @@ const updateOrderToDelivered = asyncHandler(async (req,res)=>{
      order.deliveredAt = Date.now()
 
      const updatedOrder = await order.save()
+
+      
+   const oAuth75Client = new google.auth.OAuth2( process.env.GOOGLE_CLIENT_ID,  process.env.GOOGLE_CLIENT_SECRET, process.env.REDIRECT_URI)
+  
+   oAuth75Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
+   const accessToken = oAuth75Client.getAccessToken().catch(console.error)
+      /*console.log(oAuth75Client)*/
+      
+   try{
+     
+ 
+     //setup of email for nodemailer
+     let transporter =   nodemailer.createTransport({
+       host: 'smtp.gmail.com',
+       port: 465,
+       service: 'gmail',
+       secure: true,
+       debug: false,
+       logger: true,
+       auth: {
+         type: 'OAuth2',
+         user: process.env.EMAIL,
+         clientId: process.env.GOOGLE_CLIENT_ID,
+         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+         refreshToken: process.env.REFRESH_TOKEN,
+         accessToken: accessToken.token
+       }
+     })
+     //what i actually want to send to the user/client 
+     let mailOptions = {
+       from: process.env.EMAIL,
+       to: 'odubanjoadijat@bridgewaymfb.com',
+       subject: `NEW TRANSACTIONS TO PERFORM!`, 
+       text: `AN ORDER HAS BEEN DELIVERED , AND MERCHANTS NEED TO BE CREDITED, PLEASE LOG INTO www.bridgewayco-op.com.` 
+     }
+ 
+     //actually sending the mail
+       transporter.sendMail(mailOptions , function (err, data) {
+       if (err) {
+         console.log('Error Occured:', err);
+         console.log(accessToken)
+       } else {
+         console.log('Email sent!');
+         console.log(accessToken)
+       }
+ 
+     })
+   }
+    catch(error){
+     console.log(error)
+   }
+     
 
      res.json(updatedOrder)
   }
