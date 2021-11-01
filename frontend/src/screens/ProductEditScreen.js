@@ -17,9 +17,9 @@ const ProductEditScreen= ({match, history}) => { //he is taking location & histo
 
   const [stageName,setStageName] = useState('')
   //const [email,setEmail] = useState('')
-  const [outsidePrice,setOutsidePrice] = useState('')
-  const [agreedPrice,setAgreedPrice] = useState('')
-  const [price,setPrice] = useState('')  
+  const [outsidePrice,setOutsidePrice] = useState(0)
+  const [agreedPrice,setAgreedPrice] = useState(0)
+  const [price,setPrice] = useState(0)  
   const [image,setImage] = useState('')
   const [brand,setBrand] = useState('')
   const [size,setSize] = useState('')
@@ -102,7 +102,8 @@ const uploadFileHandler =async (e)=>{
    }
 }
 
-console.log(productDetails)
+console.log(((Number(outsidePrice) + Number(agreedPrice))/(2*agreedPrice)))
+console.log(Number(outsidePrice)+Number(agreedPrice))
 
   const submitHandler = (e) => {
           e.preventDefault()
@@ -112,7 +113,7 @@ console.log(productDetails)
     stageName,
     agreedPrice,
     outsidePrice,
-    price:agreedPrice*((outsidePrice+agreedPrice)/(2*agreedPrice)),
+    price:agreedPrice*((Number(outsidePrice)+Number(agreedPrice))/(2*agreedPrice)),
     brand,
     vendor,
     vendorId,
