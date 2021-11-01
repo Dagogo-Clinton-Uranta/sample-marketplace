@@ -75,6 +75,8 @@ const createProduct = asyncHandler(async (req,res)=>{
   res.header("Access-Control-Allow-Origin","*")
    const product = new Product({
      name: 'Sample name',
+     stageName:'Sample Name',
+     size:'small',
      price: 0,
      outsidePrice:0,
      agreedPrice:0,

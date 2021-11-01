@@ -35,19 +35,19 @@ connectDB()
 const importData = async()=> {
 
   try{
-     await Order.deleteMany()
+     //await Order.deleteMany()
       /* await Product.deleteMany()*/
-      /*await User.deleteMany()*/
+      await User.deleteMany()
 
-    /*const createdUsers=  await  User.insertMany(users)*/
+    /*const createdUsers= */ await  User.insertMany(users)
     
-    /*const adminUser =  createdUsers[0]._id I ALREADY HAVE USERS ON THE DATABASE SO I DIDNT USE THIS, INSTEAD,I USED WHAT WAS BELOW*/
+    /*const adminUser =  createdUsers[0]._id I ALREADY HAVE USERS ON THE DATABASE SO I DIDNT USE THIS, INSTEAD,I USED WHAT WAS BELOW
     const adminUser = await User.findOne({isAdmin:true})
 
     const sampleProducts = products.map((product)=>{
        return {...product, user:adminUser}
     })
-       await Product.insertMany(sampleProducts) 
+       await Product.insertMany(sampleProducts) */
     
        console.log('Data Imported'.green.inverse)
        process.exit() 

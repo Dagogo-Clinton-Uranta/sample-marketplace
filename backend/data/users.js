@@ -90,7 +90,41 @@ const users = [
     childhoodStreet:'Eti-Osa Way',
     firstEmployment:'Niger Insurance',
     notes:''
-  }
+  },
+  {
+    name:'BRIDGEWAY-DISTRIBUTOR OLAM',
+    email:'bridgewaydistributorolam@yahoo.com',
+    password:hash,
+    nuban:1100016516,
+    isAdmin:false,
+    isMerchant:true,
+    merchantAddress:"Olam Nigeria Limited ,56 Abebe Village Road,Abulenla,101241 ,Lagos",
+    userMessage:'',
+    adminMessage:'',
+    momFirstName:'is a merchant',
+    shoeSize:'is a merchant',
+    closestFriend:'is a merchant',
+    childhoodStreet:'is a merchant',
+    firstEmployment:'is a merchant',
+    notes:''
+  } ,
+  {
+    name:'BRIDGEWAY-DISTRIBUTOR COCA-COLA',
+    email:'bridgewaydistributorcocacola@yahoo.com',
+    password:hash,
+    nuban:1100016509,
+    isAdmin:false,
+    isMerchant:true,
+    merchantAddress:"(THIS VENDOR SENDS GOODS TO BRIDGEWAY)49A Lafiaji way ,Dolphin Estate,Ikoyi,Lagos",
+    userMessage:'',
+    adminMessage:'',
+    momFirstName:'is a merchant',
+    shoeSize:'is a merchant',
+    closestFriend:'is a merchant',
+    childhoodStreet:'is a merchant',
+    firstEmployment:'is a merchant',
+    notes:''
+  } 
 ]
 
 //exports.users =users;
