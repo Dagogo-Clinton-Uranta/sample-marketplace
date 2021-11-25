@@ -287,7 +287,7 @@ const updateOrderToDelivered = asyncHandler(async (req,res)=>{
 //@access Private
 const getUnpaidOrders = asyncHandler(async (req,res)=>{
   res.header("Access-Control-Allow-Origin","*")
-  const orders = await Order.find({$or:[{isPaid:false},{$and:[{isPaid:true},{merchantsCredited:false},{paidAt:{$lte:new Date(new Date().getTime() -  48 * 60 * 60 * 1000) }}]}]}).sort({createdAt:-1})
+  const orders = await Order.find({$or:[{isPaid:false},{$and:[{isPaid:true},{merchantsCredited:false},{paidAt:{$lte:new Date(new Date().getTime() - /* 48 * 60 * */60 * 1000) }}]}]}).sort({createdAt:-1})
    
   res.json(orders)
 })
