@@ -219,7 +219,7 @@ const deliverHandler = ()=> {
 
           {!order.isPaid && <ListGroup.Item>
             <p style={{color:'red'}}>NOTE: PLEASE RELOAD THE SCREEN FIRST, OTHERWISE YOU MAY END UP PERFORMING THE WRONG TRANSACTION !!! </p>
-            <p>1.) PLEASE PERFORM THE FOLLOWING TRANSACTIONS TO A HOLDING ACCOUNT</p>
+            <p>1.) EACH DEBIT SHOULD BE SENT TO 'BRIDGEWAY COOPERATIVE TRANSACTION'<span style={{color:'red'}}> ACCOUNT (1100016310)</span>. </p>
             <p>2.) IF THE DEBIT CANNOT BE PERFORMED (on Bank One), PLEASE SELECT 'INSUFFICIENT FUNDS' </p>
             <p> 3.)   MESSAGE THE ADMIN TO COMMUNICATE THAT THE CLIENT HAD INSUFFICIENT FUNDS</p>
             <p>4.)  IF THE DEBIT IS SUCCESSFUL, CLICK  'CHANGE PAYMENT STATUS' .</p>
@@ -233,7 +233,7 @@ const deliverHandler = ()=> {
            {order.isPaid && (new Date(order.paidAt) <= new Date(new Date().getTime() -/* 48*60 **/ 60 * 1000)) && <ListGroup.Item>
             <p style={{color:'red'}}>NOTE: PLEASE RELOAD THE SCREEN FIRST, OTHERWISE YOU MAY END UP PERFORMING THE WRONG TRANSACTION !!! </p>
             
-            <p>1.) PLEASE PERFORM THE FOLLOWING TRANSACTIONS FROM A HOLDING ACCOUNT</p>
+            <p>1.)EACH CREDIT SHOULD BE COLLECTED FROM 'BRIDGEWAY COOPERATIVE TRANSACTION' <span style={{color:'red'}}>ACCOUNT (1100016310)</span>. </p>
             <p> 2.) AFTER EACH TRANSACITON IS PERFORMED, YOU MAY CLICK THE CHECKBOX UNDER THE 'Done?' COLUMN, TO HELP YOU KEEP TRACK</p>
             <p>3.)  ONCE ALL CREDITS ARE SUCCESSFUL, CLICK  'CHANGE PAYMENT STATUS' .</p>
             <p>4.) YOU MAY CHANGE PAYMENT STATUS AS MUCH AS YOU LIKE, UNTIL YOU ARE READY TO LEAVE THE PAGE.</p>
@@ -311,7 +311,7 @@ const deliverHandler = ()=> {
            {order.isPaid &&  (new Date(order.paidAt) <= new Date(new Date().getTime() - /*48*60 * */60 * 1000)) && <ListGroup.Item>
             <Row>
 
-             <Col>Bridgeway Co-operative: </Col>
+             <Col>Bridgeway Co-operative Income (GL): </Col>
              
              <Col>{order.bridgewayProfitAccount} </Col>
              <Col>CREDIT </Col>
