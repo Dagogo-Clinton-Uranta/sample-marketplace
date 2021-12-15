@@ -323,7 +323,7 @@ const getOrders = asyncHandler(async (req,res)=>{
   
    
    )
-   :(vendorName === 'ADMIN IS REQUESTING' &&
+   :(vendorName === 'ADMIN IS REQUESTING' && /*make another route for getting all orders in the databasecuz this one only fetches those younger than 6 days old*/
      (orders = await Order.find({createdAt:{$gte:new Date(new Date().getTime()-144 * 60 * 60 * 1000)}}).sort({createdAt:-1}).populate('user','id name nuban'))
    )
    
