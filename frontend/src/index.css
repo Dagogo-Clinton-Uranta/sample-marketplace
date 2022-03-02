@@ -161,3 +161,43 @@ margin:0 auto;
 .carousel a {
   margin: 0 auto;
 }
+
+
+/*online acct registration*/
+
+.boxTitles {
+  background-color: #fff;
+  padding:15px;
+  position:absolute;
+  top:-3.2%;
+  left:13%;
+  
+}
+
+.sectionContainer {
+  margin:15px;
+  margin-top: 30px;
+  margin-bottom:60px;
+  padding:55px;
+  border:1px solid black;
+  position:relative;
+}
+
+
+.buttonSpacer {
+  margin-top:30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/*the progress bar in the acctr registration*/
+  .progressMargin {
+    margin-top:5%;
+  }
+
+
+.Progressbar {
+  border:2px solid black;
+  margin-top:0%;
+  margin-bottom:15%;
+}

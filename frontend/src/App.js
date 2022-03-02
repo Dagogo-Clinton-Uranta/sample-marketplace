@@ -9,6 +9,7 @@ import ProductScreen from './screens/ProductScreen.js'
 import CartScreen from './screens/CartScreen.js'
 import LoginScreen from './screens/LoginScreen.js'
 import RegisterScreen from './screens/RegisterScreen.js'
+import NewAccountScreen from './screens/NewAccountScreen.js'
 import ProfileScreen from './screens/ProfileScreen.js'
 import ShippingScreen from './screens/ShippingScreen.js'
 import PaymentScreen from './screens/PaymentScreen.js'
@@ -42,6 +43,7 @@ const App = () => {
        < Route path='/placeorder' component={PlaceOrderScreen}/>
        < Route path='/login' component={LoginScreen}/>
        < Route path='/register' component={RegisterScreen}/>
+       < Route path='/newaccount' component={NewAccountScreen}/>
        < Route path='/profile' component={ProfileScreen}/>
        < Route path= '/communications' component={CommunicationScreen} />
        

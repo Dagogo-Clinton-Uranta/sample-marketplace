@@ -62,7 +62,7 @@ const LoginScreen = ({location, history}) => { //he is taking location & history
         </Form>
 
         <Row className='py-3'>
-         <Col>                       {/*youre cheating hera, youre supposed to uncomment whats below */}
+         <Col>                       {/*youre cheating here, youre supposed to uncomment whats below */}
            New Customer?<Link to={/*redirect?`$register/redirect=${redirect}`:*/'/register'}> Register</Link>
          </Col>                       
         </Row>              

@@ -59,6 +59,60 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
   },[redirect,history,nuban,userInfo,password,confirmPassword,name,email,pickupAddress,momFirstName,shoeSize,closestFriend,childhoodStreet,firstEmployment,isMerchant])
 
 
+ useEffect(() => {
+
+ if (window.sessionStorage.getItem('formInfo') === null){
+ 
+  window.sessionStorage.setItem('formInfo',JSON.stringify({
+     title: '',
+     surname : '',
+     middleName:'',
+     firstName:'',
+     stateOrigin:'',
+     nationality:'',
+     pob:'',
+     dob:'',
+     lga:'',
+     gender:'',
+     religion:'',
+     resState:'',
+     levelOfEd:'',
+     educationSpecified:'',
+     marriageStatus:'',
+     marriageSpecified:'',
+     email:'',
+     flatNo:'',
+     houseNo:'',
+     streetName:'',
+     town:'',
+     tel:'',
+     employmentType:'',
+     employerName:'',
+     businessType:'',
+     salary:'',
+     businessAddress:'',
+     businessTel:'',
+     businessEmail:'',
+     idType:'',
+     issuingAuthority:'',
+     issuePlace:'',
+     issueDate:'',
+     expiryDate:'',
+     page1:true,
+     page2:false,
+     page3:false,
+     page4:false,
+     page5:false,
+     now:0,
+    
+  }))
+
+ }
+
+ },[])
+
+
+
 
   const submitHandler = (e) => {
           e.preventDefault()
@@ -82,9 +136,28 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
 
     return (
        <FormContainer>
+
+        <Row className='py-3'>
+          <br/>
+         <Col style={{color:"red"}}>
+           Don't have an account with Bridgeway MFB ?<Link to={/*redirect?`$login/redirect=${redirect}`:*/'/newaccount'}> Fill our online account form</Link>
+         </Col>
+        </Row>
+
         <h1>Sign up</h1>
+
+         
+        <Row className='py-3'>
+         <Col>
+           Have you registered before ?<Link to={/*redirect?`$login/redirect=${redirect}`:*/'/login'}> Login</Link>
+         </Col>
+        </Row>
+
         
         {loading && <Loader/>}
+
+        <br/>
+
         <Form onSubmit={submitHandler}>
   {/*1*/}      <Form.Group controlId='name'>
 
@@ -211,13 +284,22 @@ const RegisterScreen = ({location, history}) => { //he is taking location & hist
           </ListGroup>
         </>
        }
-        <br/>
+        
           <Button type='submit' variant='primary'>Register</Button>
         </Form>
+          
+          <br/>
+
+        <Row className='py-3'>
+         <Col style={{color:"red"}} >
+           Don't have an account with bridgeway MFB ?<Link to={/*redirect?`$login/redirect=${redirect}`:*/'/newaccount'}> Fill our online account form</Link>
+         </Col>
+        </Row>
+
 
         <Row className='py-3'>
          <Col>
-           Have an account?<Link to={/*redirect?`$login/redirect=${redirect}`:*/'/login'}> Login</Link>
+           Have you registered before ?<Link to={/*redirect?`$login/redirect=${redirect}`:*/'/login'}> Login</Link>
          </Col>
         </Row>
 
