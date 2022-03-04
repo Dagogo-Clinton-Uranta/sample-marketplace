@@ -244,7 +244,7 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
           setSubmitted(true)
       
         axios.defaults.headers.post['Content-Type'] = 'application/json';
-       axios.post('https://formsubmit.co/ajax/odubanjoadijat@bridgewaymfb.com', {
+       axios.post('https://formsubmit.co/ajax/adijatodubanjo@bridgewaymfb.com', {
         
          'SUBJECT':`${title}-${surname} WOULD LIKE TO OPEN A NEW ACCOUNT CALL ${tel} TO CONFIRM`,
          'title': title,
