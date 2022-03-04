@@ -107,6 +107,13 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
     /*form info ending */
 
    
+     /*SUBMISSION PROCESSING*/
+   const [submitted,setSubmitted] = useState(false)
+   const [submitSuccess,setSubmitSuccess] = useState(false)
+   const [submitFailure,setSubmitFailure] = useState(false)
+
+
+/*SUBMISSION PROCESS ENDING */
 
 
 
@@ -198,7 +205,7 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
     levelOfEd,educationSpecified,marriageStatus,marriageSpecified,
   email,flatNo,houseNo,streetName,town,tel,employmentType,employerName,
   businessType,salary,businessAddress,businessTel,businessEmail,idType,
-  issuingAuthority,issuePlace,issueDate,expiryDate.page1,page2,page3,page4,page5
+  issuingAuthority,issuePlace,issueDate,expiryDate,page1,page2,page3,page4,page5
 ])
 
 
@@ -207,12 +214,41 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
 
   const submitHandler = (e) => {
           e.preventDefault()
+          if(title  ===''||surname ===''||middleName ===''||
+          firstName ===''||stateOrigin ===''||nationality ===''||pob ===''||
+          dob ===''||lga ===''||gender ===''||religion ===''||resState ===''||
+            levelOfEd ===''||marriageStatus ===''||
+            houseNo ===''||streetName ===''||town ===''||tel ===''||idType ===''||
+          issuingAuthority ===''||issuePlace ===''||issueDate ===''||expiryDate=='')
+          
+          {
+            window.alert('Please make sure all compulsory fields are filled in!')
+            return;
+          }
+          else if(
+                  employmentType !==''&&
+                 (employerName ===''|| businessType ===''||salary ===''||businessAddress ===''||businessTel ===''||businessEmail ==='')
+          ){
+            window.alert('You selected a form of employment,make sure to fill all business related fields.')
+            return;
+          }
+          else if(levelOfEd==="See Education Specified" && educationSpecified ===''){
+            window.alert('please specify your education, as you have selected "Other" ')
+            return;
+          }
+          else if(marriageStatus==="Other" && marriageSpecified ===''){
+            window.alert('please specify your marriage situation, as you have selected "Other" ')
+            return;
+          }
+
+          setSubmitted(true)
       
-       
         axios.defaults.headers.post['Content-Type'] = 'application/json';
-       axios.post('https://formsubmit.co/ajax/dagogouranta@gmail.com', {
-        'title': title,
-        'surname' : surname,
+       axios.post('https://formsubmit.co/ajax/odubanjoadijat@bridgewaymfb.com', {
+        
+         'SUBJECT':`${title}-${surname} WOULD LIKE TO OPEN A NEW ACCOUNT CALL ${tel} TO CONFIRM`,
+         'title': title,
+         'surname' : surname,
          'middleName':middleName,
          'firstName':firstName ,
          'stateOrigin':stateOrigin,
@@ -238,7 +274,7 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
          'employmentType':employmentType,
          'employerName':employerName,
          'businessType':businessType,
-         'salary':salary,
+         'Designation':salary,
          'businessAddress':businessAddress,
          'businessTel':businessTel,
          'businessEmail':businessEmail,
@@ -249,9 +285,14 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
          'expiryDate':expiryDate,
          
    })
-    .then(response =>{ console.log(response)
-    
-     /* window.sessionStorage.setItem('formInfo',JSON.stringify({
+    .then(response =>{ console.log(response.data)
+        if (response.data.success === 'true'){
+          setSubmitSuccess(true)
+          setSubmitted(false)
+          setPage5(false)
+          setNow(100)
+
+      window.sessionStorage.setItem('formInfo',JSON.stringify({
         title: '',
         surname : '',
         middleName:'',
@@ -291,12 +332,22 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
         page3:false,
         page4:false,
         page5:false,
-        now:0,*/
-       
-     })
-   
+        now:0
+      
+    }))
+  }
+    else if(response.data.success === 'false'){
     
-    .catch(error => console.log(error));
+      setSubmitted(false)
+        setSubmitFailure(true)
+          setPage5(false)
+
+    }
+       
+     
+  })
+    
+    .catch(error => console.log(error))
        
 
   }
@@ -352,9 +403,12 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
     setPage4(false)
     setPage5(true)
     setNow(80)
+    setSubmitFailure(false)
      
   } 
  /* PAGE HANDLER BUTTON SECTION CLOSING */
+
+
 
 
     return (
@@ -362,12 +416,8 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
         
    
     
-      { /*this jsx for user experience when filling out this long arduous form */
-      <>
-      <br/>
        <center> <h4>Open an Acount with Us !</h4> </center>
-       </>
-       }
+       
         
          
         <center className="progressMargin">PROGRESS:</center>  <ProgressBar  animated now={now} label={`${now}%`} className="Progressbar" />
@@ -384,7 +434,7 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
      {/*1*/}      <Form.Group controlId='title'>
 
 
-     <Form.Label>  Title</Form.Label>
+     <Form.Label>  Title <strong style={{color:"red"}}>*</strong></Form.Label>
          <Form.Control type='title' placeholder="Mr, Mrs, Dr, Miss etc..." value={title} onChange={(e)=>setTitle(e.target.value)}></Form.Control>
           {/*the value of form control is form control from the state.  need to read about form group from react bootstrap*/}
         </Form.Group>
@@ -392,7 +442,7 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
 
   {/*2*/}      <Form.Group controlId='name'>
 
-         <Form.Label>  Surname</Form.Label>
+         <Form.Label>  Surname <strong style={{color:"red"}}>*</strong> </Form.Label>
          <Form.Control type='name' placeholder="enter surname" value={surname} onChange={(e)=>setSurname(e.target.value)}></Form.Control>
           {/*the value of form control is form control from the state.  need to read about form group from react bootstrap*/}
         </Form.Group>
@@ -400,7 +450,7 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
 
 {/*3*/}      <Form.Group controlId='name'>
 
-     <Form.Label> Middle Name</Form.Label>
+     <Form.Label> Middle Name <strong style={{color:"red"}}>*</strong></Form.Label>
          <Form.Control type='name' placeholder="enter  middle name" value={middleName} onChange={(e)=>setMiddlename(e.target.value)}></Form.Control>
           {/*the value of form control is form control from the state.  need to read about form group from react bootstrap*/}
         </Form.Group>
@@ -408,7 +458,7 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
 
 {/*4*/}      <Form.Group controlId='name'>
 
-       <Form.Label> First Name</Form.Label>
+       <Form.Label> First Name <strong style={{color:"red"}}>*</strong></Form.Label>
          <Form.Control type='name' placeholder="enter  first name" value={firstName} onChange={(e)=>setFirstName(e.target.value)}></Form.Control>
           {/*the value of form control is form control from the state.  need to read about form group from react bootstrap*/}
         </Form.Group>
@@ -417,7 +467,7 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
 
 {/*5*/}        <Form.Group controlId='dob'>
 
-<Form.Label>  Date of Birth </Form.Label>
+<Form.Label>  Date of Birth<strong style={{color:"red"}}>*</strong> </Form.Label>
            <div>start by entering the year</div>
           <DatePicker  dateFormat="dd-MM-yyyy" selected={dob==''?new Date():dob} onChange={(date) => setDob(date)}  />
           
@@ -428,7 +478,7 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
 
 {/*6*/}        <Form.Group controlId='pob'>
 
-<Form.Label>  Place of Birth </Form.Label>
+<Form.Label>  Place of Birth<strong style={{color:"red"}}>*</strong> </Form.Label>
           <Form.Control type='text' placeholder="enter the city and state of birth" value={pob} onChange={(e)=>setPob(e.target.value)}></Form.Control>
            {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
          </Form.Group> 
@@ -440,7 +490,7 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
 
 {/*7*/}        <Form.Group controlId='nationality'>
 
-         <Form.Label>  Nationality </Form.Label>
+         <Form.Label>  Nationality <strong style={{color:"red"}}>*</strong> </Form.Label>
           <Form.Control type='text' placeholder="Your nationality" value={nationality} onChange={(e)=>setNationality(e.target.value)}></Form.Control>
            {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
          </Form.Group>    
@@ -449,7 +499,7 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
 
          {/*8*/}        <Form.Group controlId='stateOrigin'>
 
-          <Form.Label> State of Origin </Form.Label>
+          <Form.Label> State of Origin <strong style={{color:"red"}}>*</strong> </Form.Label>
           <Form.Control type='text' placeholder="Your state of origin" value={stateOrigin} onChange={(e)=>setStateOrigin(e.target.value)}></Form.Control>
            {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
          </Form.Group>    
@@ -470,7 +520,7 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
         
          {/*9*/}        <Form.Group controlId='lga'>
 
-          <Form.Label>   Local Government Area </Form.Label>
+          <Form.Label>   Local Government Area<strong style={{color:"red"}}>*</strong> </Form.Label>
           <Form.Control type='text' placeholder="Enter your L.G.A" value={lga} onChange={(e)=>setLga(e.target.value)}></Form.Control>
            {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
          </Form.Group>    
@@ -481,7 +531,7 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
          <fieldset>
          {/*10*/}        <Form.Group controlId='gender'>
 
-         <Form.Label>  Gender </Form.Label>
+         <Form.Label>  Gender <strong style={{color:"red"}}>*</strong></Form.Label>
           <div className="mb-3"></div>
          <Form.Check inline type='radio' name='radiosInline' id='radiosInline1' label="Male" checked={gender==="Male"}  onChange={(e)=>setGender("Male")}/>
           <Form.Check inline type='radio' name='radiosInline' id='radiosInline2' label="Female" checked={gender==="Female"} onChange={(e)=>setGender("Female")}/>
@@ -503,7 +553,7 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
          <fieldset>
          {/*12*/}        <Form.Group controlId='eductaionlevel'>
 
-         <Form.Label>  Level of Education </Form.Label>
+         <Form.Label>  Level of Education<strong style={{color:"red"}}>*</strong> </Form.Label>
           <div className="mb-3"></div>
          <Form.Check inline type='radio' name='radiosInline' id='radiosInline1' label="Primary" checked={levelOfEd ==="Primary"} onChange={(e)=>setLevelOfEd("Primary")}/>
           <Form.Check inline type='radio' name='radiosInline' id='radiosInline2' label="Secondary" checked={levelOfEd  ==="Secondary"} onChange={(e)=>setLevelOfEd("Secondary")}/>
@@ -520,12 +570,12 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
          <fieldset>
          {/*13*/}        <Form.Group controlId='marriageStatus'>
 
-         <Form.Label> Marital Status </Form.Label>
+         <Form.Label> Marital Status <strong style={{color:"red"}}>*</strong></Form.Label>
           <div className="mb-3"></div>
          <Form.Check inline type='radio' name='radiosInline' id='radiosInline1' label="Single" checked={marriageStatus ==="Single"} onChange={(e)=>setMarriageStatus("Single")}/>
           <Form.Check inline type='radio' name='radiosInline' id='radiosInline2' label="Married" checked={marriageStatus ==="Married"}  onChange={(e)=>setMarriageStatus("Married")}/>
           <Form.Check inline type='radio' name='radiosInline' id='radiosInline2' label="Divorced" checked={marriageStatus ==="Divorced"} onChange={(e)=>setMarriageStatus("Divorced")}/>
-          <Form.Check inline type='radio' name='radiosInline' id='radiosInline2' label="Other" checked={marriageStatus ==="Others"} onChange={(e)=>setMarriageStatus("Others")}/>
+          <Form.Check inline type='radio' name='radiosInline' id='radiosInline2' label="Other" checked={marriageStatus ==="Other"} onChange={(e)=>setMarriageStatus("Other")}/>
           <Form.Control type='input' placeholder="Marital Status, if you picked 'Other' " value={marriageSpecified} onChange={(e)=>setMarriageSpecified(e.target.value)}></Form.Control>
          </Form.Group>
          </fieldset>
@@ -541,7 +591,7 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
 
          {/*15*/}        <Form.Group controlId='maidenname'>
 
-         <Form.Label>  Mother's Maiden name  </Form.Label>
+         <Form.Label>  Mother's Maiden name <strong style={{color:"red"}}>*</strong>  </Form.Label>
           <Form.Control type='text' placeholder="mothers maiden name" value={maidenName} onChange={(e)=>setmaidenName(e.target.value)}></Form.Control>
            {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
          </Form.Group>
@@ -569,35 +619,35 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
 
     
  {/*18*/}         <Form.Group controlId='house number'>
-        <Form.Label> House Number </Form.Label>
+        <Form.Label> House Number <strong style={{color:"red"}}>*</strong></Form.Label>
           <Form.Control type='text' placeholder="house number" value={houseNo} onChange={(e)=>setHouseNo(e.target.value)}></Form.Control>
            {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
          </Form.Group>
 
 
  {/*19*/}       <Form.Group controlId='street name'>
-        <Form.Label>  Street Name  </Form.Label>
+        <Form.Label>  Street Name <strong style={{color:"red"}}>*</strong> </Form.Label>
           <Form.Control type='text' placeholder="the street you live on" value={streetName} onChange={(e)=>setStreetName(e.target.value)}></Form.Control>
           
          </Form.Group>
 
 
  {/*20*/}      <Form.Group controlId='town'>
-        <Form.Label>  Town  </Form.Label>
+        <Form.Label>  Town/City <strong style={{color:"red"}}>*</strong>  </Form.Label>
           <Form.Control type='text' placeholder="town/city name" value={town} onChange={(e)=>setTown(e.target.value)}></Form.Control>
            
          </Form.Group>
 
 
  {/*21*/}     <Form.Group controlId='state of residence'>
-        <Form.Label>  City/State  </Form.Label>
+        <Form.Label>  State <strong style={{color:"red"}}>*</strong> </Form.Label>
           <Form.Control type='text' placeholder="state where you live" value={resState} onChange={(e)=>setResState(e.target.value)}></Form.Control>
            
          </Form.Group>
 
 
 {/*22*/}     <Form.Group controlId='tel no'>
-<Form.Label>  Telephone  </Form.Label>
+<Form.Label>  Telephone <strong style={{color:"red"}}>*</strong> </Form.Label>
           <Form.Control type='text' placeholder="telephone Number" value={tel} onChange={(e)=>setTel(e.target.value)}></Form.Control>
            
          </Form.Group>
@@ -605,7 +655,7 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
 
 
 {/*23*/}     <Form.Group controlId='email'>
-  <Form.Label>  Email  </Form.Label>
+  <Form.Label>  Email <strong style={{color:"red"}}>*</strong> </Form.Label>
       <Form.Control type='text' placeholder="email address" value={email} onChange={(e)=>setEmail(e.target.value)}></Form.Control>
            
          </Form.Group>
@@ -626,12 +676,12 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
           {page4 &&
         <div className='sectionContainer'>
 
-        <h6 className="boxTitles">Business Info</h6>
+        <h6 className="boxTitles">Business Info (If Applicable)</h6>
 
         <fieldset>
          {/*25*/}        <Form.Group controlId='worktype'>
 
-         <Form.Label>  Nature of Employment </Form.Label>
+         <Form.Label>  Nature of Employment <strong style={{color:"red"}}>*</strong> </Form.Label>
           <div className="mb-3"></div>
          <Form.Check inline type='radio' name='radiosInline' id='radiosInline1' label="Salaried"  checked = {employmentType === "Salaried"} onChange={(e)=>setEmploymentType("Salaried")}/>
           <Form.Check inline type='radio' name='radiosInline' id='radiosInline2' label="Self Employed" checked = {employmentType === "Self Employed"}  onChange={(e)=>setEmploymentType("Self Employed")}/>
@@ -710,7 +760,7 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
         <fieldset>
          {/*32*/}        <Form.Group controlId='worktype'>
 
-         <Form.Label>  Type of Identification </Form.Label>
+         <Form.Label>  Type of Identification <strong style={{color:"red"}}>*</strong> </Form.Label>
          {/*<div style={{color=grey }}>Please note:If you have an ID different from the ones listed below ,you will have to come to our physical branch for verification</div>*/}
           
           <div className="mb-3"></div>
@@ -722,15 +772,15 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
          </fieldset>
     
  {/*33*/}         <Form.Group controlId='issuing authority'>
-        <Form.Label>   Issuing Authority  </Form.Label>
-          <Form.Control type='text' placeholder="who issued this card to you" value={issuingAuthority} onChange={(e)=>setIssuingAuthority(e.target.value)}></Form.Control>
+        <Form.Label>   Issuing Authority <strong style={{color:"red"}}>*</strong> </Form.Label>
+          <Form.Control type='text' placeholder="who issued this ID to you" value={issuingAuthority} onChange={(e)=>setIssuingAuthority(e.target.value)}></Form.Control>
            {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
          </Form.Group>
 
 
  {/*34*/}       <Form.Group controlId='place of issue'>
-        <Form.Label>  Place of Issue  </Form.Label>
-          <Form.Control type='text' placeholder="where were you issued this card ?" value={issuePlace} onChange={(e)=>setIssuePlace(e.target.value)}></Form.Control>
+        <Form.Label>  Place of Issue <strong style={{color:"red"}}>*</strong> </Form.Label>
+          <Form.Control type='text' placeholder="where were you issued this ID ?" value={issuePlace} onChange={(e)=>setIssuePlace(e.target.value)}></Form.Control>
            {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
          </Form.Group>
 
@@ -738,22 +788,22 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
 
 
   {/*35*/}     <Form.Group controlId='businessAddress'>
-        <Form.Label>  Issue Date  </Form.Label>
+        <Form.Label>  Issue Date <strong style={{color:"red"}}>*</strong>  </Form.Label>
          <DatePicker dateFormat="dd-MM-yyyy" selected={issueDate===''?new Date():issueDate} onChange={(date) => setIssueDate(date)} />
          </Form.Group>
 
 
 
   {/*36*/}        <Form.Group controlId='businessAddress'>
-        <Form.Label>  Expiry Date  </Form.Label>
+        <Form.Label>  Expiry Date <strong style={{color:"red"}}>*</strong> </Form.Label>
          <DatePicker dateFormat="dd-MM-yyyy" selected={expiryDate===''?new Date():expiryDate} onChange={(date) => setExpiryDate(date)} />
          </Form.Group>
 
 
          <div className='buttonSpacer'>
-         <Button type='button' variant='primary' onClick={page4Handler}>Previous</Button>
-         <Button type='submit' variant='primary'>Submit</Button>
-          
+        {!submitted && <Button type='button' variant='primary' onClick={page4Handler}>Previous</Button>}
+         {!submitted && <Button type='submit' variant='primary'>Submit</Button>}
+         {submitted && <Loader/>}
          
           </div>
 
@@ -769,22 +819,42 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
 
 
 
-        <Alert variant="success">
-  <Alert.Heading>Hey, nice to see you</Alert.Heading>
+       {submitSuccess && <Alert variant="success">
+  <Alert.Heading>Successful Submission</Alert.Heading>
   <p>
-    Aww yeah, you successfully read this important alert message. This example
-    text is going to run a bit longer so that you can see how spacing within an
-    alert works with this kind of content.
+    Congratulations! We have succesfully recieved your information and have begun the process of creating 
+    an account for you. Expect a confirmatory call from us.
   </p>
   <hr />
   <p className="mb-0">
-    Whenever you need to, be sure to use margin utilities to keep things nice
-    and tidy.
+    Please check back within 24 hours, to see if you are able to use the co-operative.
   </p>
-</Alert>
+
+  <div className='buttonSpacer'>
+     <Link to={'/'}> <Button type='button' variant='primary' >Home Page</Button></Link>
+         
+         <Button type='button' variant='primary' onClick={page1Handler}>Create Another Account</Button>
+  </div>
+</Alert> } 
 
 
+      {submitFailure && <Alert variant="danger">
+      <Alert.Heading>Submission Error</Alert.Heading>
+  <p>
+    Please Check your internet connection and try again!
+  </p>
+  <hr />
+  <p className="mb-0">
+    Don't worry, you won't have to fill the form again, just click try again.
+  </p>
 
+  <div className='buttonSpacer'>
+  <Button type='button' variant='primary' onClick={page5Handler}>Try Again</Button>
+     <Link to={'/'}> <Button type='button' variant='primary' >Home Page</Button></Link>
+         
+         
+  </div>
+</Alert> }
 
 
 
