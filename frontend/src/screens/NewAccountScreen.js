@@ -425,7 +425,7 @@ const uploadFileHandler = (e)=>{
   const formData = new FormData()
   formData.append('image',file)
   setUploading(true)
-   setIdImage(file)
+   setIdImage(formData)
   setUploading(false)
   setIsUploaded('IMAGE UPLOADED SUCCESSFULLY!')
    
@@ -864,8 +864,9 @@ const clearCanvas = () => {
          <Form.Label>  Upload your Id here <strong style={{color:"red"}}>*</strong> </Form.Label>
          <Form.File id="image-file" label="choose file" custom onChange={uploadFileHandler}>
          </Form.File>
+         <br/>
          {uploading &&<Loader/>}
-           {!uploading && <Form.Label> {isUploaded} </Form.Label>}
+         {!uploading && <Form.Label style={{color:"red"}} > {isUploaded} </Form.Label>}
 
          </Form.Group>
     
