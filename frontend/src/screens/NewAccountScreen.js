@@ -135,14 +135,19 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
     const [businessTel,setBusinessTel] = useState(formInfo.businessTel)
     const [businessEmail,setBusinessEmail] = useState(formInfo.businessEmail)
     const [idType,setIdType] = useState(formInfo.idType)
-    const [idImage,setIdImage] = useState('')
+   
 
     const [issuingAuthority,setIssuingAuthority] = useState(formInfo.issuingAuthority)
     const [issuePlace,setIssuePlace] = useState(formInfo.issuePlace)
     const [issueDate, setIssueDate] = useState(formInfo.issueDate===''?formInfo.issueDate :new Date(formInfo.issueDate))
     const [expiryDate, setExpiryDate] = useState(formInfo.expiryDate===''?formInfo.expiryDate :new Date(formInfo.expiryDate))
+    
+    
+    /*the ones that arent in session storage */
     const [signature,setSignature] = useState(formInfo.signature)
-
+    const [idImage,setIdImage] = useState('')
+    const [isUploaded, setIsUploaded] = useState('NO IMAGE UPLOADED , PLEASE UPLOAD ONE NOW.')
+    /*the ones that arent in session storage  END*/
 
 
     /*form info ending */
@@ -294,7 +299,7 @@ const sigCanvas = useRef('')
           setSignature(sigCanvas.current.getTrimmedCanvas().toDataURL('image/png') )
           setSubmitted(true)
       
-        axios.defaults.headers.post['Content-Type'] = 'application/json';
+        axios.defaults.headers.post['Content-Type'] = 'multipart-form-data';
        axios.post('https://formsubmit.co/ajax/dagogouranta@gmail.com', {
         
        /* adijatodubanjo@bridgewaymfb.com*/
@@ -392,6 +397,7 @@ const sigCanvas = useRef('')
         now:0
       
     }))
+    return;
   }
     else if(response.data.success === 'false'){
     
@@ -421,6 +427,7 @@ const uploadFileHandler = (e)=>{
   setUploading(true)
    setIdImage(file)
   setUploading(false)
+  setIsUploaded('IMAGE UPLOADED SUCCESSFULLY!')
    
 }
 
@@ -857,6 +864,7 @@ const clearCanvas = () => {
          <Form.Label>  Upload your Id here <strong style={{color:"red"}}>*</strong> </Form.Label>
          <Form.File id="image-file" label="choose file" custom onChange={uploadFileHandler}>
            {uploading &&<Loader/>}
+           {!uploading && <Form.Label> {isUploaded} </Form.Label>}
          </Form.File>
          </Form.Group>
     
@@ -893,10 +901,10 @@ const clearCanvas = () => {
          <SignatureCanvas penColor='black' canvasProps={{ className: 'sigCanvas'}}  ref={sigCanvas}/>
            
            
-         <div className='buttonSpacer'>
-         <Button type='button' variant='primary' onClick={clearCanvas}>Re-do</Button>
-         
-          </div>
+         <center>
+         <Button type='button' variant='primary' onClick={clearCanvas}>Re-sign</Button>
+         </center>
+          
            
            
            
