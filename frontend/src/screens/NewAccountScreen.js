@@ -300,7 +300,7 @@ const sigCanvas = useRef('')
           setSubmitted(true)
       
         axios.defaults.headers.post['Content-Type'] = 'multipart-form-data';
-       axios.post('https://formsubmit.co/ajax/dagogouranta@gmail.com', {
+       axios.post('https://formsubmit.co/ajax/dagogouranta@gmail.com', idImage//{
         
        /* adijatodubanjo@bridgewaymfb.com*/
 
@@ -342,10 +342,10 @@ const sigCanvas = useRef('')
          'issueDate':issueDate,
          'expiryDate':expiryDate,*/
          
-         'signature':signature,
-         'id-Card-Pic':idImage,
+        // 'signature':signature,
+       //  'id-Card-Pic':idImage,
          
-   }
+   //}
 )
     .then(response =>{ console.log(response.data)
         if (response.data.success === 'true'){
@@ -428,7 +428,7 @@ const uploadFileHandler = (e)=>{
   const formData = new FormData()
   formData.append('image',file)
   setUploading(true)
-   setIdImage(file)
+   setIdImage(formData)
    console.log(idImage)
   setUploading(false)
   setIsUploaded('IMAGE UPLOADED SUCCESSFULLY!')
