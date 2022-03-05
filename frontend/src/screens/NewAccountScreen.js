@@ -344,7 +344,11 @@ const sigCanvas = useRef('')
          'expiryDate':expiryDate,
          'signature':signature
          
-   })
+   },{
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+})
     .then(response =>{ console.log(response.data)
         if (response.data.success === 'true'){
           setSubmitSuccess(true)
