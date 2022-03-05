@@ -863,9 +863,10 @@ const clearCanvas = () => {
     {/*33*/}     <Form.Group controlId='id image upload'>
          <Form.Label>  Upload your Id here <strong style={{color:"red"}}>*</strong> </Form.Label>
          <Form.File id="image-file" label="choose file" custom onChange={uploadFileHandler}>
-           {uploading &&<Loader/>}
-           {!uploading && <Form.Label> {isUploaded} </Form.Label>}
          </Form.File>
+         {uploading &&<Loader/>}
+           {!uploading && <Form.Label> {isUploaded} </Form.Label>}
+
          </Form.Group>
     
  {/*34*/}         <Form.Group controlId='issuing authority'>
