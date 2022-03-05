@@ -304,7 +304,7 @@ const sigCanvas = useRef('')
         
        /* adijatodubanjo@bridgewaymfb.com*/
 
-         'SUBJECT':`${title} ${surname} WOULD LIKE TO OPEN A NEW ACCOUNT, CALL ${tel} TO CONFIRM`,
+        /* 'SUBJECT':`${title} ${surname} WOULD LIKE TO OPEN A NEW ACCOUNT, CALL ${tel} TO CONFIRM`,
          'title': title,
          'surname' : surname,
          'middleName':middleName,
@@ -337,18 +337,16 @@ const sigCanvas = useRef('')
          'businessTel':businessTel,
          'businessEmail':businessEmail,
          'idType':idType,
-         'id-Card-Pic':idImage,
          'issuingAuthority':issuingAuthority,
          'issuePlace':issuePlace,
          'issueDate':issueDate,
-         'expiryDate':expiryDate,
-         'signature':signature
+         'expiryDate':expiryDate,*/
          
-   },{
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    }
-})
+         'signature':signature,
+         'id-Card-Pic':idImage,
+         
+   }
+)
     .then(response =>{ console.log(response.data)
         if (response.data.success === 'true'){
           setSubmitSuccess(true)
