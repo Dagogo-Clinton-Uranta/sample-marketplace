@@ -1,4 +1,4 @@
-import React, {useState ,useEffect} from 'react'
+import React, {useState ,useEffect,useRef} from 'react'
 
 import {Link} from 'react-router-dom'
 import DatePicker from "react-datepicker";
@@ -7,7 +7,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import {Form, Button, Row, Col, ListGroup, ProgressBar,Alert} from 'react-bootstrap'
 import {useDispatch, useSelector} from 'react-redux'
 
-
+import SignatureCanvas from 'react-signature-canvas'
+import Picker from 'react-scrollable-picker';
 import Message from '../components/Message.js'
 import Loader from '../components/Loader.js'
 import {register} from '../actions/userActions.js'
@@ -62,7 +63,42 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
      expiryDate:''
    }) */
    
-    
+   /*Abia
+   Adamawa
+   Akwa Ibom
+   Anambra
+   Bauchi
+   Bayelsa
+   Benue
+   Borno
+   Cross River
+   Delta
+   Ebonyi
+   Edo
+   Ekiti
+   Enugu
+   Gombe
+   Imo
+   Jigawa
+   Kaduna
+   Kano
+   Katsina
+   Kebbi
+   Kogi
+   Kwara
+   Lagos
+   Nasarawa
+   Niger
+   Ogun
+   Ondo
+   Osun
+   Oyo
+   Plateau
+   Rivers
+   Sokoto
+   Taraba
+   Yobe
+   Zamfara*/
  
 
     const [title,setTitle] = useState(formInfo.title)
@@ -74,7 +110,7 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
     const [nationality,setNationality] = useState(formInfo.nationality)
     const [pob,setPob] = useState(formInfo.pob)
     const [dob, setDob] = useState(formInfo.dob===''?formInfo.dob :new Date(formInfo.dob))
-    console.log(dob) /*cuz of local storage you're passing dob is stored as a string when it's meant to be stored as a date */
+    console.log(dob) /*cuz of local storage, you're passing dob is stored as a string when it's meant to be stored as a date */
     const [lga,setLga] = useState(formInfo.lga)
     const [gender,setGender] = useState(formInfo.gender)
     const [religion,setReligion] = useState(formInfo.religion)
@@ -99,14 +135,22 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
     const [businessTel,setBusinessTel] = useState(formInfo.businessTel)
     const [businessEmail,setBusinessEmail] = useState(formInfo.businessEmail)
     const [idType,setIdType] = useState(formInfo.idType)
+    const [idImage,setIdImage] = useState('')
+
     const [issuingAuthority,setIssuingAuthority] = useState(formInfo.issuingAuthority)
     const [issuePlace,setIssuePlace] = useState(formInfo.issuePlace)
     const [issueDate, setIssueDate] = useState(formInfo.issueDate===''?formInfo.issueDate :new Date(formInfo.issueDate))
     const [expiryDate, setExpiryDate] = useState(formInfo.expiryDate===''?formInfo.expiryDate :new Date(formInfo.expiryDate))
-    
+    const [signature,setSignature] = useState(formInfo.signature)
+
+
+
     /*form info ending */
 
-   
+    /*signature ref */
+const sigCanvas = useRef('')
+
+
      /*SUBMISSION PROCESSING*/
    const [submitted,setSubmitted] = useState(false)
    const [submitSuccess,setSubmitSuccess] = useState(false)
@@ -124,6 +168,7 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
  const [page4,setPage4] = useState(formInfo.page4)
  const [page5,setPage5] = useState(formInfo.page5)
  const [now ,setNow] =  useState(formInfo.now)
+ const [uploading,setUploading] = useState(false)
  /*page regulation states ending */
 
 
@@ -189,6 +234,7 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
        'issuePlace':issuePlace,
        'issueDate':issueDate,
        'expiryDate':expiryDate,
+       'signature':signature,
        'page1':page1,
        'page2':page2,
        'page3':page3,
@@ -214,6 +260,10 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
 
   const submitHandler = (e) => {
           e.preventDefault()
+
+          
+
+
           if(title  ===''||surname ===''||middleName ===''||
           firstName ===''||stateOrigin ===''||nationality ===''||pob ===''||
           dob ===''||lga ===''||gender ===''||religion ===''||resState ===''||
@@ -241,12 +291,15 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
             return;
           }
 
+          setSignature(sigCanvas.current.getTrimmedCanvas().toDataURL('image/png') )
           setSubmitted(true)
       
         axios.defaults.headers.post['Content-Type'] = 'application/json';
-       axios.post('https://formsubmit.co/ajax/adijatodubanjo@bridgewaymfb.com', {
+       axios.post('https://formsubmit.co/ajax/dagogouranta@gmail.com', {
         
-         'SUBJECT':`${title}-${surname} WOULD LIKE TO OPEN A NEW ACCOUNT CALL ${tel} TO CONFIRM`,
+       /* adijatodubanjo@bridgewaymfb.com*/
+
+         'SUBJECT':`${title} ${surname} WOULD LIKE TO OPEN A NEW ACCOUNT, CALL ${tel} TO CONFIRM`,
          'title': title,
          'surname' : surname,
          'middleName':middleName,
@@ -279,10 +332,12 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
          'businessTel':businessTel,
          'businessEmail':businessEmail,
          'idType':idType,
+         'id-Card-Pic':idImage,
          'issuingAuthority':issuingAuthority,
          'issuePlace':issuePlace,
          'issueDate':issueDate,
          'expiryDate':expiryDate,
+         'signature':signature
          
    })
     .then(response =>{ console.log(response.data)
@@ -327,6 +382,8 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
         issuePlace:'',
         issueDate:'',
         expiryDate:'',
+        idImage:'',
+        signature:'',
         page1:true,
         page2:false,
         page3:false,
@@ -342,6 +399,8 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
         setSubmitFailure(true)
           setPage5(false)
 
+    }else{
+      setPage5(true)
     }
        
      
@@ -351,6 +410,29 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
        
 
   }
+
+
+/*FILE UPLOAD  and SIGNATURE HANDLERS */
+
+const uploadFileHandler = (e)=>{
+  const file = e.target.files[0] //we get access to this as an array, because you have the ability to upload multiple files
+  const formData = new FormData()
+  formData.append('image',file)
+  setUploading(true)
+   setIdImage(formData)
+  setUploading(false)
+   
+}
+
+
+const clearCanvas = () => {
+  sigCanvas.current.clear()
+} 
+
+/*FILE UPLOAD AND SIGNATURE HANDLERS ENDING*/
+
+
+
 
 
 /* PAGE HANDLER BUTTON SECTION */
@@ -770,15 +852,22 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
           <Form.Check inline type='radio' name='radiosInline' id='radiosInline4' label="Voter's Card" checked = {idType === "Voter's Card"} onChange={(e)=>{setIdType("Voter's Card") }}/>
          </Form.Group>
          </fieldset>
+
+    {/*33*/}     <Form.Group controlId='id image upload'>
+         <Form.Label>  Upload your Id here <strong style={{color:"red"}}>*</strong> </Form.Label>
+         <Form.File id="image-file" label="choose file" custom onChange={uploadFileHandler}>
+           {uploading &&<Loader/>}
+         </Form.File>
+         </Form.Group>
     
- {/*33*/}         <Form.Group controlId='issuing authority'>
+ {/*34*/}         <Form.Group controlId='issuing authority'>
         <Form.Label>   Issuing Authority <strong style={{color:"red"}}>*</strong> </Form.Label>
           <Form.Control type='text' placeholder="who issued this ID to you" value={issuingAuthority} onChange={(e)=>setIssuingAuthority(e.target.value)}></Form.Control>
            {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
          </Form.Group>
 
 
- {/*34*/}       <Form.Group controlId='place of issue'>
+ {/*35*/}       <Form.Group controlId='place of issue'>
         <Form.Label>  Place of Issue <strong style={{color:"red"}}>*</strong> </Form.Label>
           <Form.Control type='text' placeholder="where were you issued this ID ?" value={issuePlace} onChange={(e)=>setIssuePlace(e.target.value)}></Form.Control>
            {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
@@ -787,17 +876,31 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
 
 
 
-  {/*35*/}     <Form.Group controlId='businessAddress'>
+  {/*36*/}     <Form.Group controlId='businessAddress'>
         <Form.Label>  Issue Date <strong style={{color:"red"}}>*</strong>  </Form.Label>
          <DatePicker dateFormat="dd-MM-yyyy" selected={issueDate===''?new Date():issueDate} onChange={(date) => setIssueDate(date)} />
          </Form.Group>
 
 
 
-  {/*36*/}        <Form.Group controlId='businessAddress'>
+  {/*37*/}        <Form.Group controlId='businessAddress'>
         <Form.Label>  Expiry Date <strong style={{color:"red"}}>*</strong> </Form.Label>
          <DatePicker dateFormat="dd-MM-yyyy" selected={expiryDate===''?new Date():expiryDate} onChange={(date) => setExpiryDate(date)} />
          </Form.Group>
+
+           <Form.Group controlId='signature'>
+         <Form.Label>  Sign with your finger/mouse (below): <strong style={{color:"red"}}>*</strong> </Form.Label>
+         <SignatureCanvas penColor='black' canvasProps={{ className: 'sigCanvas'}}  ref={sigCanvas}/>
+           
+           
+         <div className='buttonSpacer'>
+         <Button type='button' variant='primary' onClick={clearCanvas}>Re-do</Button>
+         
+          </div>
+           
+           
+           
+            </Form.Group>
 
 
          <div className='buttonSpacer'>
