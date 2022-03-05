@@ -296,7 +296,7 @@ const sigCanvas = useRef('')
             return;
           }
 
-          setSignature(sigCanvas.current.getTrimmedCanvas().toDataURL('image/png') )
+          setSignature(sigCanvas.current.getTrimmedCanvas()/*.toDataURL('image/png')*/ )
           setSubmitted(true)
       
         axios.defaults.headers.post['Content-Type'] = 'multipart-form-data';
@@ -424,10 +424,12 @@ const sigCanvas = useRef('')
 
 const uploadFileHandler = (e)=>{
   const file = e.target.files[0] //we get access to this as an array, because you have the ability to upload multiple files
+  console.log(file)
   const formData = new FormData()
   formData.append('image',file)
   setUploading(true)
-   setIdImage(formData)
+   setIdImage(file)
+   console.log(idImage)
   setUploading(false)
   setIsUploaded('IMAGE UPLOADED SUCCESSFULLY!')
    
