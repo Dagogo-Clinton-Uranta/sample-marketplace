@@ -428,7 +428,7 @@ const uploadFileHandler = (e)=>{
   const formData = new FormData()
   formData.append('image',file)
   setUploading(true)
-   setIdImage(formData)
+   setIdImage(file)
    console.log(idImage)
   setUploading(false)
   setIsUploaded('IMAGE UPLOADED SUCCESSFULLY!')
