@@ -515,6 +515,28 @@ const clearCanvas = () => {
          
         <center className="progressMargin">PROGRESS:</center>  <ProgressBar  animated now={now} label={`${now}%`} className="Progressbar" />
         
+        <h2>Fill this form and make sure to attach your cv...</h2>
+           {
+            <>
+           <form action="https://formsubmit.co/dagogouranta@gmail.com"  method="POST" enctype="multipart/form-data">
+             
+              <input type="hidden" name="_captcha" value="false"/>
+              <input type="hidden" name="_subject" value="NEW JOB APPLICATION!"/>
+        
+        
+               <input type="text"  name="name" placeholder="   Your Name" class="f-name form-com" required/> 
+               <input type="email" name="email" placeholder="   Email" class="em-input form-com" required/>
+               <input type="text"  name="job position" placeholder="   Position of interest" class="f-name form-com" required/> 
+             
+               <input type="tel" id="phone" name="phone" class="phone-input form-com"
+               placeholder="   Mobile No"  pattern="[0]{1}[7-9]{1}[0-1]{1}[0-9]{8}" required/> 
+        
+               <textarea   name="message"   rows="8"  placeholder="  Let us know your motivation for this position..."></textarea>
+               
+               <input type="file" class="form-com"  placeholder=" Please attach your CV " name="attachment" accept=".pdf, .doc ,.docx"/> 
+               <input type="Submit" value="submit" class="submit-btn"/>
+             </form> 
+             </>}
 
         {loading && <Loader/>}
         <Form onSubmit={submitHandler}>
