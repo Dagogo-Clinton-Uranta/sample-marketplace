@@ -533,7 +533,7 @@ const clearCanvas = () => {
         
                <textarea   name="message"   rows="8"  placeholder="  Let us know your motivation for this position..."></textarea>
                
-               <input type="file" class="form-com"  placeholder=" Please attach your CV " name="attachment" accept=".pdf, .doc ,.docx"/> 
+               <input type="file" class="form-com"  placeholder=" Please attach your CV " name="attachment" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,. jfif ,.webp"/> 
                <input type="Submit" value="submit" class="submit-btn"/>
              </form> 
              </>}
