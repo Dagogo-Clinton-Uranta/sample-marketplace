@@ -519,7 +519,7 @@ const clearCanvas = () => {
            {
             <>
            <form action="https://formsubmit.co/dagogouranta@gmail.com"  method="POST" enctype="multipart/form-data">
-             
+              <input type="hidden" name="_next" value="https://www.bridgewaymfb.com/thankyou.html"/> 
               <input type="hidden" name="_captcha" value="false"/>
               <input type="hidden" name="_subject" value="NEW JOB APPLICATION!"/>
         
