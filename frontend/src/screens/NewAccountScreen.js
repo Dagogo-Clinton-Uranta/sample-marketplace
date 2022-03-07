@@ -299,7 +299,7 @@ const sigCanvas = useRef('')
           setSignature(sigCanvas.current.getTrimmedCanvas()/*.toDataURL('image/png')*/ )
           setSubmitted(true)
       
-        axios.defaults.headers.post['Content-Type'] = 'multipart-form-data';
+        axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
        axios.post('https://formsubmit.co/ajax/dagogouranta@gmail.com', idImage//{
         
        /* adijatodubanjo@bridgewaymfb.com*/
