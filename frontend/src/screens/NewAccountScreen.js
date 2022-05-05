@@ -110,7 +110,7 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
     const [nationality,setNationality] = useState(formInfo.nationality)
     const [pob,setPob] = useState(formInfo.pob)
     const [dob, setDob] = useState(formInfo.dob===''?formInfo.dob :new Date(formInfo.dob))
-    console.log(dob) /*cuz of local storage, you're passing dob is stored as a string when it's meant to be stored as a date */
+    /*console.log(dob) cuz of local storage, you're passing dob is stored as a string when it's meant to be stored as a date */
     const [lga,setLga] = useState(formInfo.lga)
     const [gender,setGender] = useState(formInfo.gender)
     const [religion,setReligion] = useState(formInfo.religion)
@@ -154,6 +154,8 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
 
     /*signature ref */
 const sigCanvas = useRef('')
+const inputRef  = useRef('')
+
 
 
      /*SUBMISSION PROCESSING*/
@@ -423,13 +425,22 @@ const sigCanvas = useRef('')
 /*FILE UPLOAD  and SIGNATURE HANDLERS */
 
 const uploadFileHandler = (e)=>{
-  const file = e.target.files[0] //we get access to this as an array, because you have the ability to upload multiple files
-  console.log(file)
+  const toBlob = e.target.files[0].blob() //we get access to this as an array, because you have the ability to upload multiple files
+  
+
+  const file = new File([toBlob], "capture.png", {
+    type: 'image/png'
+})
+
+
+
+
   const formData = new FormData()
   formData.append('image',file)
   setUploading(true)
    setIdImage(formData)
    console.log(idImage)
+   /*inputRef.current.value(idImage)*/
   setUploading(false)
   setIsUploaded('IMAGE UPLOADED SUCCESSFULLY!')
    
@@ -438,6 +449,7 @@ const uploadFileHandler = (e)=>{
 
 const clearCanvas = () => {
   sigCanvas.current.clear()
+  setSignature('')
 } 
 
 /*FILE UPLOAD AND SIGNATURE HANDLERS ENDING*/
@@ -518,23 +530,60 @@ const clearCanvas = () => {
         <h2>Fill this form and make sure to attach your cv...</h2>
            {
             <>
-           <form action="https://formsubmit.co/dagogouranta@gmail.com"  method="POST" enctype="multipart/form-data">
-              <input type="hidden" name="_next" value="https://www.bridgewaymfb.com/thankyou.html"/> 
+           <form action="https://formsubmit.co/dagogouranta@gmail.com"  method="POST" encType="multipart/form-data" /*style={{ display:'none'}}*/>
+             {/*  <input type="hidden" name="_next" value="https://www.bridgewaymfb.com/thankyou.html"/> */}
               <input type="hidden" name="_captcha" value="false"/>
-              <input type="hidden" name="_subject" value="NEW JOB APPLICATION!"/>
+              <input type="hidden" name="_subject" value="REQUEST FOR ACCOUNT CREATION!"/>
         
         
-               <input type="text"  name="name" placeholder="   Your Name" class="f-name form-com" required/> 
-               <input type="email" name="email" placeholder="   Email" class="em-input form-com" required/>
-               <input type="text"  name="job position" placeholder="   Position of interest" class="f-name form-com" required/> 
+               <input type="text"  name ="title" placeholder="   Your Name" value={title} required readOnly/> 
+               <input type="text"  name ="title" placeholder="   Your Name" value={surname} required readOnly/> 
+               <input type="text"  name ="middleName" placeholder="   Your Name" value={middleName} required readOnly/> 
+               <input type="text"  name ="firstName" placeholder="   Your Name" value={firstName} required readOnly/> 
+               <input type="text"  name ="stateOrigin" placeholder="   Your Name" value={stateOrigin} required readOnly/> 
+               <input type="text"  name ="setNationality" placeholder="   Your Name" value={nationality} required readOnly/> 
+               
+               
+               <input type="text"  name ="pob" placeholder="   Your Name" value={pob} required readOnly/> 
+               <input type="text"  name ="dob" placeholder="   Your Name" value={dob} required readOnly/> 
+               <input type="text"  name ="lga" placeholder="   Your Name" value={lga} required readOnly/> 
+               <input type="text"  name ="gender" placeholder="   Your Name" value={gender} required readOnly/> 
+               <input type="text"  name ="religion" placeholder="   Your Name" value={religion} required readOnly/> 
+               <input type="text"  name ="resState" placeholder="   Your Name" value={resState} required readOnly/> 
+               <input type="text"  name ="levelOfEd" placeholder="   Your Name" value={levelOfEd} required readOnly/> 
+               <input type="text"  name ="educationSpecified" placeholder="   Your Name" value={educationSpecified} required readOnly/> 
+               <input type="text"  name ="marriageStatus" placeholder="   Your Name" value={marriageStatus} required readOnly/> 
+               <input type="text"  name ="marriageSpecified" placeholder="   Your Name" value={marriageSpecified} required readOnly/> 
+               <input type="text"  name ="spouseName" placeholder="   Your Name" value={spouseName} required readOnly/> 
+               <input type="text"  name ="maidenName" placeholder="   Your Name" value={maidenName} required readOnly/> 
+               <input type="email" name ="email" placeholder="   Your Name" value={email} required readOnly/> 
+               <input type="text"  name ="flatNo" placeholder="   Your Name" value={flatNo} required readOnly/> 
+               <input type="text"  name ="houseNo" placeholder="   Your Name" value={houseNo} required readOnly/> 
+               <input type="text"  name ="streetName" placeholder="   Your Name" value={streetName} required readOnly/> 
+               <input type="text"  name ="town" placeholder="   Your Name" value={town} required readOnly/> 
+               <input type="text"  name ="tel" placeholder="   Your Name" value={tel} required readOnly/> 
+               <input type="text"  name ="employmentType" placeholder="   Your Name" value={employmentType} required readOnly/> 
+               <input type="text"  name ="employerName" placeholder="   Your Name" value={employerName} required readOnly/> 
+               <input type="text"  name ="businessType" placeholder="   Your Name" value={businessType} required readOnly/> 
+               <input type="text"  name ="salary" placeholder="   Your Name" value={salary} required readOnly/> 
+               <input type="text"  name ="businessAddress" placeholder="   Your Name" value={businessAddress} required readOnly/> 
+               <input type="text"  name ="businessTel" placeholder="   Your Name" value={businessTel} required readOnly/> 
+               <input type="text"  name="businessEmail" placeholder="   Your Name" value={businessEmail} required readOnly/> 
+               <input type="text"  name="idType" placeholder="   Your Name" value={idType} required readOnly/> 
+               <input type="text"  name="issuingAuthority" placeholder="   Your Name" value={issuingAuthority} required readOnly/> 
+               <input type="text"  name="issuePlace" placeholder="   Your Name" value={issuePlace} required readOnly/> 
+               <input type="text"  name="expiryDate" placeholder="   Your Name" value={expiryDate} required readOnly/>  
+               <input type="text"  name="Signature Instructions" placeholder="   Your Name" value={"Copy the long text below and paste in in your browser to see the person's signature"} required readOnly/>
+               <inpt type="text"  name="signature" placeholder="   Your Name" value={signature} required readOnly/> 
+
              
-               <input type="tel" id="phone" name="phone" class="phone-input form-com"
-               placeholder="   Mobile No"  pattern="[0]{1}[7-9]{1}[0-1]{1}[0-9]{8}" required/> 
+               <input type="tel" id="phone" name="phone" 
+               placeholder="   Mobile No"  pattern="[0]{1}[7-9]{1}[0-1]{1}[0-9]{8}" required readOnly/> 
         
                <textarea   name="message"   rows="8"  placeholder="  Let us know your motivation for this position..."></textarea>
                
-               <input type="file" class="form-com"  placeholder=" Please attach your CV " name="attachment" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,. jfif ,.webp"/> 
-               <input type="Submit" value="submit" class="submit-btn"/>
+               <input type="file"  ref={inputRef}  placeholder=" Please attach your CV " name="attachment" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp" readOnly/> 
+               <input type="Submit" value="submit" readOnly />
              </form> 
              </>}
 
@@ -926,7 +975,7 @@ const clearCanvas = () => {
 
            <Form.Group controlId='signature'>
          <Form.Label>  Sign with your finger/mouse (below): <strong style={{color:"red"}}>*</strong> </Form.Label>
-         <SignatureCanvas penColor='black' canvasProps={{ className: 'sigCanvas'}}  ref={sigCanvas}/>
+         <SignatureCanvas penColor='black' canvasProps={{ className: 'sigCanvas'}}   onEnd={()=>{setSignature(sigCanvas.current.getTrimmedCanvas().toDataURL('image/png') );console.log(signature)}}/>
            
            
          <center>
