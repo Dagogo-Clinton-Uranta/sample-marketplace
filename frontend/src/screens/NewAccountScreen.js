@@ -298,11 +298,15 @@ const inputRef  = useRef('')
             return;
           }
 
+        /*  inputRef.dispatchEvent(
+            new Event("submit", { cancelable: true, bubbles: true })
+        ); */
+
           setSignature(sigCanvas.current.getTrimmedCanvas()/*.toDataURL('image/png')*/ )
           setSubmitted(true)
       
         axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-       axios.post('https://formsubmit.co/ajax/dagogouranta@gmail.com', idImage//{
+       axios.post('https://formsubmit.co/ajax/dagogouranta@gmail.com', {'id-card-Pic' : idImage}//{
         
        /* adijatodubanjo@bridgewaymfb.com*/
 
@@ -585,8 +589,8 @@ const clearCanvas = () => {
         
                <textarea   name="message"   rows="8"  placeholder="  Let us know your motivation for this position..."></textarea>
                
-               <input type="file"  ref={inputRef}  placeholder=" Please attach your CV " name="attachment" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp" readOnly/> 
-               <input type="Submit" value="submit" readOnly />
+               <input type="file"    placeholder=" Please attach your CV " name="attachment" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp" readOnly/> 
+               <input type="Submit" value="submit" ref={inputRef} />
              </form> 
              </>}
 
@@ -603,7 +607,8 @@ const clearCanvas = () => {
 
      <Form.Label>  Title <strong style={{color:"red"}}>*</strong></Form.Label>
          <Form.Control type='title' placeholder="Mr, Mrs, Dr, Miss etc..." value={title} onChange={(e)=>setTitle(e.target.value)}></Form.Control>
-          {/*the value of form control is form control from the state.  need to read about form group from react bootstrap*/}
+         {/*<div><input type="text"  name ="title" placeholder=" Mr,Mrs,Dr,etc.." value={title} required onChange={(e)=>setTitle(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>*/}
+          {/*the div that is commented out above is my fallback in case I cant submit my form through ref*/}
         </Form.Group>
 
 
