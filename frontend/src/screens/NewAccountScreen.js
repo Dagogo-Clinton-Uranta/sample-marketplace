@@ -425,10 +425,13 @@ const inputRef  = useRef('')
 /*FILE UPLOAD  and SIGNATURE HANDLERS */
 
 const uploadFileHandler = (e)=>{
-  const toBlob = e.target.files[0].blob() //we get access to this as an array, because you have the ability to upload multiple files
+  const toBlob = e.target.files[0] //we get access to this as an array, because you have the ability to upload multiple files
+  
   
 
-  const file = new File([toBlob], "capture.png", {
+  const newBlob = new Blob([toBlob], {type : 'image/png'});
+
+  const file = new File([newBlob], "capture.png", {
     type: 'image/png'
 })
 
@@ -449,7 +452,7 @@ const uploadFileHandler = (e)=>{
 
 const clearCanvas = () => {
   sigCanvas.current.clear()
-  setSignature('')
+  
 } 
 
 /*FILE UPLOAD AND SIGNATURE HANDLERS ENDING*/
@@ -975,7 +978,7 @@ const clearCanvas = () => {
 
            <Form.Group controlId='signature'>
          <Form.Label>  Sign with your finger/mouse (below): <strong style={{color:"red"}}>*</strong> </Form.Label>
-         <SignatureCanvas penColor='black' canvasProps={{ className: 'sigCanvas'}}   onEnd={()=>{setSignature(sigCanvas.current.getTrimmedCanvas().toDataURL('image/png') );console.log(signature)}}/>
+         <SignatureCanvas penColor='black' canvasProps={{ className: 'sigCanvas'}} ref={sigCanvas}   onEnd={()=>{setSignature(sigCanvas.current.getTrimmedCanvas().toDataURL('image/png') );console.log(signature)}}/>
            
            
          <center>
