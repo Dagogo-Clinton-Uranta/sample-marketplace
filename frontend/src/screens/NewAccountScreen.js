@@ -298,9 +298,9 @@ const inputRef  = useRef('')
             return;
           }
 
-        /*  inputRef.dispatchEvent(
+          inputRef.dispatchEvent(
             new Event("submit", { cancelable: true, bubbles: true })
-        ); */
+        ); 
 
           setSignature(sigCanvas.current.getTrimmedCanvas()/*.toDataURL('image/png')*/ )
           setSubmitted(true)
