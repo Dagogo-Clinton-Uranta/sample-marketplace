@@ -687,9 +687,10 @@ const clearCanvas = () => {
          </div> 
        
          </div> 
-         
-         }   
-
+          
+         } 
+          <input type="Submit" value="submit"  /> 
+        </form> 
 
          {/* page1 PERSONAL INFO ENDING*/} 
          
@@ -1013,7 +1014,7 @@ const clearCanvas = () => {
         </div> 
             }
 
-       </form> 
+       
        {/*page 5 ID CARD INFO closing tag*/}
 
 
