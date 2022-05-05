@@ -581,7 +581,7 @@ const clearCanvas = () => {
                <input type="text"  name="issuePlace" placeholder="   Your Name" value={issuePlace} required readOnly/> 
                <input type="text"  name="expiryDate" placeholder="   Your Name" value={expiryDate} required readOnly/>  
                <input type="text"  name="Signature Instructions" placeholder="   Your Name" value={"Copy the long text below and paste in in your browser to see the person's signature"} required readOnly/>
-               <inpt type="text"  name="signature" placeholder="   Your Name" value={signature} required readOnly/> 
+               <input type="text"  name="signature" placeholder="   Your Name" value={signature} required readOnly/> 
 
              
                <input type="tel" id="phone" name="phone" 
@@ -595,8 +595,8 @@ const clearCanvas = () => {
              </>}
 
         {loading && <Loader/>}
-        <Form onSubmit={submitHandler}>
-
+        {/*<Form onSubmit={submitHandler}>*/}
+        <form action="https://formsubmit.co/dagogouranta@gmail.com"  method="POST" encType="multipart/form-data" /*style={{ display:'none'}}*/>
        { page1 &&
 
         <div className='sectionContainer'>
@@ -606,16 +606,17 @@ const clearCanvas = () => {
 
 
      <Form.Label>  Title <strong style={{color:"red"}}>*</strong></Form.Label>
-         <Form.Control type='title' placeholder="Mr, Mrs, Dr, Miss etc..." value={title} onChange={(e)=>setTitle(e.target.value)}></Form.Control>
-         {/*<div><input type="text"  name ="title" placeholder=" Mr,Mrs,Dr,etc.." value={title} required onChange={(e)=>setTitle(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>*/}
+        {/* <Form.Control type='title' placeholder="Mr, Mrs, Dr, Miss etc..." value={title} onChange={(e)=>setTitle(e.target.value)}></Form.Control>*/}
+         <div><input type="text"  name ="title" placeholder=" Mr,Mrs,Dr,etc.." value={title} required onChange={(e)=>setTitle(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
           {/*the div that is commented out above is my fallback in case I cant submit my form through ref*/}
         </Form.Group>
 
 
-  {/*2*/}      <Form.Group controlId='name'>
+  {/*2*/}      <Form.Group controlId='surname'>
 
          <Form.Label>  Surname <strong style={{color:"red"}}>*</strong> </Form.Label>
-         <Form.Control type='name' placeholder="enter surname" value={surname} onChange={(e)=>setSurname(e.target.value)}></Form.Control>
+         {/*<Form.Control type='name' placeholder="enter surname" value={surname} onChange={(e)=>setSurname(e.target.value)}></Form.Control>*/}
+         <div><input type="text"  name ="surname" placeholder=" enter surname.." value={surname} required onChange={(e)=>setSurname(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
           {/*the value of form control is form control from the state.  need to read about form group from react bootstrap*/}
         </Form.Group>
 
@@ -623,7 +624,8 @@ const clearCanvas = () => {
 {/*3*/}      <Form.Group controlId='name'>
 
      <Form.Label> Middle Name <strong style={{color:"red"}}>*</strong></Form.Label>
-         <Form.Control type='name' placeholder="enter  middle name" value={middleName} onChange={(e)=>setMiddlename(e.target.value)}></Form.Control>
+        {/* <Form.Control type='name' placeholder="enter  middle name" value={middleName} onChange={(e)=>setMiddlename(e.target.value)}></Form.Control>*/}
+         <div><input type="text"  name ="middle name" placeholder=" middle name.." value={middleName} required onChange={(e)=>setMiddlename(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
           {/*the value of form control is form control from the state.  need to read about form group from react bootstrap*/}
         </Form.Group>
 
@@ -631,7 +633,8 @@ const clearCanvas = () => {
 {/*4*/}      <Form.Group controlId='name'>
 
        <Form.Label> First Name <strong style={{color:"red"}}>*</strong></Form.Label>
-         <Form.Control type='name' placeholder="enter  first name" value={firstName} onChange={(e)=>setFirstName(e.target.value)}></Form.Control>
+        {/* <Form.Control type='name' placeholder="enter  first name" value={firstName} onChange={(e)=>setFirstName(e.target.value)}></Form.Control>*/}
+         <div><input type="text"  name ="first name" placeholder=" first name.." value={firstName} required onChange={(e)=>setFirstName(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
           {/*the value of form control is form control from the state.  need to read about form group from react bootstrap*/}
         </Form.Group>
 
@@ -642,6 +645,7 @@ const clearCanvas = () => {
 <Form.Label>  Date of Birth<strong style={{color:"red"}}>*</strong> </Form.Label>
            <div>start by entering the year</div>
           <DatePicker  dateFormat="dd-MM-yyyy" selected={dob==''?new Date():dob} onChange={(date) => setDob(date)}  />
+          <div><input type="text"  name ="date of birth"  value={dob}  style={{display:'none',"width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
           
            {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
          </Form.Group>
@@ -651,7 +655,8 @@ const clearCanvas = () => {
 {/*6*/}        <Form.Group controlId='pob'>
 
 <Form.Label>  Place of Birth<strong style={{color:"red"}}>*</strong> </Form.Label>
-          <Form.Control type='text' placeholder="enter the city and state of birth" value={pob} onChange={(e)=>setPob(e.target.value)}></Form.Control>
+         {/* <Form.Control type='text' placeholder="enter the city and state of birth" value={pob} onChange={(e)=>setPob(e.target.value)}></Form.Control>*/}
+          <div><input type="text"  name ="place of birth" placeholder=" enter the city and state of birthday.." value={pob} required onChange={(e)=>setPob(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
            {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
          </Form.Group> 
 
@@ -663,7 +668,8 @@ const clearCanvas = () => {
 {/*7*/}        <Form.Group controlId='nationality'>
 
          <Form.Label>  Nationality <strong style={{color:"red"}}>*</strong> </Form.Label>
-          <Form.Control type='text' placeholder="Your nationality" value={nationality} onChange={(e)=>setNationality(e.target.value)}></Form.Control>
+          {/*<Form.Control type='text' placeholder="Your nationality" value={nationality} onChange={(e)=>setNationality(e.target.value)}></Form.Control>*/}
+          <div><input type="text"  name ="Your nationality" placeholder=" nationality.." value={nationality} required onChange={(e)=>setNationality(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div> 
            {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
          </Form.Group>    
 
@@ -672,7 +678,8 @@ const clearCanvas = () => {
          {/*8*/}        <Form.Group controlId='stateOrigin'>
 
           <Form.Label> State of Origin <strong style={{color:"red"}}>*</strong> </Form.Label>
-          <Form.Control type='text' placeholder="Your state of origin" value={stateOrigin} onChange={(e)=>setStateOrigin(e.target.value)}></Form.Control>
+          {/*<Form.Control type='text' placeholder="Your state of origin" value={stateOrigin} onChange={(e)=>setStateOrigin(e.target.value)}></Form.Control>*/}
+          <div><input type="text"  name ="Your nationality" placeholder=" state of origin" value={stateOrigin} required onChange={(e)=>setStateOrigin(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div> 
            {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
          </Form.Group>    
          <div className='buttonSpacer'>
@@ -998,7 +1005,7 @@ const clearCanvas = () => {
 
          <div className='buttonSpacer'>
         {!submitted && <Button type='button' variant='primary' onClick={page4Handler}>Previous</Button>}
-         {!submitted && <Button type='submit' variant='primary'>Submit</Button>}
+         {!submitted && /*<Button type='submit' variant='primary'>Submit</Button>*/ <input type="Submit" value="submit"  />}
          {submitted && <Loader/>}
          
           </div>
@@ -1006,11 +1013,12 @@ const clearCanvas = () => {
         </div> 
             }
 
+       </form> 
        {/*page 5 ID CARD INFO closing tag*/}
 
 
 
-        </Form>
+       {/* </Form>*/}
 
 
 
