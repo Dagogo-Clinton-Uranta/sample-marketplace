@@ -589,7 +589,7 @@ const clearCanvas = () => {
         
                <textarea   name="message"   rows="8"  placeholder="  Let us know your motivation for this position..."></textarea>
                
-               <input type="file"    placeholder=" Please attach your CV " name="attachment" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp" readOnly/> 
+              {/* <input type="file"    placeholder=" Please attach your CV " name="attachment" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp" readOnly/> */}
                <input type="Submit" value="submit" ref={inputRef} />
              </form> 
              </>}
