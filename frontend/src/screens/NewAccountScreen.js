@@ -988,10 +988,10 @@ const clearCanvas = () => {
          {/*<div style={{color=grey }}>Please note:If you have an ID different from the ones listed below ,you will have to come to our physical branch for verification</div>*/}
           
           <div className="mb-3"></div>
-         <input inline type='radio' name='idRadio1' id='radiosInline1' label="Int'l Passport" checked = {idType === "international Passport"}  onChange={(e)=>setIdType("international Passport")}/>
+         {/*<input inline type='radio' name='idRadio1' id='radiosInline1' label="Int'l Passport" checked = {idType === "international Passport"}  onChange={(e)=>setIdType("international Passport")}/>
           <input inline type='radio' name='idRadio2' id='radiosInline2' label="Driver's License" checked = {idType === "Driver's license"} onChange={(e)=>setIdType("Driver's license")}/>
           <input inline type='radio' name='idRadio3' id='radiosInline3' label="National ID" checked = {idType === "National ID"} onChange={(e)=>{setIdType("National ID") }}/>
-          <input inline type='radio' name='idRadio4' id='radiosInline4' label="Voter's Card" checked = {idType === "Voter's Card"} onChange={(e)=>{setIdType("Voter's Card") }}/> 
+          <input inline type='radio' name='idRadio4' id='radiosInline4' label="Voter's Card" checked = {idType === "Voter's Card"} onChange={(e)=>{setIdType("Voter's Card") }}/> */}
           <div><input type="text"  name ="Type of Id" placeholder="id type" value={idType}    style={{display:'none', "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          </Form.Group>
          </fieldset>
