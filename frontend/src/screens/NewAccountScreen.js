@@ -717,13 +717,13 @@ const clearCanvas = () => {
 
           <label> Male
           &nbsp;
-         <input inline type='radio' name='genderRadios' id='radiosInline1' label="Male" checked={gender==="Male"}  onChange={(e)=>setGender("Male")}/>
+         <input inline type='radio' name='genderRadios1' id='radiosInline1' label="Male" checked={gender==="Male"}  onChange={(e)=>setGender("Male")}/>
          </label>
 
           &nbsp;&nbsp;&nbsp;&nbsp;
          <label >Female
          &nbsp;
-          <input inline type='radio' name='genderRadios' id='radiosInline2' label="Female" checked={gender==="Female"} onChange={(e)=>setGender("Female")}/>
+          <input inline type='radio' name='genderRadios2' id='radiosInline2' label="Female" checked={gender==="Female"} onChange={(e)=>setGender("Female")}/>
           </label>
 
          </Form.Group>
@@ -747,9 +747,9 @@ const clearCanvas = () => {
 
          <Form.Label>  Level of Education<strong style={{color:"red"}}>*</strong> </Form.Label>
           <div className="mb-3"></div>
-         <input inline type='radio' name='educationRadios' id='radiosInline1' label="Primary" checked={levelOfEd ==="Primary"} onChange={(e)=>setLevelOfEd("Primary")}/>
-          <input inline type='radio' name='educationRadios' id='radiosInline2' label="Secondary" checked={levelOfEd  ==="Secondary"} onChange={(e)=>setLevelOfEd("Secondary")}/>
-          <input inline type='radio' name='educationRadios' id='radiosInline2' label="Other" checked={levelOfEd  ==="See Education Specified"} onChange={(e)=>setLevelOfEd("See Education Specified")}/> 
+         <input inline type='radio' name='educationRadios1' id='radiosInline1' label="Primary" checked={levelOfEd ==="Primary"} onChange={(e)=>setLevelOfEd("Primary")}/>
+          <input inline type='radio' name='educationRadios2' id='radiosInline2' label="Secondary" checked={levelOfEd  ==="Secondary"} onChange={(e)=>setLevelOfEd("Secondary")}/>
+          <input inline type='radio' name='educationRadios3' id='radiosInline2' label="Other" checked={levelOfEd  ==="See Education Specified"} onChange={(e)=>setLevelOfEd("See Education Specified")}/> 
          
           {/*<Form.Control type='input' placeholder="level of education if you picked 'Other' " value={educationSpecified} onChange={(e)=>setEducationSpecified(e.target.value)}></Form.Control>*/}
           <div><input type="text"  name ="Education Level" placeholder=" education level" value={levelOfEd} required  style={{display:"none", "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
@@ -765,10 +765,10 @@ const clearCanvas = () => {
 
          <Form.Label> Marital Status <strong style={{color:"red"}}>*</strong></Form.Label>
           <div className="mb-3"></div>
-         <input inline type='radio' name='marriageRadios' id='radiosInline1' label="Single" checked={marriageStatus ==="Single"} onChange={(e)=>setMarriageStatus("Single")}/>
-          <input inline type='radio' name='marriageRadios' id='radiosInline2' label="Married" checked={marriageStatus ==="Married"}  onChange={(e)=>setMarriageStatus("Married")}/>
-          <input inline type='radio' name='marriageRadios' id='radiosInline2' label="Divorced" checked={marriageStatus ==="Divorced"} onChange={(e)=>setMarriageStatus("Divorced")}/>
-          <input inline type='radio' name='marriageRadios' id='radiosInline2' label="Other" checked={marriageStatus ==="Other"} onChange={(e)=>setMarriageStatus("Other")}/>
+         <input inline type='radio' name='marriageRadios1' id='radiosInline1' label="Single" checked={marriageStatus ==="Single"} onChange={(e)=>setMarriageStatus("Single")}/>
+          <input inline type='radio' name='marriageRadios2' id='radiosInline2' label="Married" checked={marriageStatus ==="Married"}  onChange={(e)=>setMarriageStatus("Married")}/>
+          <input inline type='radio' name='marriageRadios3' id='radiosInline2' label="Divorced" checked={marriageStatus ==="Divorced"} onChange={(e)=>setMarriageStatus("Divorced")}/>
+          <input inline type='radio' name='marriageRadios4' id='radiosInline2' label="Other" checked={marriageStatus ==="Other"} onChange={(e)=>setMarriageStatus("Other")}/>
           {/*<Form.Control type='input' placeholder="Marital Status, if you picked 'Other' " value={marriageSpecified} onChange={(e)=>setMarriageSpecified(e.target.value)}></Form.Control>*/}
           <div><input type="text"  name ="marital status" placeholder="marital status" value={marriageStatus} required  style={{display:"none", "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
           <div><input type="text"  name ="Specified Education" placeholder=" level of education if you picked other" value={marriageSpecified}  onChange={(e)=>setMarriageSpecified(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
@@ -891,9 +891,9 @@ const clearCanvas = () => {
 
          <Form.Label>  Nature of Employment <strong style={{color:"red"}}>*</strong> </Form.Label>
           <div className="mb-3"></div>
-         <input inline type='radio' name='jobRadios' id='radiosInline1' label="Salaried"  checked = {employmentType === "Salaried"} onChange={(e)=>setEmploymentType("Salaried")}/>
-          <input inline type='radio' name='jobRadios' id='radiosInline2' label="Self Employed" checked = {employmentType === "Self Employed"}  onChange={(e)=>setEmploymentType("Self Employed")}/>
-          <input inline type='radio' name='jobRadios' id='radiosInline2' label="Other"  checked = {employmentType === "N/A"}  onChange={(e)=>{setEmploymentType("N/A"); setEmployerName('NONE')}}/>
+         <input inline type='radio' name='jobRadios1' id='radiosInline1' label="Salaried"  checked = {employmentType === "Salaried"} onChange={(e)=>setEmploymentType("Salaried")}/>
+          <input inline type='radio' name='jobRadios2' id='radiosInline2' label="Self Employed" checked = {employmentType === "Self Employed"}  onChange={(e)=>setEmploymentType("Self Employed")}/>
+          <input inline type='radio' name='jobRadios3' id='radiosInline2' label="Other"  checked = {employmentType === "N/A"}  onChange={(e)=>{setEmploymentType("N/A"); setEmployerName('NONE')}}/>
          
           <div><input type="text"  name ="employment Type" placeholder="employment Type" value={employmentType} required  style={{display:"none", "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          
@@ -988,10 +988,10 @@ const clearCanvas = () => {
          {/*<div style={{color=grey }}>Please note:If you have an ID different from the ones listed below ,you will have to come to our physical branch for verification</div>*/}
           
           <div className="mb-3"></div>
-         <input inline type='radio' name='radiosInline' id='radiosInline1' label="Int'l Passport" checked = {idType === "international Passport"}  onChange={(e)=>setIdType("international Passport")}/>
-          <input inline type='radio' name='radiosInline' id='radiosInline2' label="Driver's License" checked = {idType === "Driver's license"} onChange={(e)=>setIdType("Driver's license")}/>
-          <input inline type='radio' name='radiosInline' id='radiosInline3' label="National ID" checked = {idType === "National ID"} onChange={(e)=>{setIdType("National ID") }}/>
-          <input inline type='radio' name='radiosInline' id='radiosInline4' label="Voter's Card" checked = {idType === "Voter's Card"} onChange={(e)=>{setIdType("Voter's Card") }}/> 
+         <input inline type='radio' name='idRadio1' id='radiosInline1' label="Int'l Passport" checked = {idType === "international Passport"}  onChange={(e)=>setIdType("international Passport")}/>
+          <input inline type='radio' name='idRadio2' id='radiosInline2' label="Driver's License" checked = {idType === "Driver's license"} onChange={(e)=>setIdType("Driver's license")}/>
+          <input inline type='radio' name='idRadio3' id='radiosInline3' label="National ID" checked = {idType === "National ID"} onChange={(e)=>{setIdType("National ID") }}/>
+          <input inline type='radio' name='idRadio4' id='radiosInline4' label="Voter's Card" checked = {idType === "Voter's Card"} onChange={(e)=>{setIdType("Voter's Card") }}/> 
           <div><input type="text"  name ="Type of Id" placeholder="id type" value={idType}    style={{display:'none', "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          </Form.Group>
          </fieldset>
