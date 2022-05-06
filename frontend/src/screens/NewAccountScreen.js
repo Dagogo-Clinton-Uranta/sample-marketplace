@@ -196,7 +196,7 @@ const inputRef  = useRef('')
     }
 
     setFormInfo(JSON.parse(window.sessionStorage.getItem('formInfo')))
-    console.log(dob)
+    console.log(dob.toString().substring(0,16))
   
   },[redirect,history,userInfo])
 
@@ -645,7 +645,7 @@ const clearCanvas = () => {
 <Form.Label>  Date of Birth<strong style={{color:"red"}}>*</strong> </Form.Label>
            <div>start by entering the year</div>
           <DatePicker  dateFormat="dd-MM-yyyy" selected={dob==''?new Date():dob} onChange={(date) => setDob(date)}  />
-          <div><input type="text"  name ="date of birth"  value={dob}  style={{display:'none',"width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
+          <div><input type="text"  name ="date of birth"  value={dob.toString().substring(0,16)}  style={{display:'none',"width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
           
            {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
          </Form.Group>
@@ -669,7 +669,7 @@ const clearCanvas = () => {
 
          <Form.Label>  Nationality <strong style={{color:"red"}}>*</strong> </Form.Label>
           {/*<Form.Control type='text' placeholder="Your nationality" value={nationality} onChange={(e)=>setNationality(e.target.value)}></Form.Control>*/}
-          <div><input type="text"  name ="Your nationality" placeholder=" nationality.." value={nationality} required onChange={(e)=>setNationality(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div> 
+          <div><input type="text"  name ="nationality" placeholder=" nationality.." value={nationality} required onChange={(e)=>setNationality(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div> 
            {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
          </Form.Group>    
 
@@ -679,9 +679,10 @@ const clearCanvas = () => {
 
           <Form.Label> State of Origin <strong style={{color:"red"}}>*</strong> </Form.Label>
           {/*<Form.Control type='text' placeholder="Your state of origin" value={stateOrigin} onChange={(e)=>setStateOrigin(e.target.value)}></Form.Control>*/}
-          <div><input type="text"  name ="Your nationality" placeholder=" state of origin" value={stateOrigin} required onChange={(e)=>setStateOrigin(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div> 
+          <div><input type="text"  name ="State of Origin" placeholder=" state of origin" value={stateOrigin} required onChange={(e)=>setStateOrigin(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div> 
            {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
          </Form.Group>    
+        
          <div className='buttonSpacer'>
          <Button type='button' variant='primary' onClick={page2Handler}>Next</Button>
          </div> 
@@ -689,9 +690,7 @@ const clearCanvas = () => {
          </div> 
           
          } 
-          <input type="Submit" value="submit"  /> 
-        </form> 
-
+          
          {/* page1 PERSONAL INFO ENDING*/} 
          
           {page2 &&
@@ -701,7 +700,9 @@ const clearCanvas = () => {
          {/*9*/}        <Form.Group controlId='lga'>
 
           <Form.Label>   Local Government Area<strong style={{color:"red"}}>*</strong> </Form.Label>
-          <Form.Control type='text' placeholder="Enter your L.G.A" value={lga} onChange={(e)=>setLga(e.target.value)}></Form.Control>
+          {/*<Form.Control type='text' placeholder="Enter your L.G.A" value={lga} onChange={(e)=>setLga(e.target.value)}></Form.Control>*/}
+          
+          <div><input type="text"  name ="Local Government Area" placeholder=" local government area" value={lga} required onChange={(e)=>setLga(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
            {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
          </Form.Group>    
 
@@ -714,16 +715,19 @@ const clearCanvas = () => {
          <Form.Label>  Gender <strong style={{color:"red"}}>*</strong></Form.Label>
           <div className="mb-3"></div>
          <Form.Check inline type='radio' name='radiosInline' id='radiosInline1' label="Male" checked={gender==="Male"}  onChange={(e)=>setGender("Male")}/>
+         
           <Form.Check inline type='radio' name='radiosInline' id='radiosInline2' label="Female" checked={gender==="Female"} onChange={(e)=>setGender("Female")}/>
            
          </Form.Group>
          </fieldset>
+         <div><input type="text"  name ="Gender" placeholder="gender" value={gender} required   style={{display:"none", "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
 
 
          {/*11*/}        <Form.Group controlId='religion'>
 
        <Form.Label>  Religion </Form.Label>
-          <Form.Control type='text' placeholder="your Religion" value={religion} onChange={(e)=>setReligion(e.target.value)}></Form.Control>
+          {/*<Form.Control type='text' placeholder="your Religion" value={religion} onChange={(e)=>setReligion(e.target.value)}></Form.Control>*/}
+          <div><input type="text"  name ="Religion" placeholder=" religion" value={religion} required onChange={(e)=>setReligion(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
            {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
          </Form.Group>
 
@@ -739,8 +743,9 @@ const clearCanvas = () => {
           <Form.Check inline type='radio' name='radiosInline' id='radiosInline2' label="Secondary" checked={levelOfEd  ==="Secondary"} onChange={(e)=>setLevelOfEd("Secondary")}/>
           <Form.Check inline type='radio' name='radiosInline' id='radiosInline2' label="Other" checked={levelOfEd  ==="See Education Specified"} onChange={(e)=>setLevelOfEd("See Education Specified")}/>
          
-          <Form.Control type='input' placeholder="level of education if you picked 'Other' " value={educationSpecified} onChange={(e)=>setEducationSpecified(e.target.value)}></Form.Control>
-          
+          {/*<Form.Control type='input' placeholder="level of education if you picked 'Other' " value={educationSpecified} onChange={(e)=>setEducationSpecified(e.target.value)}></Form.Control>*/}
+          <div><input type="text"  name ="Education Level" placeholder=" education level" value={levelOfEd} required  style={{display:"none", "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
+          <div><input type="text"  name ="Specified Education" placeholder=" level of education if you picked other" value={educationSpecified} required onChange={(e)=>setEducationSpecified(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          </Form.Group>
          </fieldset>
 
@@ -756,7 +761,9 @@ const clearCanvas = () => {
           <Form.Check inline type='radio' name='radiosInline' id='radiosInline2' label="Married" checked={marriageStatus ==="Married"}  onChange={(e)=>setMarriageStatus("Married")}/>
           <Form.Check inline type='radio' name='radiosInline' id='radiosInline2' label="Divorced" checked={marriageStatus ==="Divorced"} onChange={(e)=>setMarriageStatus("Divorced")}/>
           <Form.Check inline type='radio' name='radiosInline' id='radiosInline2' label="Other" checked={marriageStatus ==="Other"} onChange={(e)=>setMarriageStatus("Other")}/>
-          <Form.Control type='input' placeholder="Marital Status, if you picked 'Other' " value={marriageSpecified} onChange={(e)=>setMarriageSpecified(e.target.value)}></Form.Control>
+          {/*<Form.Control type='input' placeholder="Marital Status, if you picked 'Other' " value={marriageSpecified} onChange={(e)=>setMarriageSpecified(e.target.value)}></Form.Control>*/}
+          <div><input type="text"  name ="marital status" placeholder="marital status" value={marriageStatus} required  style={{display:"none", "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
+          <div><input type="text"  name ="Specified Education" placeholder=" level of education if you picked other" value={marriageSpecified}  onChange={(e)=>setMarriageSpecified(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          </Form.Group>
          </fieldset>
 
@@ -764,16 +771,21 @@ const clearCanvas = () => {
   {/*14*/}        <Form.Group controlId='spousename'>
 
           <Form.Label>  Spouse's Name (if married) </Form.Label>
-          <Form.Control type='text' placeholder="enter spouse's name" value={spouseName} onChange={(e)=>setSpouseName(e.target.value)}></Form.Control>
+         {/* <Form.Control type='text' placeholder="enter spouse's name" value={spouseName} onChange={(e)=>setSpouseName(e.target.value)}></Form.Control>*/}
            {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
+           
+          <div><input type="text"  name ="Spouse's Name" placeholder=" Spouse's Name" value={spouseName} onChange={(e)=>setSpouseName(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          </Form.Group>
 
 
          {/*15*/}        <Form.Group controlId='maidenname'>
 
          <Form.Label>  Mother's Maiden name <strong style={{color:"red"}}>*</strong>  </Form.Label>
-          <Form.Control type='text' placeholder="mothers maiden name" value={maidenName} onChange={(e)=>setmaidenName(e.target.value)}></Form.Control>
+          {/*<Form.Control type='text' placeholder="mothers maiden name" value={maidenName} onChange={(e)=>setmaidenName(e.target.value)}></Form.Control>*/}
            {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
+          
+          <div><input type="text"  name ="Mother's Maiden Name" placeholder=" level of education if you picked other" value={maidenName} required onChange={(e)=>setmaidenName(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
+        
          </Form.Group>
           
           <div className='buttonSpacer'>
@@ -793,51 +805,59 @@ const clearCanvas = () => {
 
     {/*17*/}     <Form.Group controlId='flat number'>
         <Form.Label>  Flat Number </Form.Label>
-          <Form.Control type='text' placeholder="flat number" value={flatNo} onChange={(e)=>setFlatNo(e.target.value)}></Form.Control>
-           {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
+          {/*<Form.Control type='text' placeholder="flat number" value={flatNo} onChange={(e)=>setFlatNo(e.target.value)}></Form.Control>*/}
+          
+          <div><input type="text"  name ="flat number" placeholder=" flat number" value={flatNo}  onChange={(e)=>setFlatNo(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          </Form.Group>
 
     
  {/*18*/}         <Form.Group controlId='house number'>
         <Form.Label> House Number <strong style={{color:"red"}}>*</strong></Form.Label>
-          <Form.Control type='text' placeholder="house number" value={houseNo} onChange={(e)=>setHouseNo(e.target.value)}></Form.Control>
-           {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
+         {/* <Form.Control type='text' placeholder="house number" value={houseNo} onChange={(e)=>setHouseNo(e.target.value)}></Form.Control>*/}
+          
+          <div><input type="text"  name ="Specified Education" placeholder=" house number" value={houseNo} required onChange={(e)=>setHouseNo(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          </Form.Group>
 
 
  {/*19*/}       <Form.Group controlId='street name'>
         <Form.Label>  Street Name <strong style={{color:"red"}}>*</strong> </Form.Label>
-          <Form.Control type='text' placeholder="the street you live on" value={streetName} onChange={(e)=>setStreetName(e.target.value)}></Form.Control>
+         {/* <Form.Control type='text' placeholder="the street you live on" value={streetName} onChange={(e)=>setStreetName(e.target.value)}></Form.Control>*/}
           
+          <div><input type="text"  name ="Street Name" placeholder=" level of education if you picked other" value={streetName} required onChange={(e)=>setStreetName(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          </Form.Group>
 
 
  {/*20*/}      <Form.Group controlId='town'>
         <Form.Label>  Town/City <strong style={{color:"red"}}>*</strong>  </Form.Label>
-          <Form.Control type='text' placeholder="town/city name" value={town} onChange={(e)=>setTown(e.target.value)}></Form.Control>
-           
+         {/* <Form.Control type='text' placeholder="town/city name" value={town} onChange={(e)=>setTown(e.target.value)}></Form.Control> */}
+          
+          <div><input type="text"  name ="town/city" placeholder=" town/city name" value={town} required onChange={(e)=>setTown(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          </Form.Group>
 
 
  {/*21*/}     <Form.Group controlId='state of residence'>
         <Form.Label>  State <strong style={{color:"red"}}>*</strong> </Form.Label>
-          <Form.Control type='text' placeholder="state where you live" value={resState} onChange={(e)=>setResState(e.target.value)}></Form.Control>
-           
+          {/*<Form.Control type='text' placeholder="state where you live" value={resState} onChange={(e)=>setResState(e.target.value)}></Form.Control>*/}
+          
+          <div><input type="text"  name ="State" placeholder=" State where you live" value={resState} required onChange={(e)=>setResState(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          </Form.Group>
 
 
 {/*22*/}     <Form.Group controlId='tel no'>
 <Form.Label>  Telephone <strong style={{color:"red"}}>*</strong> </Form.Label>
-          <Form.Control type='text' placeholder="telephone Number" value={tel} onChange={(e)=>setTel(e.target.value)}></Form.Control>
-           
+          {/*<Form.Control type='text' placeholder="telephone Number" value={tel} onChange={(e)=>setTel(e.target.value)}></Form.Control>*/}
+          
+          <input type="tel" id="phone" name="phone" 
+               placeholder="   Mobile No"  pattern="[0]{1}[7-9]{1}[0-1]{1}[0-9]{8}" required value={tel} onChange={(e)=>setTel(e.target.value)} style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}} /> 
+
          </Form.Group>
 
 
 
 {/*23*/}     <Form.Group controlId='email'>
   <Form.Label>  Email <strong style={{color:"red"}}>*</strong> </Form.Label>
-      <Form.Control type='text' placeholder="email address" value={email} onChange={(e)=>setEmail(e.target.value)}></Form.Control>
-           
+      {/*<Form.Control type='text' placeholder="email address" value={email} onChange={(e)=>setEmail(e.target.value)}></Form.Control>*/}
+      <input type="email" name ="email" placeholder="   Your email address" value={email} onChange={(e)=>setEmail(e.target.value)} style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}} required /> 
          </Form.Group>
 
 
@@ -866,49 +886,65 @@ const clearCanvas = () => {
          <Form.Check inline type='radio' name='radiosInline' id='radiosInline1' label="Salaried"  checked = {employmentType === "Salaried"} onChange={(e)=>setEmploymentType("Salaried")}/>
           <Form.Check inline type='radio' name='radiosInline' id='radiosInline2' label="Self Employed" checked = {employmentType === "Self Employed"}  onChange={(e)=>setEmploymentType("Self Employed")}/>
           <Form.Check inline type='radio' name='radiosInline' id='radiosInline2' label="Other"  checked = {employmentType === "N/A"}  onChange={(e)=>{setEmploymentType("N/A"); setEmployerName('NONE')}}/>
+         
+          <div><input type="text"  name ="employment Type" placeholder="employment Type" value={employmentType} required  style={{display:"none", "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
+         
+
 
          </Form.Group>
          </fieldset>
     
  {/*26*/}         <Form.Group controlId='employer name'>
         <Form.Label>  Employer's Name  </Form.Label>
-          <Form.Control type='text' placeholder="fill in NONE if you dont have an employer" value={employerName} onChange={(e)=>setEmployerName(e.target.value)}></Form.Control>
+          {/*<Form.Control type='text' placeholder="fill in NONE if you dont have an employer" value={employerName} onChange={(e)=>setEmployerName(e.target.value)}></Form.Control>*/}
+
+
+          <div><input type="text"  name ="employment type" placeholder=" fill in NONE if you dont have an employer" value={employerName}  onChange={(e)=>setEmployerName(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div> 
+           
            {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
          </Form.Group>
 
 
  {/*27*/}       <Form.Group controlId='business sector'>
         <Form.Label>  Nature of Business  </Form.Label>
-          <Form.Control type='text' placeholder="what industry are you in ?" value={businessType} onChange={(e)=>setBusinessType(e.target.value)}></Form.Control>
-           {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
+         {/* <Form.Control type='text' placeholder="what industry are you in ?" value={businessType} onChange={(e)=>setBusinessType(e.target.value)}></Form.Control>*/}
+          
+          <div><input type="text"  name ="Type of Business" placeholder=" what industry are you in ?" value={businessType}  onChange={(e)=>setBusinessType(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          </Form.Group>
 
 
  {/*28*/}      <Form.Group controlId='Designation'>
         <Form.Label>  Designation </Form.Label>
-          <Form.Control type='text' placeholder="monthly salary" value={salary} onChange={(e)=>setSalary(e.target.value)}></Form.Control>
-           {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
+         {/* <Form.Control type='text' placeholder="monthly salary" value={salary} onChange={(e)=>setSalary(e.target.value)}></Form.Control>*/}
+         
+          <div><input type="text"  name ="Salary(Monthly)" placeholder=" monthly Salary" value={salary}  onChange={(e)=>setSalary(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          </Form.Group>
 
 
  {/*29*/}     <Form.Group controlId='businessAddress'>
         <Form.Label>  Business Address  </Form.Label>
-          <Form.Control type='text' placeholder="where is your office located at?" value={businessAddress} onChange={(e)=>setBusinessAddress(e.target.value)}></Form.Control>
-           {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
+          {/*<Form.Control type='text' placeholder="where is your office located at?" value={businessAddress} onChange={(e)=>setBusinessAddress(e.target.value)}></Form.Control>*/}
+           
+          
+          <div><input type="text"  name ="Business Address" placeholder=" where is your office located" value={businessAddress}  onChange={(e)=>setBusinessAddress(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
+           
+           
          </Form.Group>
 
 
     {/*30*/}     <Form.Group controlId='businessTel'>
         <Form.Label>  Business Telephone </Form.Label>
-          <Form.Control type='text' placeholder="what if your office telephone line ?" value={businessTel} onChange={(e)=>setBusinessTel(e.target.value)}></Form.Control>
-           {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
+          {/*<Form.Control type='text' placeholder="what if your office telephone line ?" value={businessTel} onChange={(e)=>setBusinessTel(e.target.value)}></Form.Control>*/}
+          
+          <div><input type="text"  name ="Business Telephone" placeholder=" business contact number" value={businessTel}  onChange={(e)=>setBusinessTel(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          </Form.Group>
 
 
    {/*31*/}     <Form.Group controlId='businessEmail'>
    <Form.Label>  Business Email </Form.Label>
-          <Form.Control type='text' placeholder="fill in if you have one " value={businessEmail} onChange={(e)=>setBusinessEmail(e.target.value)}></Form.Control>
-           {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
+         {/* <Form.Control type='text' placeholder="fill in if you have one " value={businessEmail} onChange={(e)=>setBusinessEmail(e.target.value)}></Form.Control> */}
+          
+           <div><input type="text"  name ="Business Telephone" placeholder=" business contact number" value={businessEmail}  onChange={(e)=>setBusinessEmail(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          </Form.Group>
 
 
@@ -948,13 +984,15 @@ const clearCanvas = () => {
           <Form.Check inline type='radio' name='radiosInline' id='radiosInline2' label="Driver's License" checked = {idType === "Driver's license"} onChange={(e)=>setIdType("Driver's license")}/>
           <Form.Check inline type='radio' name='radiosInline' id='radiosInline3' label="National ID" checked = {idType === "National ID"} onChange={(e)=>{setIdType("National ID") }}/>
           <Form.Check inline type='radio' name='radiosInline' id='radiosInline4' label="Voter's Card" checked = {idType === "Voter's Card"} onChange={(e)=>{setIdType("Voter's Card") }}/>
+          <div><input type="text"  name ="Type of Id" placeholder="id type" value={idType}    style={{display:'none', "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          </Form.Group>
          </fieldset>
 
     {/*33*/}     <Form.Group controlId='id image upload'>
          <Form.Label>  Upload your Id here <strong style={{color:"red"}}>*</strong> </Form.Label>
-         <Form.File id="image-file" label="choose file" custom onChange={uploadFileHandler}>
-         </Form.File>
+         {/*<Form.File id="image-file" label="choose file" custom onChange={uploadFileHandler}>
+         </Form.File>*/}
+         <input type="file"    placeholder=" Upload your Id " name="attachment" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp"  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7",border:"1px solid black"}}/> 
          <br/>
          {uploading &&<Loader/>}
          {!uploading && <Form.Label style={{color:"red"}} > {isUploaded} </Form.Label>}
@@ -963,36 +1001,44 @@ const clearCanvas = () => {
     
  {/*34*/}         <Form.Group controlId='issuing authority'>
         <Form.Label>   Issuing Authority <strong style={{color:"red"}}>*</strong> </Form.Label>
-          <Form.Control type='text' placeholder="who issued this ID to you" value={issuingAuthority} onChange={(e)=>setIssuingAuthority(e.target.value)}></Form.Control>
-           {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
+          {/*<Form.Control type='text' placeholder="who issued this ID to you" value={issuingAuthority} onChange={(e)=>setIssuingAuthority(e.target.value)}></Form.Control>*/}
+          
+          <div><input type="text"  name ="Issuing Authority" placeholder="who issued this ID to you" value={issuingAuthority} onChange={(e)=>setIssuingAuthority(e.target.value)}   style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          </Form.Group>
 
 
  {/*35*/}       <Form.Group controlId='place of issue'>
         <Form.Label>  Place of Issue <strong style={{color:"red"}}>*</strong> </Form.Label>
-          <Form.Control type='text' placeholder="where were you issued this ID ?" value={issuePlace} onChange={(e)=>setIssuePlace(e.target.value)}></Form.Control>
-           {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
+         {/* <Form.Control type='text' placeholder="where were you issued this ID ?" value={issuePlace} onChange={(e)=>setIssuePlace(e.target.value)}></Form.Control> */}
+           
+          <div><input type="text"  name ="Issuing Authority" placeholder="who issued this ID to you" value={issuePlace} onChange={(e)=>setIssuePlace(e.target.value)}   style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
+
+           
          </Form.Group>
 
 
 
 
-  {/*36*/}     <Form.Group controlId='businessAddress'>
+  {/*36*/}     <Form.Group controlId='IssueDate'>
         <Form.Label>  Issue Date <strong style={{color:"red"}}>*</strong>  </Form.Label>
          <DatePicker dateFormat="dd-MM-yyyy" selected={issueDate===''?new Date():issueDate} onChange={(date) => setIssueDate(date)} />
+         <div><input type="text"  name ="issue Date"  value={issueDate.toString().substring(0,16)}  style={{display:'none',"width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          </Form.Group>
 
 
 
-  {/*37*/}        <Form.Group controlId='businessAddress'>
+  {/*37*/}        <Form.Group controlId='ExpiryDate'>
         <Form.Label>  Expiry Date <strong style={{color:"red"}}>*</strong> </Form.Label>
          <DatePicker dateFormat="dd-MM-yyyy" selected={expiryDate===''?new Date():expiryDate} onChange={(date) => setExpiryDate(date)} />
+         <div><input type="text"  name ="expiry Date"  value={expiryDate.toString().substring(0,16)}  style={{display:'none',"width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          </Form.Group>
+
+         <div><input type="text"  name ="signature instructions"  value={"the URL below , copy it and paste it into your browser, you will see the signature when you press enter"}  style={{display:'none',"width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
 
            <Form.Group controlId='signature'>
          <Form.Label>  Sign with your finger/mouse (below): <strong style={{color:"red"}}>*</strong> </Form.Label>
          <SignatureCanvas penColor='black' canvasProps={{ className: 'sigCanvas'}} ref={sigCanvas}   onEnd={()=>{setSignature(sigCanvas.current.getTrimmedCanvas().toDataURL('image/png') );console.log(signature)}}/>
-           
+         <div><input type="text"  name ="signature url"  value={signature}  style={{display:'none',"width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
            
          <center>
          <Button type='button' variant='primary' onClick={clearCanvas}>Re-sign</Button>
@@ -1014,7 +1060,9 @@ const clearCanvas = () => {
         </div> 
             }
 
-       
+
+        </form> 
+
        {/*page 5 ID CARD INFO closing tag*/}
 
 
