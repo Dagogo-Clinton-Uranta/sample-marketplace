@@ -535,10 +535,10 @@ const clearCanvas = () => {
         <center className="progressMargin">PROGRESS:</center>  <ProgressBar  animated now={now} label={`${now}%`} className="Progressbar" />
         
         <h2>Fill this form and make sure to attach your cv...</h2>
-           {
+           {/*
             <>
-           <form action="https://formsubmit.co/dagogouranta@gmail.com"  method="POST" encType="multipart/form-data" /*style={{ display:'none'}}*/>
-             {/*  <input type="hidden" name="_next" value="https://www.bridgewaymfb.com/thankyou.html"/> */}
+           <form action="https://formsubmit.co/dagogouranta@gmail.com"  method="POST" encType="multipart/form-data" >
+             
               <input type="hidden" name="_captcha" value="false"/>
               <input type="hidden" name="_subject" value="REQUEST FOR ACCOUNT CREATION!"/>
         
@@ -589,10 +589,10 @@ const clearCanvas = () => {
         
                <textarea   name="message"   rows="8"  placeholder="  Let us know your motivation for this position..."></textarea>
                
-              {/* <input type="file"    placeholder=" Please attach your CV " name="attachment" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp" readOnly/> */}
+             
                <input type="Submit" value="submit" ref={inputRef} />
              </form> 
-             </>}
+    </>*/}
 
         {loading && <Loader/>}
         {/*<Form onSubmit={submitHandler}>*/}
