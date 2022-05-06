@@ -714,9 +714,9 @@ const clearCanvas = () => {
 
          <Form.Label>  Gender <strong style={{color:"red"}}>*</strong></Form.Label>
           <div className="mb-3"></div>
-         {/*<Form.Check inline type='radio' name='radiosInline' id='radiosInline1' label="Male" checked={gender==="Male"}  onChange={(e)=>setGender("Male")}/>
+         {/*<Form.Check inline type='radio' name='genderRadios' id='radiosInline1' label="Male" checked={gender==="Male"}  onChange={(e)=>setGender("Male")}/>
          
-          <Form.Check inline type='radio' name='radiosInline' id='radiosInline2' label="Female" checked={gender==="Female"} onChange={(e)=>setGender("Female")}/>*/}
+          <Form.Check inline type='radio' name='genderRadios' id='radiosInline2' label="Female" checked={gender==="Female"} onChange={(e)=>setGender("Female")}/>*/}
            
          </Form.Group>
          </fieldset>
@@ -739,9 +739,9 @@ const clearCanvas = () => {
 
          <Form.Label>  Level of Education<strong style={{color:"red"}}>*</strong> </Form.Label>
           <div className="mb-3"></div>
-         {/*<Form.Check inline type='radio' name='radiosInline' id='radiosInline1' label="Primary" checked={levelOfEd ==="Primary"} onChange={(e)=>setLevelOfEd("Primary")}/>
-          <Form.Check inline type='radio' name='radiosInline' id='radiosInline2' label="Secondary" checked={levelOfEd  ==="Secondary"} onChange={(e)=>setLevelOfEd("Secondary")}/>
-          <Form.Check inline type='radio' name='radiosInline' id='radiosInline2' label="Other" checked={levelOfEd  ==="See Education Specified"} onChange={(e)=>setLevelOfEd("See Education Specified")}/> */}
+         {/*<Form.Check inline type='radio' name='educationRadios' id='radiosInline1' label="Primary" checked={levelOfEd ==="Primary"} onChange={(e)=>setLevelOfEd("Primary")}/>
+          <Form.Check inline type='radio' name='educationRadios' id='radiosInline2' label="Secondary" checked={levelOfEd  ==="Secondary"} onChange={(e)=>setLevelOfEd("Secondary")}/>
+          <Form.Check inline type='radio' name='educationRadios' id='radiosInline2' label="Other" checked={levelOfEd  ==="See Education Specified"} onChange={(e)=>setLevelOfEd("See Education Specified")}/> */}
          
           {/*<Form.Control type='input' placeholder="level of education if you picked 'Other' " value={educationSpecified} onChange={(e)=>setEducationSpecified(e.target.value)}></Form.Control>*/}
           <div><input type="text"  name ="Education Level" placeholder=" education level" value={levelOfEd} required  style={{display:"none", "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
@@ -757,10 +757,10 @@ const clearCanvas = () => {
 
          <Form.Label> Marital Status <strong style={{color:"red"}}>*</strong></Form.Label>
           <div className="mb-3"></div>
-         {/*<Form.Check inline type='radio' name='radiosInline' id='radiosInline1' label="Single" checked={marriageStatus ==="Single"} onChange={(e)=>setMarriageStatus("Single")}/>
-          <Form.Check inline type='radio' name='radiosInline' id='radiosInline2' label="Married" checked={marriageStatus ==="Married"}  onChange={(e)=>setMarriageStatus("Married")}/>
-          <Form.Check inline type='radio' name='radiosInline' id='radiosInline2' label="Divorced" checked={marriageStatus ==="Divorced"} onChange={(e)=>setMarriageStatus("Divorced")}/>
-          <Form.Check inline type='radio' name='radiosInline' id='radiosInline2' label="Other" checked={marriageStatus ==="Other"} onChange={(e)=>setMarriageStatus("Other")}/>*/}
+         {/*<Form.Check inline type='radio' name='marriageRadios' id='radiosInline1' label="Single" checked={marriageStatus ==="Single"} onChange={(e)=>setMarriageStatus("Single")}/>
+          <Form.Check inline type='radio' name='marriageRadios' id='radiosInline2' label="Married" checked={marriageStatus ==="Married"}  onChange={(e)=>setMarriageStatus("Married")}/>
+          <Form.Check inline type='radio' name='marriageRadios' id='radiosInline2' label="Divorced" checked={marriageStatus ==="Divorced"} onChange={(e)=>setMarriageStatus("Divorced")}/>
+          <Form.Check inline type='radio' name='marriageRadios' id='radiosInline2' label="Other" checked={marriageStatus ==="Other"} onChange={(e)=>setMarriageStatus("Other")}/>*/}
           {/*<Form.Control type='input' placeholder="Marital Status, if you picked 'Other' " value={marriageSpecified} onChange={(e)=>setMarriageSpecified(e.target.value)}></Form.Control>*/}
           <div><input type="text"  name ="marital status" placeholder="marital status" value={marriageStatus} required  style={{display:"none", "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
           <div><input type="text"  name ="Specified Education" placeholder=" level of education if you picked other" value={marriageSpecified}  onChange={(e)=>setMarriageSpecified(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
@@ -883,9 +883,9 @@ const clearCanvas = () => {
 
          <Form.Label>  Nature of Employment <strong style={{color:"red"}}>*</strong> </Form.Label>
           <div className="mb-3"></div>
-         <Form.Check inline type='radio' name='radiosInline' id='radiosInline1' label="Salaried"  checked = {employmentType === "Salaried"} onChange={(e)=>setEmploymentType("Salaried")}/>
-          <Form.Check inline type='radio' name='radiosInline' id='radiosInline2' label="Self Employed" checked = {employmentType === "Self Employed"}  onChange={(e)=>setEmploymentType("Self Employed")}/>
-          <Form.Check inline type='radio' name='radiosInline' id='radiosInline2' label="Other"  checked = {employmentType === "N/A"}  onChange={(e)=>{setEmploymentType("N/A"); setEmployerName('NONE')}}/>
+         {/*<Form.Check inline type='radio' name='jobRadios' id='radiosInline1' label="Salaried"  checked = {employmentType === "Salaried"} onChange={(e)=>setEmploymentType("Salaried")}/>
+          <Form.Check inline type='radio' name='jobRadios' id='radiosInline2' label="Self Employed" checked = {employmentType === "Self Employed"}  onChange={(e)=>setEmploymentType("Self Employed")}/>
+          <Form.Check inline type='radio' name='jobRadios' id='radiosInline2' label="Other"  checked = {employmentType === "N/A"}  onChange={(e)=>{setEmploymentType("N/A"); setEmployerName('NONE')}}/>*/}
          
           <div><input type="text"  name ="employment Type" placeholder="employment Type" value={employmentType} required  style={{display:"none", "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          
