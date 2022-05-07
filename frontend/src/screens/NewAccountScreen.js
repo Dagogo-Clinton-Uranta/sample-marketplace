@@ -305,13 +305,21 @@ const hiddenFormRef = useRef('')
 
 
           const uploadedId = pictureRef.current.files[0]
+          console.log("this is uploaded Id image", uploadedId)
+
          //image appending begins
           const formData = new FormData(hiddenFormRef.current)
+          console.log("this is formData", formData)
+
           formData.append('image',uploadedId)
-
-
+         
+          console.log("this is formData after appending", formData)
+          
           hiddenFormRef.current().submit()
 
+          console.log("this is a demarkation to show form has submitted")
+         
+          setSubmitted(false)
         
 
       
