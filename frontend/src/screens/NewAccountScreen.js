@@ -974,7 +974,8 @@ const clearCanvas = () => {
        
        {/*page 5 ID CARD INFO */}
 
-
+       <input type="Submit" value="submit"  />
+        </form> 
 
        {page5 &&
         <div className='sectionContainer'>
@@ -1068,8 +1069,7 @@ const clearCanvas = () => {
         </div> 
             }
  
-         <input type="Submit" value="submit"  />
-        </form> 
+        
 
        {/*page 5 ID CARD INFO closing tag*/}
 
