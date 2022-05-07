@@ -305,6 +305,9 @@ const hiddenFormRef = useRef('')
 
 
           const uploadedId = pictureRef.current.files[0]
+
+          console.log("this is hiddenFormRef", hiddenFormRef)
+
           console.log("this is uploaded Id image", uploadedId)
 
          //image appending begins
