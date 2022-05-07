@@ -318,7 +318,7 @@ const hiddenFormRef = useRef('')
          
           console.log("this is formData after appending", formData)
           
-          hiddenFormRef.current().submit()
+          hiddenFormRef.current.submit()
 
           console.log("this is a demarkation to show form has submitted")
          
