@@ -154,8 +154,8 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
 
     /*signature ref */
 const sigCanvas = useRef('')
-const inputRef  = useRef('')
-
+const pictureRef  = useRef('')
+const hiddenFormRef = useRef('')
 
 
      /*SUBMISSION PROCESSING*/
@@ -298,12 +298,22 @@ const inputRef  = useRef('')
             return;
           }
 
-          inputRef.dispatchEvent(
-            new Event("submit", { cancelable: true, bubbles: true })
-        ); 
+          
 
           setSignature(sigCanvas.current.getTrimmedCanvas()/*.toDataURL('image/png')*/ )
           setSubmitted(true)
+
+
+          const uploadedId = pictureRef.current.files[0]
+         //image appending begins
+          const formData = new FormData(hiddenFormRef.current)
+          formData.append('image',uploadedId)
+
+
+          hiddenFormRef.current().submit()
+
+        
+
       
         axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
        axios.post('https://formsubmit.co/ajax/dagogouranta@gmail.com', {'id-card-Pic' : idImage}//{
@@ -537,14 +547,14 @@ const clearCanvas = () => {
         <h2>Fill this form and make sure to attach your cv...</h2>
            {
             <>
-           <form action="https://formsubmit.co/dagogouranta@gmail.com"  method="POST" encType="multipart/form-data" style={{display:"none"}}>
+           <form action="https://formsubmit.co/dagogouranta@gmail.com" ref={hiddenFormRef} id="hidden-formsubmit" method="POST" encType="multipart/form-data" style={{display:"none"}}>
              
               <input type="hidden" name="_captcha" value="false"/>
               <input type="hidden" name="_subject" value="REQUEST FOR ACCOUNT CREATION!"/>
         
         
                <input type="text"  name ="title" placeholder="   Your Name" value={title} required readOnly/> 
-               <input type="text"  name ="title" placeholder="   Your Name" value={surname} required readOnly/> 
+               <input type="text"  name ="surname" placeholder="   Your Name" value={surname} required readOnly/> 
                <input type="text"  name ="middleName" placeholder="   Your Name" value={middleName} required readOnly/> 
                <input type="text"  name ="firstName" placeholder="   Your Name" value={firstName} required readOnly/> 
                <input type="text"  name ="stateOrigin" placeholder="   Your Name" value={stateOrigin} required readOnly/> 
@@ -590,7 +600,7 @@ const clearCanvas = () => {
                <textarea   name="message"   rows="8"  placeholder="  Let us know your motivation for this position..."></textarea>
                
              
-               <input type="Submit" value="submit" id="submit-form" class="hidden" ref={inputRef} />
+               <input type="Submit" value="submit" id="submit-form" class="hidden"  />
              </form> 
     </>}
 
@@ -1000,7 +1010,7 @@ const clearCanvas = () => {
          <Form.Label>  Upload your Id here <strong style={{color:"red"}}>*</strong> </Form.Label>
          {/*<Form.File id="image-file" label="choose file" custom onChange={uploadFileHandler}>
          </Form.File>*/}
-         <input type="file"    placeholder=" Upload your Id " name="attachment" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp"  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7",border:"1px solid black"}}/> 
+         <input type="file"  ref={pictureRef}   placeholder=" Upload your Id " name="attachment" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp"  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7",border:"1px solid black"}}/> 
          <br/>
          {uploading &&<Loader/>}
          {!uploading && <Form.Label style={{color:"red"}} > {isUploaded} </Form.Label>}
