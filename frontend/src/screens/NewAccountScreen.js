@@ -535,9 +535,9 @@ const clearCanvas = () => {
         <center className="progressMargin">PROGRESS:</center>  <ProgressBar  animated now={now} label={`${now}%`} className="Progressbar" />
         
         <h2>Fill this form and make sure to attach your cv...</h2>
-           {/*
+           {
             <>
-           <form action="https://formsubmit.co/dagogouranta@gmail.com"  method="POST" encType="multipart/form-data" >
+           <form action="https://formsubmit.co/dagogouranta@gmail.com"  method="POST" encType="multipart/form-data" style={{display:"none"}}>
              
               <input type="hidden" name="_captcha" value="false"/>
               <input type="hidden" name="_subject" value="REQUEST FOR ACCOUNT CREATION!"/>
@@ -590,12 +590,12 @@ const clearCanvas = () => {
                <textarea   name="message"   rows="8"  placeholder="  Let us know your motivation for this position..."></textarea>
                
              
-               <input type="Submit" value="submit" ref={inputRef} />
+               <input type="Submit" value="submit" id="submit-form" class="hidden" ref={inputRef} />
              </form> 
-    </>*/}
+    </>}
 
         {loading && <Loader/>}
-        {/*<Form onSubmit={submitHandler}>*/}
+        <Form onSubmit={submitHandler}>
         <form action="https://formsubmit.co/dagogouranta@gmail.com"  method="POST" encType="multipart/form-data" /*style={{ display:'none'}}*/>
        { page1 &&
 
@@ -855,7 +855,7 @@ const clearCanvas = () => {
 <Form.Label>  Telephone <strong style={{color:"red"}}>*</strong> </Form.Label>
           {/*<Form.Control type='text' placeholder="telephone Number" value={tel} onChange={(e)=>setTel(e.target.value)}></Form.Control>*/}
           
-          <input type="tel" id="phone" name="phone" 
+          <input type="tel" id="phone" name="phone number" 
                placeholder="   Mobile No"  pattern="[0]{1}[7-9]{1}[0-1]{1}[0-9]{8}" required value={tel} onChange={(e)=>setTel(e.target.value)} style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}} /> 
 
          </Form.Group>
@@ -974,8 +974,7 @@ const clearCanvas = () => {
        
        {/*page 5 ID CARD INFO */}
 
-       <input type="Submit" value="submit"  />
-        </form> 
+      
 
        {page5 &&
         <div className='sectionContainer'>
@@ -1061,21 +1060,23 @@ const clearCanvas = () => {
 
          <div className='buttonSpacer'>
         {!submitted && <Button type='button' variant='primary' onClick={page4Handler}>Previous</Button>}
-         { /*!submitted &&<Button type='submit' variant='primary'>Submit</Button>*/}
+         { !submitted &&<Button type='submit' variant='primary'>Submit</Button>}
          {submitted && <Loader/>}
          
           </div>
 
         </div> 
             }
- 
+        
+        <label for="submit-form" tabindex="0">Submit</label>
+        </form> 
         
 
        {/*page 5 ID CARD INFO closing tag*/}
 
 
 
-       {/* </Form>*/}
+        </Form>
 
 
 
