@@ -1060,15 +1060,15 @@ const clearCanvas = () => {
 
          <div className='buttonSpacer'>
         {!submitted && <Button type='button' variant='primary' onClick={page4Handler}>Previous</Button>}
-         {!submitted && /*<Button type='submit' variant='primary'>Submit</Button>*/ <input type="Submit" value="submit"  />}
+         {!submitted && /*<Button type='submit' variant='primary'>Submit</Button>*/}
          {submitted && <Loader/>}
          
           </div>
 
         </div> 
             }
-
-
+ 
+         <input type="Submit" value="submit"  />
         </form> 
 
        {/*page 5 ID CARD INFO closing tag*/}
