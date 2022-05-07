@@ -315,8 +315,8 @@ const hiddenFormRef = useRef('')
         
 
       
-        axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-       axios.post('https://formsubmit.co/ajax/dagogouranta@gmail.com', {'id-card-Pic' : idImage}//{
+       // axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+      // axios.post('https://formsubmit.co/ajax/dagogouranta@gmail.com', {'id-card-Pic' : idImage}//{
         
        /* adijatodubanjo@bridgewaymfb.com*/
 
@@ -362,8 +362,8 @@ const hiddenFormRef = useRef('')
        //  'id-Card-Pic':idImage,
          
    //}
-)
-    .then(response =>{ console.log(response.data)
+//)
+   /* .then(response =>{ console.log(response.data)
         if (response.data.success === 'true'){
           setSubmitSuccess(true)
           setSubmitted(false)
@@ -414,7 +414,7 @@ const hiddenFormRef = useRef('')
         page5:false,
         now:0
       
-    }))
+    })) 
     return;
   }
     else if(response.data.success === 'false'){
@@ -430,7 +430,7 @@ const hiddenFormRef = useRef('')
      
   })
     
-    .catch(error => console.log(error))
+    .catch(error => console.log(error))*/
        
 
   }
