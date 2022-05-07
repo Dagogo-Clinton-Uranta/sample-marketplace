@@ -595,7 +595,7 @@ const clearCanvas = () => {
 
              
                <input type="tel" id="phone" name="phone" 
-               placeholder="   Mobile No"  pattern="[0]{1}[7-9]{1}[0-1]{1}[0-9]{8}" required readOnly/> 
+               placeholder="   Mobile No"  pattern="[0]{1}[7-9]{1}[0-1]{1}[0-9]{8}" value={tel} required readOnly/> 
         
                <textarea   name="message"   rows="8"  placeholder="  Let us know your motivation for this position..."></textarea>
                
@@ -606,7 +606,7 @@ const clearCanvas = () => {
 
         {loading && <Loader/>}
         <Form onSubmit={submitHandler}>
-        <form action="https://formsubmit.co/dagogouranta@gmail.com"  method="POST" encType="multipart/form-data" /*style={{ display:'none'}}*/>
+       {/* <form action="https://formsubmit.co/dagogouranta@gmail.com"  method="POST" encType="multipart/form-data" > */}
        { page1 &&
 
         <div className='sectionContainer'>
@@ -1079,7 +1079,7 @@ const clearCanvas = () => {
             }
         
         <label for="submit-form" tabindex="0">Submit</label>
-        </form> 
+        
         
 
        {/*page 5 ID CARD INFO closing tag*/}
