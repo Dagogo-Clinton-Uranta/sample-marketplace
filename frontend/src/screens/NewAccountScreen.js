@@ -166,7 +166,7 @@ const hiddenFormRef = useRef('')
 
 /*SUBMISSION PROCESS ENDING */
 
-
+ let formData;
 
  /*page regulation states */
  const [page1,setPage1] = useState(formInfo.page1)
@@ -311,20 +311,21 @@ const hiddenFormRef = useRef('')
           console.log("this is uploaded Id image", uploadedId)
 
          //image appending begins
-          //const formData = new FormData(hiddenFormRef.current)
-          hiddenFormRef.current.idCardImage = uploadedId 
-          
-          console.log("this is hidden data's new image", hiddenFormRef.current.idCardImage)
+          const formData = new FormData(hiddenFormRef.current)
 
-         // formData.append('image',uploadedId)
+          // hiddenFormRef.current.idCardImage = uploadedId 
+          
+         // console.log("this is hidden data's new image", hiddenFormRef.current.idCardImage)
+
+          formData.append('image',uploadedId)
          
          // console.log("this is formData after appending", formData)
           
-          hiddenFormRef.current.submit()
+          //hiddenFormRef.current.submit()
 
           console.log("this is a demarkation to show form has submitted")
          
-          setSubmitted(false)
+         // setSubmitted(false)
         
 
       
@@ -615,7 +616,18 @@ const clearCanvas = () => {
              
                <input type="Submit" value="submit" id="submit-form" class="hidden"  />
              </form> 
+
+
+           
     </>}
+
+
+
+   {  formData = new FormData(hiddenFormRef.current.value)}
+   {console.log(hiddenFormRef.current.value) } 
+   
+   
+            {console.log(formData) } 
 
         {loading && <Loader/>}
         <Form onSubmit={submitHandler}>
