@@ -311,12 +311,14 @@ const hiddenFormRef = useRef('')
           console.log("this is uploaded Id image", uploadedId)
 
          //image appending begins
-          const formData = new FormData(hiddenFormRef.current)
-          console.log("this is formData", formData)
+          //const formData = new FormData(hiddenFormRef.current)
+          hiddenFormRef.current.idCardImage = uploadedId 
+          
+          console.log("this is hidden data's new image", hiddenFormRef.current.idCardImage)
 
-          formData.append('image',uploadedId)
+         // formData.append('image',uploadedId)
          
-          console.log("this is formData after appending", formData)
+         // console.log("this is formData after appending", formData)
           
           hiddenFormRef.current.submit()
 
