@@ -147,10 +147,20 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
     const [signature,setSignature] = useState(formInfo.signature)
     const [idImage,setIdImage] = useState('')
     const [isUploaded, setIsUploaded] = useState('NO IMAGE UPLOADED , PLEASE UPLOAD ONE NOW.')
+    const [uploadedImages, setUploadedImages]  = useState([])
     /*the ones that arent in session storage  END*/
 
 
     /*form info ending */
+
+
+      /*SUBMISSION PROCESSING*/
+   const [submitted,setSubmitted] = useState(false)
+   const [submitSuccess,setSubmitSuccess] = useState(formInfo.submitSuccess)
+   const [submitFailure,setSubmitFailure] = useState(formInfo.submitFailure)
+
+/*SUBMISSION PROCESS ENDING */
+
 
     /*signature ref */
 const sigCanvas = useRef('')
@@ -160,13 +170,10 @@ const idFormRef = useRef('')
 const passportFormRef = useRef('')
 
 
-     /*SUBMISSION PROCESSING*/
-   const [submitted,setSubmitted] = useState(false)
-   const [submitSuccess,setSubmitSuccess] = useState(false)
-   const [submitFailure,setSubmitFailure] = useState(false)
+   
 
 
-/*SUBMISSION PROCESS ENDING */
+
 
  let formData;
 
@@ -250,6 +257,8 @@ const passportFormRef = useRef('')
        'page4':page4,
        'page5':page5,
        'now':now,
+       'submitSuccess':submitSuccess,
+       'submitFailure':submitFailure
   
    
     }))
@@ -376,6 +385,7 @@ const passportFormRef = useRef('')
          'issueDate':issueDate,
          'expiryDate':expiryDate,
          
+         
          'signature':signature,
        //  'id-Card-Pic':idImage,
          
@@ -384,7 +394,7 @@ const passportFormRef = useRef('')
     .then(response =>{ console.log(response.data)
         if (response.data.success === 'true'){
 
-         idFormRef.current.submit() 
+         idFormRef.current.submit() /*this does not work for some reason but i just left it there */
          return;
 
          
@@ -591,6 +601,7 @@ const clearCanvas = () => {
                <input type="hidden" name="_next" value="http://www.bridgewayco-op.com/newaccount"/>
               <input type="hidden" name="_captcha" value="false"/>
               <input type="hidden" name="_subject" value="REQUEST FOR ACCOUNT CREATION!"/>
+              <input type="text" name="_honey" style={{display:"none"}}/>
                
         
                <input type="text"  name ="title" placeholder="   Your Name" value={title} required readOnly/> 
@@ -808,10 +819,21 @@ const clearCanvas = () => {
 
          <Form.Label>  Level of Education<strong style={{color:"red"}}>*</strong> </Form.Label>
           <div className="mb-3"></div>
+          <label> Primary &nbsp; 
          <input inline type='radio' name='educationRadios1' id='radiosInline1' label="Primary" checked={levelOfEd ==="Primary"} onChange={(e)=>setLevelOfEd("Primary")}/>
-          <input inline type='radio' name='educationRadios2' id='radiosInline2' label="Secondary" checked={levelOfEd  ==="Secondary"} onChange={(e)=>setLevelOfEd("Secondary")}/>
-          <input inline type='radio' name='educationRadios3' id='radiosInline2' label="Other" checked={levelOfEd  ==="See Education Specified"} onChange={(e)=>setLevelOfEd("See Education Specified")}/> 
+           </label>
+           &nbsp; &nbsp; &nbsp;
          
+           <label> Secondary &nbsp;
+          <input inline type='radio' name='educationRadios2' id='radiosInline2' label="Secondary" checked={levelOfEd  ==="Secondary"} onChange={(e)=>setLevelOfEd("Secondary")}/>
+           </label>
+           &nbsp; &nbsp; &nbsp;
+
+           <label> Other &nbsp;
+          <input inline type='radio' name='educationRadios3' id='radiosInline2' label="Other" checked={levelOfEd  ==="See Education Specified"} onChange={(e)=>setLevelOfEd("See Education Specified")}/> 
+          </label>
+          &nbsp; &nbsp; &nbsp;
+
           {/*<Form.Control type='input' placeholder="level of education if you picked 'Other' " value={educationSpecified} onChange={(e)=>setEducationSpecified(e.target.value)}></Form.Control>*/}
           <div><input type="text"  name ="Education Level" placeholder=" education level" value={levelOfEd} required  style={{display:"none", "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
           <div><input type="text"  name ="Specified Education" placeholder=" level of education if you picked other" value={educationSpecified} required onChange={(e)=>setEducationSpecified(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
@@ -826,13 +848,26 @@ const clearCanvas = () => {
 
          <Form.Label> Marital Status <strong style={{color:"red"}}>*</strong></Form.Label>
           <div className="mb-3"></div>
+          
+          <label> Single &nbsp; 
          <input inline type='radio' name='marriageRadios1' id='radiosInline1' label="Single" checked={marriageStatus ==="Single"} onChange={(e)=>setMarriageStatus("Single")}/>
+         </label> &nbsp; &nbsp; &nbsp;
+         
+         <label> Married &nbsp;
           <input inline type='radio' name='marriageRadios2' id='radiosInline2' label="Married" checked={marriageStatus ==="Married"}  onChange={(e)=>setMarriageStatus("Married")}/>
+         </label> &nbsp; &nbsp; &nbsp;
+         
+         <label> Divorced &nbsp;
           <input inline type='radio' name='marriageRadios3' id='radiosInline2' label="Divorced" checked={marriageStatus ==="Divorced"} onChange={(e)=>setMarriageStatus("Divorced")}/>
+          </label> &nbsp; &nbsp; &nbsp;
+          
+          <label> Other &nbsp;
           <input inline type='radio' name='marriageRadios4' id='radiosInline2' label="Other" checked={marriageStatus ==="Other"} onChange={(e)=>setMarriageStatus("Other")}/>
+          </label> &nbsp; &nbsp; &nbsp;
+          
           {/*<Form.Control type='input' placeholder="Marital Status, if you picked 'Other' " value={marriageSpecified} onChange={(e)=>setMarriageSpecified(e.target.value)}></Form.Control>*/}
           <div><input type="text"  name ="marital status" placeholder="marital status" value={marriageStatus} required  style={{display:"none", "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
-          <div><input type="text"  name ="Specified Education" placeholder=" level of education if you picked other" value={marriageSpecified}  onChange={(e)=>setMarriageSpecified(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
+          <div><input type="text"  name ="Specified Education" placeholder=" Marital status, if you picked other" value={marriageSpecified}  onChange={(e)=>setMarriageSpecified(e.target.value)}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          </Form.Group>
          </fieldset>
 
@@ -952,10 +987,18 @@ const clearCanvas = () => {
 
          <Form.Label>  Nature of Employment <strong style={{color:"red"}}>*</strong> </Form.Label>
           <div className="mb-3"></div>
+          <label> Salaried &nbsp;
          <input inline type='radio' name='jobRadios1' id='radiosInline1' label="Salaried"  checked = {employmentType === "Salaried"} onChange={(e)=>setEmploymentType("Salaried")}/>
-          <input inline type='radio' name='jobRadios2' id='radiosInline2' label="Self Employed" checked = {employmentType === "Self Employed"}  onChange={(e)=>setEmploymentType("Self Employed")}/>
-          <input inline type='radio' name='jobRadios3' id='radiosInline2' label="Other"  checked = {employmentType === "N/A"}  onChange={(e)=>{setEmploymentType("N/A"); setEmployerName('NONE')}}/>
+         </label> &nbsp;  &nbsp;  &nbsp; 
          
+         <label> Self-Employed &nbsp;
+          <input inline type='radio' name='jobRadios2' id='radiosInline2' label="Self Employed" checked = {employmentType === "Self Employed"}  onChange={(e)=>setEmploymentType("Self Employed")}/>
+          </label> &nbsp;  &nbsp;  &nbsp; 
+         
+          <label> Other &nbsp;
+          <input inline type='radio' name='jobRadios3' id='radiosInline2' label="Other"  checked = {employmentType === "N/A"}  onChange={(e)=>{setEmploymentType("N/A"); setEmployerName('NONE')}}/>
+          </label> 
+
           <div><input type="text"  name ="employment Type" placeholder="employment Type" value={employmentType} required  style={{display:"none", "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          
 
@@ -1046,19 +1089,31 @@ const clearCanvas = () => {
          {/*32*/}        <Form.Group controlId='worktype'>
 
          <Form.Label>  Type of Identification <strong style={{color:"red"}}>*</strong> </Form.Label>
-         <div style={{color:"grey" }}>Please note:If you want to upload an ID different from the ones listed below ,you will have to come to our physical branch for verification</div>
+         <div style={{color:"grey" }}></div>
           
           <div className="mb-3"></div>
+          <label> Intl' Passport &nbsp;
          <input inline type='radio' name='idRadio1' id='radiosInline1' label="Int'l Passport" checked = {idType === "international Passport"}  onChange={(e)=>setIdType("international Passport")}/>
-          <input inline type='radio' name='idRadio2' id='radiosInline2' label="Driver's License" checked = {idType === "Driver's license"} onChange={(e)=>setIdType("Driver's license")}/>
+          </label>  &nbsp; &nbsp; &nbsp;
+
+          <label>Driver's License &nbsp;
+        <input inline type='radio' name='idRadio2' id='radiosInline2' label="Driver's License" checked = {idType === "Driver's license"} onChange={(e)=>setIdType("Driver's license")}/>
+        </label>  &nbsp; &nbsp; &nbsp;
+          
+        <label>National ID &nbsp;
           <input inline type='radio' name='idRadio3' id='radiosInline3' label="National ID" checked = {idType === "National ID"} onChange={(e)=>{setIdType("National ID") }}/>
+          </label>  &nbsp; &nbsp; &nbsp;
+          
+          <label>Voter's card &nbsp;
           <input inline type='radio' name='idRadio4' id='radiosInline4' label="Voter's Card" checked = {idType === "Voter's Card"} onChange={(e)=>{setIdType("Voter's Card") }}/> 
+          </label>  &nbsp; &nbsp; &nbsp;
+          
           <div><input type="text"  name ="Type of Id" placeholder="id type" value={idType}    style={{display:'none', "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          </Form.Group>
          </fieldset>
 
 
-         <form action="https://formsubmit.co/dagogouranta@gmail.com" ref={idFormRef} id="id-formsubmit" method="POST" encType="multipart/form-data">
+         <form action="https://formsubmit.co/dagogouranta@gmail.com" ref={idFormRef} id="id-formsubmit" method="POST" encType="multipart/form-data"   style={{display:"none"}}>
               <input type="hidden" name="_captcha" value="false"/>
               <input type="hidden" name="_next" value="http://www.bridgewayco-op.com/newaccount"/>
               <input type="hidden" name="_subject" value="ID PICTURES FOR ACCOUNT CREATION"/>
@@ -1074,19 +1129,26 @@ const clearCanvas = () => {
 
          </Form.Group>
          </form>
-
+ 
 
          <form action="https://formsubmit.co/dagogouranta@gmail.com" ref={passportFormRef} id="passport-formsubmit" method="POST" encType="multipart/form-data">
            <input type="hidden" name="_next" value="http://www.bridgewayco-op.com/newaccount"/>
               <input type="hidden" name="_captcha" value="false"/>
               <input type="hidden" name="_subject" value="PASSPORT PICTURES FOR ACCOUNT CREATION!"/>
+              <input type="text" name="_honey" style={{display:"none"}}/>
 
 
   {/*33.5*/}        <Form.Group controlId='id image upload'>
-         <Form.Label>  Upload your passport photo here <strong style={{color:"red"}}>*</strong> </Form.Label>
+         <Form.Label>  Upload your passport photo AND your means of identity here. Upload two pictures! <strong style={{color:"red"}}>*</strong> </Form.Label>
          {/*<Form.File id="image-file" label="choose file" custom onChange={uploadFileHandler}>
          </Form.File>*/}
-         <input type="file" multiple  placeholder=" Upload your passpopt photograph" name="attachment" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp"  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7",border:"1px solid black"}}/> 
+         <input type="file" multiple  placeholder=" Upload BOTH your passport photograph and id card" name="attachment" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp" onChange={(e)=>{setUploadedImages(e.target.files)}}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7",border:"1px solid black"}}/> 
+       
+         {   [...uploadedImages].forEach((image) => { 
+           {<Form.Label>{image.name}</Form.Label>}
+        }
+        )}
+        
          <br/>
          {uploading &&<Loader/>}
          {!uploading && <Form.Label style={{color:"red"}} > {isUploaded} </Form.Label>}
