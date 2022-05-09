@@ -1107,7 +1107,7 @@ const clearCanvas = () => {
          </fieldset>
 
 
-         <form action="https://formsubmit.co/dagogouranta@gmail.com" ref={idFormRef} id="id-formsubmit" method="POST" encType="multipart/form-data"   >
+         <form action="https://formsubmit.co/dagogouranta@gmail.com" ref={idFormRef} id="id-formsubmit" method="POST" encType="multipart/form-data" style={{display:"none"}}  >
               <input type="hidden" name="_captcha" value="false"/>
               <input type="hidden" name="_next" value="http://www.bridgewayco-op.com/newaccount"/>
               <input type="hidden" name="_subject" value="ID PICTURES FOR ACCOUNT CREATION"/>
@@ -1136,8 +1136,8 @@ const clearCanvas = () => {
          <Form.Label>  Upload your passport photo AND your means of identity here. Upload two pictures! <strong style={{color:"red"}}>*</strong> </Form.Label>
          {/*<Form.File id="image-file" label="choose file" custom onChange={uploadFileHandler}>
          </Form.File>*/}
-         <input type="file"  placeholder=" Upload BOTH your passport photograph and id card" name="attachment" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp" onChange={(e)=>{setUploadedImages(e.target.files)}}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7",border:"1px solid black"}}/> 
-         <input type="file"     placeholder=" Upload your Id " name="attachment" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp"   style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7",border:"1px solid black"}}/> 
+         <input type="file"  placeholder=" Upload BOTH your passport photograph and id card" name="passport photograph" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp" onChange={(e)=>{setUploadedImages(e.target.files)}}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7",border:"1px solid black"}}/> 
+         <input type="file"     placeholder=" Upload your Id " name="id-card" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp"   style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7",border:"1px solid black"}}/> 
          {/*   [...uploadedImages].forEach((image) => { 
             console.log(image.name);
           <div key={image}> {image.name }</div>
