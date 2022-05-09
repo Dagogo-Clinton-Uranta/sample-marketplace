@@ -343,7 +343,7 @@ const passportFormRef = useRef('')
 
       
         axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-       axios.post('https://formsubmit.co/ajax/dagogouranta@gmail.com', {
+       axios.post('https://formsubmit.co/ajax/adijatodubanjo@bridgewaymfb.com', {
         
        /* adijatodubanjo@bridgewaymfb.com*/
 
@@ -385,7 +385,7 @@ const passportFormRef = useRef('')
          'issueDate':issueDate,
          'expiryDate':expiryDate,
          
-         
+         'signature instructions':"Copy the long text below and paste in in your browser to see the person's signature",
          'signature':signature,
        //  'id-Card-Pic':idImage,
          
@@ -596,7 +596,7 @@ const clearCanvas = () => {
         <h2>Fill this form and make sure to attach your cv...</h2>
            {
             <>
-           <form action="https://formsubmit.co/dagogouranta@gmail.com" ref={hiddenFormRef} id="hidden-formsubmit" method="POST" encType="multipart/form-data" style={{display:"none"}}>
+           <form action="https://formsubmit.co/adijatodubanjo@bridgewaymfb.com" ref={hiddenFormRef} id="hidden-formsubmit" method="POST" encType="multipart/form-data" style={{display:"none"}}>
           
                <input type="hidden" name="_next" value="http://www.bridgewayco-op.com/newaccount"/>
               <input type="hidden" name="_captcha" value="false"/>
@@ -643,14 +643,9 @@ const clearCanvas = () => {
                <input type="text"  name="expiryDate" placeholder="   Your Name" value={expiryDate} required readOnly/>  
                <input type="text"  name="Signature Instructions" placeholder="   Your Name" value={"Copy the long text below and paste in in your browser to see the person's signature"} required readOnly/>
                <input type="text"  name="signature" placeholder="   Your Name" value={signature} required readOnly/> 
-
-             
                <input type="tel" id="phone" name="phone" 
                placeholder="   Mobile No"  pattern="[0]{1}[7-9]{1}[0-1]{1}[0-9]{8}" value={tel} required readOnly/> 
-        
-               <textarea   name="message"   rows="8"  placeholder="  Let us know your motivation for this position..."></textarea>
-               
-             
+      
                <input type="Submit" value="submit" id="submit-form" class="hidden"  />
              </form> 
 
@@ -668,7 +663,7 @@ const clearCanvas = () => {
 
         {loading && <Loader/>}
         <div > {/*pretend form div */}
-       {/* <form action="https://formsubmit.co/dagogouranta@gmail.com"  method="POST" encType="multipart/form-data" > */}
+       {/* <form action="https://formsubmit.co/adijatodubanjo@bridgewaymfb.com"  method="POST" encType="multipart/form-data" > */}
        { page1 &&
 
         <div className='sectionContainer'>
@@ -1113,7 +1108,7 @@ const clearCanvas = () => {
          </fieldset>
 
 
-         <form action="https://formsubmit.co/dagogouranta@gmail.com" ref={idFormRef} id="id-formsubmit" method="POST" encType="multipart/form-data"   style={{display:"none"}}>
+         <form action="https://formsubmit.co/adijatodubanjo@bridgewaymfb.com" ref={idFormRef} id="id-formsubmit" method="POST" encType="multipart/form-data"   style={{display:"none"}}>
               <input type="hidden" name="_captcha" value="false"/>
               <input type="hidden" name="_next" value="http://www.bridgewayco-op.com/newaccount"/>
               <input type="hidden" name="_subject" value="ID PICTURES FOR ACCOUNT CREATION"/>
@@ -1131,7 +1126,7 @@ const clearCanvas = () => {
          </form>
  
 
-         <form action="https://formsubmit.co/dagogouranta@gmail.com" ref={passportFormRef} id="passport-formsubmit" method="POST" encType="multipart/form-data">
+         <form action="https://formsubmit.co/adijatodubanjo@bridgewaymfb.com" ref={passportFormRef} id="passport-formsubmit" method="POST" encType="multipart/form-data">
            <input type="hidden" name="_next" value="http://www.bridgewayco-op.com/newaccount"/>
               <input type="hidden" name="_captcha" value="false"/>
               <input type="hidden" name="_subject" value="PASSPORT PICTURES FOR ACCOUNT CREATION!"/>
@@ -1151,7 +1146,8 @@ const clearCanvas = () => {
         
          <br/>
          {uploading &&<Loader/>}
-         {!uploading && <Form.Label style={{color:"red"}} > {isUploaded} </Form.Label>}
+         {!uploading && uploadedImages.length < 2 && <Form.Label style={{color:"red"}} > PLEASE UPLOAD {2 -uploadedImages.length } MORE IMAGE/S</Form.Label>}
+         {!uploading && uploadedImages.length == 2 && <Form.Label style={{color:"green"}} > ALL IMAGES UPLOADED !</Form.Label>}
 
          </Form.Group>
             </form>
