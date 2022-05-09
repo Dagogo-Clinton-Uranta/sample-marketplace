@@ -384,7 +384,7 @@ const passportFormRef = useRef('')
     .then(response =>{ console.log(response.data)
         if (response.data.success === 'true'){
 
-          idFormRef.current.submit()
+         /* idFormRef.current.submit()*/ return
 
          
     
@@ -467,7 +467,7 @@ const passportFormRef = useRef('')
 
 
 
-  )
+  
     
     .catch(error => console.log(error))
        
@@ -1085,7 +1085,7 @@ const clearCanvas = () => {
          <Form.Label>  Upload your passport photo here <strong style={{color:"red"}}>*</strong> </Form.Label>
          {/*<Form.File id="image-file" label="choose file" custom onChange={uploadFileHandler}>
          </Form.File>*/}
-         <input type="file"   placeholder=" Upload your passpopt photograph" name="attachment" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp"  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7",border:"1px solid black"}}/> 
+         <input type="file" multiple  placeholder=" Upload your passpopt photograph" name="attachment" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp"  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7",border:"1px solid black"}}/> 
          <br/>
          {uploading &&<Loader/>}
          {!uploading && <Form.Label style={{color:"red"}} > {isUploaded} </Form.Label>}
