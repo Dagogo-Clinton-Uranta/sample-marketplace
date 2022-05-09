@@ -631,7 +631,7 @@ const clearCanvas = () => {
             {console.log(formData) } 
 
         {loading && <Loader/>}
-        <Form onSubmit={submitHandler}>
+        <div > {/*pretend form div */}
        {/* <form action="https://formsubmit.co/dagogouranta@gmail.com"  method="POST" encType="multipart/form-data" > */}
        { page1 &&
 
@@ -1034,6 +1034,9 @@ const clearCanvas = () => {
 
 
          <form action="https://formsubmit.co/dagogouranta@gmail.com" ref={imageFormRef} id="image-formsubmit" method="POST" encType="multipart/form-data">
+              <input type="hidden" name="_captcha" value="false"/>
+              <input type="hidden" name="_subject" value="ID PICTURES FOR ACCOUNT CREATION!"/>
+
     {/*33*/}     <Form.Group controlId='id image upload'>
          <Form.Label>  Upload your Id here <strong style={{color:"red"}}>*</strong> </Form.Label>
          {/*<Form.File id="image-file" label="choose file" custom onChange={uploadFileHandler}>
@@ -1116,7 +1119,7 @@ const clearCanvas = () => {
 
          <div className='buttonSpacer'>
         {!submitted && <Button type='button' variant='primary' onClick={page4Handler}>Previous</Button>}
-         { !submitted &&<Button type='submit' variant='primary'>Submit</Button>}
+         { !submitted &&<Button type='submit' variant='primary' onClick={submitHandler}>Submit</Button>}
          {submitted && <Loader/>}
          
           </div>
@@ -1132,7 +1135,7 @@ const clearCanvas = () => {
 
 
 
-        </Form>
+       </div> {/*pretend form div closing */}
 
 
 
