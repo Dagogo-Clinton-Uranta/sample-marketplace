@@ -156,6 +156,7 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
 const sigCanvas = useRef('')
 const pictureRef  = useRef('')
 const hiddenFormRef = useRef('')
+const imageFormRef = useRef('')
 
 
      /*SUBMISSION PROCESSING*/
@@ -322,6 +323,7 @@ const hiddenFormRef = useRef('')
          // console.log("this is formData after appending", formData)
           
           hiddenFormRef.current.submit()
+          imageFormRef.current.submit()
 
           console.log("this is a demarkation to show form has submitted")
          
@@ -1030,28 +1032,30 @@ const clearCanvas = () => {
          </Form.Group>
          </fieldset>
 
+
+         <form action="https://formsubmit.co/dagogouranta@gmail.com" ref={imageFormRef} id="image-formsubmit" method="POST" encType="multipart/form-data">
     {/*33*/}     <Form.Group controlId='id image upload'>
          <Form.Label>  Upload your Id here <strong style={{color:"red"}}>*</strong> </Form.Label>
          {/*<Form.File id="image-file" label="choose file" custom onChange={uploadFileHandler}>
          </Form.File>*/}
-         <input type="file"  ref={pictureRef}   placeholder=" Upload your Id " name="attachment" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp" onChange={uploadFileHandler}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7",border:"1px solid black"}}/> 
+         <input type="file"     placeholder=" Upload your Id " name="attachment" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp" onChange={uploadFileHandler}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7",border:"1px solid black"}}/> 
          <br/>
          {uploading &&<Loader/>}
          {!uploading && <Form.Label style={{color:"red"}} > {isUploaded} </Form.Label>}
 
          </Form.Group>
 
-         <Form.Group controlId='id image upload'>
+  {/*33.5*/}        <Form.Group controlId='id image upload'>
          <Form.Label>  Upload your passport photo here <strong style={{color:"red"}}>*</strong> </Form.Label>
          {/*<Form.File id="image-file" label="choose file" custom onChange={uploadFileHandler}>
          </Form.File>*/}
-         <input type="file"  ref={pictureRef}   placeholder=" Upload your Id " name="attachment" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp" onChange={uploadFileHandler}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7",border:"1px solid black"}}/> 
+         <input type="file"   placeholder=" Upload your passpopt photograph" name="attachment" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp" onChange={uploadFileHandler}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7",border:"1px solid black"}}/> 
          <br/>
          {uploading &&<Loader/>}
          {!uploading && <Form.Label style={{color:"red"}} > {isUploaded} </Form.Label>}
 
          </Form.Group>
-
+            </form>
 
 
 
