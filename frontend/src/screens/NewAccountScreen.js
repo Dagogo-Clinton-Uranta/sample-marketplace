@@ -417,7 +417,7 @@ const passportFormRef = useRef('')
     setNow(100),
 
 
- window.sessionStorage.setItem('formInfo',JSON.stringify({
+ /*window.sessionStorage.setItem('formInfo',JSON.stringify({
   title: '',
   surname : '',
   middleName:'',
@@ -461,7 +461,7 @@ const passportFormRef = useRef('')
   page5:false,
   now:0
 
-}))
+})*/   )
 
 
 
