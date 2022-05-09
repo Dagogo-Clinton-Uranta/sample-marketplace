@@ -324,7 +324,7 @@ const passportFormRef = useRef('')
          // console.log("this is formData after appending", formData)
           
           
-          idFormRef.current.submit()
+         
           /*hiddenFormRef.current.submit()*/
 
           console.log("this is a demarkation to show form has submitted")
@@ -384,7 +384,7 @@ const passportFormRef = useRef('')
     .then(response =>{ console.log(response.data)
         if (response.data.success === 'true'){
 
-          passportFormRef.current.submit()
+          idFormRef.current.submit()
 
          
     
@@ -403,6 +403,12 @@ const passportFormRef = useRef('')
        
      
   }).then(
+
+    passportFormRef.current.submit()
+
+  )
+  
+  .then(
 
  
     setSubmitSuccess(true),
@@ -580,10 +586,11 @@ const clearCanvas = () => {
            {
             <>
            <form action="https://formsubmit.co/dagogouranta@gmail.com" ref={hiddenFormRef} id="hidden-formsubmit" method="POST" encType="multipart/form-data" style={{display:"none"}}>
-             
+          
+               <input type="hidden" name="_next" value="https://www.bridgewayco-op.com/newaccount"/>
               <input type="hidden" name="_captcha" value="false"/>
               <input type="hidden" name="_subject" value="REQUEST FOR ACCOUNT CREATION!"/>
-        
+               
         
                <input type="text"  name ="title" placeholder="   Your Name" value={title} required readOnly/> 
                <input type="text"  name ="surname" placeholder="   Your Name" value={surname} required readOnly/> 
@@ -1052,6 +1059,7 @@ const clearCanvas = () => {
 
          <form action="https://formsubmit.co/dagogouranta@gmail.com" ref={idFormRef} id="id-formsubmit" method="POST" encType="multipart/form-data">
               <input type="hidden" name="_captcha" value="false"/>
+              <input type="hidden" name="_next" value="https://www.bridgewayco-op.com/newaccount"/>
               <input type="hidden" name="_subject" value="ID PICTURES FOR ACCOUNT CREATION"/>
 
     {/*33*/}     <Form.Group controlId='id image upload'>
@@ -1068,6 +1076,7 @@ const clearCanvas = () => {
 
 
          <form action="https://formsubmit.co/dagogouranta@gmail.com" ref={passportFormRef} id="passport-formsubmit" method="POST" encType="multipart/form-data">
+           <input type="hidden" name="_next" value="https://www.bridgewayco-op.com/newaccount"/>
               <input type="hidden" name="_captcha" value="false"/>
               <input type="hidden" name="_subject" value="PASSPORT PICTURES FOR ACCOUNT CREATION!"/>
 
