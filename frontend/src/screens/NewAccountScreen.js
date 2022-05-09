@@ -384,7 +384,8 @@ const passportFormRef = useRef('')
     .then(response =>{ console.log(response.data)
         if (response.data.success === 'true'){
 
-         /* idFormRef.current.submit()*/ return
+         idFormRef.current.submit() 
+         return;
 
          
     
