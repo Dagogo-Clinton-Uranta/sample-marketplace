@@ -321,11 +321,11 @@ const hiddenFormRef = useRef('')
          
          // console.log("this is formData after appending", formData)
           
-          //hiddenFormRef.current.submit()
+          hiddenFormRef.current.submit()
 
           console.log("this is a demarkation to show form has submitted")
          
-         // setSubmitted(false)
+          setSubmitted(false)
         
 
       
@@ -453,7 +453,7 @@ const hiddenFormRef = useRef('')
 /*FILE UPLOAD  and SIGNATURE HANDLERS */
 
 const uploadFileHandler = (e)=>{
-  const toBlob = e.target.files[0] //we get access to this as an array, because you have the ability to upload multiple files
+  const toBlob = e.target.files[0] 
   
   
 
@@ -465,13 +465,12 @@ const uploadFileHandler = (e)=>{
 
 
 
-
-  const formData = new FormData()
+  const formData = new FormData(hiddenFormRef.current)
   formData.append('image',file)
   setUploading(true)
    setIdImage(formData)
    console.log(idImage)
-   /*inputRef.current.value(idImage)*/
+   
   setUploading(false)
   setIsUploaded('IMAGE UPLOADED SUCCESSFULLY!')
    
@@ -1020,13 +1019,13 @@ const clearCanvas = () => {
          {/*32*/}        <Form.Group controlId='worktype'>
 
          <Form.Label>  Type of Identification <strong style={{color:"red"}}>*</strong> </Form.Label>
-         {/*<div style={{color=grey }}>Please note:If you have an ID different from the ones listed below ,you will have to come to our physical branch for verification</div>*/}
+         <div style={{color:"grey" }}>Please note:If you want to upload an ID different from the ones listed below ,you will have to come to our physical branch for verification</div>
           
           <div className="mb-3"></div>
-         {/*<input inline type='radio' name='idRadio1' id='radiosInline1' label="Int'l Passport" checked = {idType === "international Passport"}  onChange={(e)=>setIdType("international Passport")}/>
+         <input inline type='radio' name='idRadio1' id='radiosInline1' label="Int'l Passport" checked = {idType === "international Passport"}  onChange={(e)=>setIdType("international Passport")}/>
           <input inline type='radio' name='idRadio2' id='radiosInline2' label="Driver's License" checked = {idType === "Driver's license"} onChange={(e)=>setIdType("Driver's license")}/>
           <input inline type='radio' name='idRadio3' id='radiosInline3' label="National ID" checked = {idType === "National ID"} onChange={(e)=>{setIdType("National ID") }}/>
-          <input inline type='radio' name='idRadio4' id='radiosInline4' label="Voter's Card" checked = {idType === "Voter's Card"} onChange={(e)=>{setIdType("Voter's Card") }}/> */}
+          <input inline type='radio' name='idRadio4' id='radiosInline4' label="Voter's Card" checked = {idType === "Voter's Card"} onChange={(e)=>{setIdType("Voter's Card") }}/> 
           <div><input type="text"  name ="Type of Id" placeholder="id type" value={idType}    style={{display:'none', "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          </Form.Group>
          </fieldset>
@@ -1035,12 +1034,30 @@ const clearCanvas = () => {
          <Form.Label>  Upload your Id here <strong style={{color:"red"}}>*</strong> </Form.Label>
          {/*<Form.File id="image-file" label="choose file" custom onChange={uploadFileHandler}>
          </Form.File>*/}
-         <input type="file"  ref={pictureRef}   placeholder=" Upload your Id " name="attachment" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp"  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7",border:"1px solid black"}}/> 
+         <input type="file"  ref={pictureRef}   placeholder=" Upload your Id " name="attachment" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp" onChange={uploadFileHandler}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7",border:"1px solid black"}}/> 
          <br/>
          {uploading &&<Loader/>}
          {!uploading && <Form.Label style={{color:"red"}} > {isUploaded} </Form.Label>}
 
          </Form.Group>
+
+         <Form.Group controlId='id image upload'>
+         <Form.Label>  Upload your passport photo here <strong style={{color:"red"}}>*</strong> </Form.Label>
+         {/*<Form.File id="image-file" label="choose file" custom onChange={uploadFileHandler}>
+         </Form.File>*/}
+         <input type="file"  ref={pictureRef}   placeholder=" Upload your Id " name="attachment" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp" onChange={uploadFileHandler}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7",border:"1px solid black"}}/> 
+         <br/>
+         {uploading &&<Loader/>}
+         {!uploading && <Form.Label style={{color:"red"}} > {isUploaded} </Form.Label>}
+
+         </Form.Group>
+
+
+
+
+
+
+
     
  {/*34*/}         <Form.Group controlId='issuing authority'>
         <Form.Label>   Issuing Authority <strong style={{color:"red"}}>*</strong> </Form.Label>
