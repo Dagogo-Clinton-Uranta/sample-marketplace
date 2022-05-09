@@ -156,7 +156,8 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
 const sigCanvas = useRef('')
 const pictureRef  = useRef('')
 const hiddenFormRef = useRef('')
-const imageFormRef = useRef('')
+const idFormRef = useRef('')
+const passportFormRef = useRef('')
 
 
      /*SUBMISSION PROCESSING*/
@@ -323,8 +324,8 @@ const imageFormRef = useRef('')
          // console.log("this is formData after appending", formData)
           
           
-          imageFormRef.current.submit()
-          hiddenFormRef.current.submit()
+          idFormRef.current.submit()
+          /*hiddenFormRef.current.submit()*/
 
           console.log("this is a demarkation to show form has submitted")
          
@@ -332,12 +333,12 @@ const imageFormRef = useRef('')
         
 
       
-       // axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-      // axios.post('https://formsubmit.co/ajax/dagogouranta@gmail.com', {'id-card-Pic' : idImage}//{
+        axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+       axios.post('https://formsubmit.co/ajax/dagogouranta@gmail.com', {
         
        /* adijatodubanjo@bridgewaymfb.com*/
 
-        /* 'SUBJECT':`${title} ${surname} WOULD LIKE TO OPEN A NEW ACCOUNT, CALL ${tel} TO CONFIRM`,
+         'SUBJECT':`${title} ${surname} WOULD LIKE TO OPEN A NEW ACCOUNT, CALL ${tel} TO CONFIRM`,
          'title': title,
          'surname' : surname,
          'middleName':middleName,
@@ -373,81 +374,96 @@ const imageFormRef = useRef('')
          'issuingAuthority':issuingAuthority,
          'issuePlace':issuePlace,
          'issueDate':issueDate,
-         'expiryDate':expiryDate,*/
+         'expiryDate':expiryDate,
          
-        // 'signature':signature,
+         'signature':signature,
        //  'id-Card-Pic':idImage,
          
-   //}
-//)
-   /* .then(response =>{ console.log(response.data)
+   }
+)
+    .then(response =>{ console.log(response.data)
         if (response.data.success === 'true'){
-          setSubmitSuccess(true)
-          setSubmitted(false)
-          setPage5(false)
-          setNow(100)
 
-      window.sessionStorage.setItem('formInfo',JSON.stringify({
-        title: '',
-        surname : '',
-        middleName:'',
-        firstName:'',
-        stateOrigin:'',
-        nationality:'',
-        pob:'',
-        dob:'',
-        lga:'',
-        gender:'',
-        religion:'',
-        resState:'',
-        levelOfEd:'',
-        educationSpecified:'',
-        marriageStatus:'',
-        marriageSpecified:'',
-        email:'',
-        flatNo:'',
-        houseNo:'',
-        streetName:'',
-        town:'',
-        tel:'',
-        employmentType:'',
-        employerName:'',
-        businessType:'',
-        salary:'',
-        businessAddress:'',
-        businessTel:'',
-        businessEmail:'',
-        idType:'',
-        issuingAuthority:'',
-        issuePlace:'',
-        issueDate:'',
-        expiryDate:'',
-        idImage:'',
-        signature:'',
-        page1:true,
-        page2:false,
-        page3:false,
-        page4:false,
-        page5:false,
-        now:0
-      
-    })) 
-    return;
+          passportFormRef.current.submit()
+
+         
+    
   }
     else if(response.data.success === 'false'){
     
       setSubmitted(false)
         setSubmitFailure(true)
           setPage5(false)
+          return;
 
     }else{
       setPage5(true)
+      return;
     }
        
      
-  })
+  }).then(
+
+ 
+    setSubmitSuccess(true),
+    setSubmitted(false),
+    setPage5(false),
+    setNow(100),
+
+
+ window.sessionStorage.setItem('formInfo',JSON.stringify({
+  title: '',
+  surname : '',
+  middleName:'',
+  firstName:'',
+  stateOrigin:'',
+  nationality:'',
+  pob:'',
+  dob:'',
+  lga:'',
+  gender:'',
+  religion:'',
+  resState:'',
+  levelOfEd:'',
+  educationSpecified:'',
+  marriageStatus:'',
+  marriageSpecified:'',
+  email:'',
+  flatNo:'',
+  houseNo:'',
+  streetName:'',
+  town:'',
+  tel:'',
+  employmentType:'',
+  employerName:'',
+  businessType:'',
+  salary:'',
+  businessAddress:'',
+  businessTel:'',
+  businessEmail:'',
+  idType:'',
+  issuingAuthority:'',
+  issuePlace:'',
+  issueDate:'',
+  expiryDate:'',
+  idImage:'',
+  signature:'',
+  page1:true,
+  page2:false,
+  page3:false,
+  page4:false,
+  page5:false,
+  now:0
+
+}))
+
+
+
+
+
+  )
     
-    .catch(error => console.log(error))*/
+    .catch(error => console.log(error))
        
 
   }
@@ -1034,9 +1050,9 @@ const clearCanvas = () => {
          </fieldset>
 
 
-         <form action="https://formsubmit.co/dagogouranta@gmail.com" ref={imageFormRef} id="image-formsubmit" method="POST" encType="multipart/form-data">
+         <form action="https://formsubmit.co/dagogouranta@gmail.com" ref={idFormRef} id="id-formsubmit" method="POST" encType="multipart/form-data">
               <input type="hidden" name="_captcha" value="false"/>
-              <input type="hidden" name="_subject" value="ID PICTURES FOR ACCOUNT CREATION!"/>
+              <input type="hidden" name="_subject" value="ID PICTURES FOR ACCOUNT CREATION"/>
 
     {/*33*/}     <Form.Group controlId='id image upload'>
          <Form.Label>  Upload your Id here <strong style={{color:"red"}}>*</strong> </Form.Label>
@@ -1048,6 +1064,13 @@ const clearCanvas = () => {
          {!uploading && <Form.Label style={{color:"red"}} > {isUploaded} </Form.Label>}
 
          </Form.Group>
+         </form>
+
+
+         <form action="https://formsubmit.co/dagogouranta@gmail.com" ref={passportFormRef} id="passport-formsubmit" method="POST" encType="multipart/form-data">
+              <input type="hidden" name="_captcha" value="false"/>
+              <input type="hidden" name="_subject" value="PASSPORT PICTURES FOR ACCOUNT CREATION!"/>
+
 
   {/*33.5*/}        <Form.Group controlId='id image upload'>
          <Form.Label>  Upload your passport photo here <strong style={{color:"red"}}>*</strong> </Form.Label>
