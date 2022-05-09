@@ -305,11 +305,11 @@ const imageFormRef = useRef('')
           setSubmitted(true)
 
 
-          const uploadedId = pictureRef.current.files[0]
+        //  const uploadedId = pictureRef.current.files[0]
 
-          console.log("this is hiddenFormRef", hiddenFormRef)
+        //  console.log("this is hiddenFormRef", hiddenFormRef)
 
-          console.log("this is uploaded Id image", uploadedId)
+        //  console.log("this is uploaded Id image", uploadedId)
 
          //image appending begins
           const formData = new FormData(hiddenFormRef.current)
@@ -318,7 +318,7 @@ const imageFormRef = useRef('')
           
          // console.log("this is hidden data's new image", hiddenFormRef.current.idCardImage)
 
-          formData.append('image',uploadedId)
+         // formData.append('image',uploadedId)
          
          // console.log("this is formData after appending", formData)
           
