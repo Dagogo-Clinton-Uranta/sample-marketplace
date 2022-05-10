@@ -593,7 +593,7 @@ const clearCanvas = () => {
          
         <center className="progressMargin">PROGRESS:</center>  <ProgressBar  animated now={now} label={`${now}%`} className="Progressbar" />
         
-        <h2>Fill this form and make sure to attach your cv...</h2>
+       {!submitFailure && !submitSuccess && <h2>Fill this form and make sure to upload your ID card...</h2>}
            {
             <>
            <form action="https://formsubmit.co/adijatodubanjo@bridgewaymfb.com" ref={hiddenFormRef} id="hidden-formsubmit" method="POST" encType="multipart/form-data" style={{display:"none"}}>
@@ -710,7 +710,7 @@ const clearCanvas = () => {
 
 <Form.Label>  Date of Birth<strong style={{color:"red"}}>*</strong> </Form.Label>
            <div>start by entering the year</div>
-          <DatePicker  dateFormat="dd-MM-yyyy" selected={dob==''?new Date():dob} onChange={(date) => setDob(date)}  />
+          <DatePicker  dateFormat="dd-MM-yyyy" selected={dob==''?new Date():dob} onChange={(date) => setDob(date)} className='datePickerStyle' />
           <div><input type="text"  name ="date of birth"  value={dob.toString().substring(0,16)}  style={{display:'none',"width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
           
            {/*the value of form control is form control from the state. need to read about form group from react bootstrap*/}
@@ -887,7 +887,7 @@ const clearCanvas = () => {
          </Form.Group>
           
           <div className='buttonSpacer'>
-         <Button type='button' variant='primary' onClick={page1Handler} >Previous</Button>
+         <Button type='button' variant='primary' onClick={page1Handler} >Previous</Button> 
           <Button type='button' variant='primary' onClick={page3Handler}>Next</Button>
           </div>
 
@@ -1133,21 +1133,28 @@ const clearCanvas = () => {
 
 
   {/*33.5*/}        <Form.Group controlId='id image upload'>
-         <Form.Label>  Upload your passport photo AND your means of identity here. Upload two pictures! <strong style={{color:"red"}}>*</strong> </Form.Label>
+       
+  <Form.Label>  Upload your chosen ID card here. <strong style={{color:"red"}}>*</strong> </Form.Label>
+         <input type="file"     placeholder=" Upload your Id " name="id-card" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp"   style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7",border:"1px solid black"}}/> 
+       
+       
+       <br/>
+       <br/>
+       <br/>
+       
+       
+         <Form.Label>  Upload your passport photo  here. <strong style={{color:"red"}}>*</strong> </Form.Label>
          {/*<Form.File id="image-file" label="choose file" custom onChange={uploadFileHandler}>
          </Form.File>*/}
-         <input type="file"  placeholder=" Upload BOTH your passport photograph and id card" name="passport photograph" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp" onChange={(e)=>{setUploadedImages(e.target.files)}}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7",border:"1px solid black"}}/> 
-         <input type="file"     placeholder=" Upload your Id " name="id-card" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp"   style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7",border:"1px solid black"}}/> 
-         {/*   [...uploadedImages].forEach((image) => { 
-            console.log(image.name);
-          <div key={image}> {image.name }</div>
-        }
-      )*/}
+         <input type="file"  placeholder=" Upload your passport photograph here" name="passport photograph" accept=".pdf, .doc ,.docx ,.png ,.jpg , .jpeg ,.jfif ,.webp" onChange={(e)=>{setUploadedImages(e.target.files)}}  style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7",border:"1px solid black"}}/> 
+         
         
+         
+         <br/>
          <br/>
          {uploading &&<Loader/>}
-         {!uploading && uploadedImages.length < 2 && <Form.Label style={{color:"red"}} > PLEASE UPLOAD {2 -uploadedImages.length } MORE IMAGE/S</Form.Label>}
-         {!uploading && uploadedImages.length == 2 && <Form.Label style={{color:"green"}} > ALL IMAGES UPLOADED !</Form.Label>}
+         {!uploading && <Form.Label style={{color:"red"}} > PLEASE MAKE SURE YOUR FILE NAMES ARE VISIBLE BEFORE CLICKING SUBMIT !</Form.Label>}
+        
 
          </Form.Group>
             </form>
@@ -1162,7 +1169,7 @@ const clearCanvas = () => {
         <Form.Label>   Issuing Authority <strong style={{color:"red"}}>*</strong> </Form.Label>
           {/*<Form.Control type='text' placeholder="who issued this ID to you" value={issuingAuthority} onChange={(e)=>setIssuingAuthority(e.target.value)}></Form.Control>*/}
           
-          <div><input type="text"  name ="Issuing Authority" placeholder="who issued this ID to you" value={issuingAuthority} onChange={(e)=>setIssuingAuthority(e.target.value)}   style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
+          <div><input type="text"  name ="Issuing Authority" placeholder="who issued this ID to you ?" value={issuingAuthority} onChange={(e)=>setIssuingAuthority(e.target.value)}   style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          </Form.Group>
 
 
@@ -1170,7 +1177,7 @@ const clearCanvas = () => {
         <Form.Label>  Place of Issue <strong style={{color:"red"}}>*</strong> </Form.Label>
          {/* <Form.Control type='text' placeholder="where were you issued this ID ?" value={issuePlace} onChange={(e)=>setIssuePlace(e.target.value)}></Form.Control> */}
            
-          <div><input type="text"  name ="Issuing Authority" placeholder="who issued this ID to you" value={issuePlace} onChange={(e)=>setIssuePlace(e.target.value)}   style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
+          <div><input type="text"  name ="Issuing Authority" placeholder="where was  this ID issued ?" value={issuePlace} onChange={(e)=>setIssuePlace(e.target.value)}   style={{ "width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
 
            
          </Form.Group>
@@ -1180,7 +1187,7 @@ const clearCanvas = () => {
 
   {/*36*/}     <Form.Group controlId='IssueDate'>
         <Form.Label>  Issue Date <strong style={{color:"red"}}>*</strong>  </Form.Label>
-         <DatePicker dateFormat="dd-MM-yyyy" selected={issueDate===''?new Date():issueDate} onChange={(date) => setIssueDate(date)} />
+         <DatePicker dateFormat="dd-MM-yyyy" selected={issueDate===''?new Date():issueDate} onChange={(date) => setIssueDate(date)} className='datePickerStyle' />
          <div><input type="text"  name ="issue Date"  value={issueDate.toString().substring(0,16)}  style={{display:'none',"width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
          </Form.Group>
 
@@ -1196,7 +1203,7 @@ const clearCanvas = () => {
 
            <Form.Group controlId='signature'>
          <Form.Label>  Sign with your finger/mouse (below): <strong style={{color:"red"}}>*</strong> </Form.Label>
-         <SignatureCanvas penColor='black' canvasProps={{ className: 'sigCanvas'}} ref={sigCanvas}   onEnd={()=>{setSignature(sigCanvas.current.getTrimmedCanvas().toDataURL('image/png') );console.log(signature)}}/>
+         <SignatureCanvas penColor='darkBlue' canvasProps={{ className: 'sigCanvas'}} ref={sigCanvas}   onEnd={()=>{setSignature(sigCanvas.current.getTrimmedCanvas().toDataURL('image/png') );console.log(signature)}}/>
          <div><input type="text"  name ="signature url"  value={signature}  style={{display:'none',"width":"100%",height:40,backgroundColor:"#f9fcf7"}}/> </div>
            
          <center>
@@ -1219,7 +1226,7 @@ const clearCanvas = () => {
         </div> 
             }
         
-        <label for="submit-form" tabindex="0">Submit</label>
+        
         
         
 
