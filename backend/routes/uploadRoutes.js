@@ -17,6 +17,7 @@ const storage = multer.diskStorage({
      cb(null,`${file.fieldName}-${Date.now()}${path.extname(file.originalname)}`)
   },
 })
+
 function checkFileType(file,cb){
   const filetypes =/png|jpeg|jpg/
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase())  //path.extname the extname is a method of path function, while in const extname, thats just a variable we're declaring

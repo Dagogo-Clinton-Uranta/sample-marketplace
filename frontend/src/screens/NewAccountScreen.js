@@ -23,7 +23,7 @@ const NewAccountScreen = ({location, history}) => { //he is taking location & hi
    /*form info that I am gonna submit */
    const [formInfo,setFormInfo] = useState( JSON.parse(window.sessionStorage.getItem('formInfo')))
    
-   /* I DIDNT DELETE THIS JUST YEST, IN CASE I NEED AN OBJECT LIKE THIS AGAIN
+   /* I DIDNT DELETE THIS JUST YET, IN CASE I NEED AN OBJECT LIKE THIS AGAIN
    useState({
     title: '',
     surname : '',
@@ -345,7 +345,7 @@ const passportFormRef = useRef('')
         axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
        axios.post('https://formsubmit.co/ajax/dagogouranta@gmail.com', {
         
-       /* adijatodubanjo@bridgewaymfb.com*/
+       /* adijatodubanjo@bridgewaymfb.com this is ideally where all account registration info will go to*/
 
          'SUBJECT':`${title} ${surname} WOULD LIKE TO OPEN A NEW ACCOUNT, CALL ${tel} TO CONFIRM`,
          'title': title,

@@ -37,7 +37,9 @@ const Product = mongoose.model('Product',productSchema)
 /*the this Product you export, you set a new instance
  of it anytime you want to save it to database
  N.B MongoDB uses mongoose ORM/ODM unlinke SQL databases cuz
- sql databases come with a structure that you put in through a GUI*/
+ sql databases come with a structure that you put in through a GUI
+ 
+ coming back a year later.. this statement is not exactly true*/
 
 //exports.Product = Product
 export default Product

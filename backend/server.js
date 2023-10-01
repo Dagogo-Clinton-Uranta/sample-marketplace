@@ -68,7 +68,7 @@ app.get('/api/config/paypal',(req,res)=>{
 
 //this is a temporary route, until i can figure out what is going on with my admin messages
 app.patch('/admin/user/:id/api/users/adminMessage',presentAdminMessage)
-//this is a temporary route, until i can figure out what is going on with my admin messages
+//this is a temporary route, until i can figure out what is going on with my admin messages END
 
 
 const __dirname =path.resolve() //OKAY BRAD DID THIS TO MIMIC PATH.JOIN(__DIRNAME) , BECAUSE THE OG __dirname IS ONLY ACCESSIBLE IN COMMON JS AND NOT ES6 SYNTAX
