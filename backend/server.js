@@ -72,7 +72,7 @@ app.patch('/admin/user/:id/api/users/adminMessage',presentAdminMessage)
 
 
 const __dirname =path.resolve() //OKAY BRAD DID THIS TO MIMIC PATH.JOIN(__DIRNAME) , BECAUSE THE OG __dirname IS ONLY ACCESSIBLE IN COMMON JS AND NOT ES6 SYNTAX
-app.use('/uploads', express.static(path.join(__dirname,'/uploads')))
+app.use('/backend/uploads', express.static(path.join(__dirname,'/backend/uploads')))
 
 
 
@@ -84,15 +84,15 @@ if(process.NODE_ENV === 'production'){
     res.sendFile(path.resolve(__dirname,'frontend','build','index.html'))
   })
 }else{
-  /*app.get('/', (req,res) => {
+  app.get('/', (req,res) => {
     res.send('API is running...')
-  })*/
+  })
 
-  app.use(express.static(path.join(__dirname,'/frontend/build')))
+  /*app.use(express.static(path.join(__dirname,'/frontend/build')))
 
   app.get('*', (req,res) =>{ 
     res.sendFile(path.resolve(__dirname,'frontend','build','index.html'))
-  })
+  })*/
 
 
 
