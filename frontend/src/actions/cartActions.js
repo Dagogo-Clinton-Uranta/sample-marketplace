@@ -1,4 +1,6 @@
 import axios from 'axios' //when we add to cart, we want to get info for that particular product from our backend, so we can see details
+import baseUrl from '../baseUrl'
+
 import {CART_REMOVE_ITEM,
         CART_ADD_ITEM,
         CART_SAVE_SHIPPING_ADDRESS,
@@ -7,7 +9,7 @@ import {CART_REMOVE_ITEM,
 
 export const addToCart =(id, qty) => async(dispatch, getState) => {
 //getState allows us to get our entire state tree
-  const {data} = await axios.get(`/api/products/${id}`)
+  const {data} = await axios.get(`${baseUrl}/api/products/${id}`)
 
   dispatch({
     type:CART_ADD_ITEM,

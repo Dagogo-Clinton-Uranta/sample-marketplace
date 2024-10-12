@@ -33,6 +33,8 @@ import {ORDER_CREATE_REQUEST,
         //ORDER_DELIVER_RESET,
        } from '../constants/orderConstants'
 import axios from 'axios'
+import baseUrl from '../baseUrl'
+
                               /*the entire order object*/
 export const createOrder  = (order) => async (dispatch,getState)=> {
    //redux thunk was used just now in the form of async (dispatch) above
@@ -47,7 +49,7 @@ export const createOrder  = (order) => async (dispatch,getState)=> {
         Authorization:`Bearer ${userInfo.token}`
       }
     }
-    const {data} = await axios.post(`/api/orders`,order,config)
+    const {data} = await axios.post(`${baseUrl}/api/orders`,order,config)
     //i'm gonna take a stab here and say that the third argument for axios is for setting header property
 
     dispatch({
@@ -76,7 +78,7 @@ export const getOrderDetails  = (id) => async (dispatch,getState)=> {
         Authorization:`Bearer ${userInfo.token}`
       }
     }
-    const {data} = await axios.get(`/api/orders/${id}`,config)
+    const {data} = await axios.get(`${baseUrl}/api/orders/${id}`,config)
     //i'm gonna take a stab here and say that the third argument for axios is for setting header property
 
     dispatch({
@@ -108,7 +110,7 @@ export const payOrder  = (orderId) => async (dispatch,getState) =>{
         Authorization:`Bearer ${userInfo.token}`
       }
     }
-    const {data} = await axios.put(`/api/orders/${orderId}/pay`,{},config)
+    const {data} = await axios.put(`${baseUrl}/api/orders/${orderId}/pay`,{},config)
     //i'm gonna take a stab here and say that the third argument for axios is for setting header property
 
     dispatch({
@@ -140,7 +142,7 @@ export const merchantCreditOrder  = (orderId) => async (dispatch,getState) =>{
           Authorization:`Bearer ${userInfo.token}`
         }
       }
-      const {data} = await axios.put(`/api/orders/${orderId}/paymerchants`,{},config)
+      const {data} = await axios.put(`${baseUrl}/api/orders/${orderId}/paymerchants`,{},config)
       //i'm gonna take a stab here and say that the third argument for axios is for setting header property
   
       dispatch({
@@ -173,7 +175,7 @@ export const insufficientFundsOrder  = (orderId,userType) => async (dispatch,get
           Authorization:`Bearer ${userInfo.token}`
         }
       }
-      const {data} = await axios.put(`/api/orders/${orderId}/funds`,{userType},config)
+      const {data} = await axios.put(`${baseUrl}/api/orders/${orderId}/funds`,{userType},config)
       //i'm gonna take a stab here and say that the third argument for axios is for setting header property
   
       dispatch({
@@ -204,7 +206,7 @@ export const deliverOrder  = (order) => async (dispatch,getState)=> {
         Authorization:`Bearer ${userInfo.token}`
       }
     }
-    const {data} = await axios.put(`/api/orders/${order._id}/deliver`,{},config)
+    const {data} = await axios.put(`${baseUrl}/api/orders/${order._id}/deliver`,{},config)
     //i'm gonna take a stab here and say that the third argument for axios is for setting header property
 
     dispatch({
@@ -236,7 +238,7 @@ export const listMyOrders  = () => async (dispatch,getState)=> {
         Authorization:`Bearer ${userInfo.token}`
       }
     } 
-    const {data} = await axios.get(`/api/orders/myorders`,config)
+    const {data} = await axios.get(`${baseUrl}/api/orders/myorders`,config)
     //i'm gonna take a stab here and say that the third argument for axios is for setting header property
 
     dispatch({
@@ -268,7 +270,7 @@ export const listOrders  = (vendorName=''/*try a reg ex of all allowable charact
         Authorization:`Bearer ${userInfo.token}`
       }
     }
-    const {data} = await axios.get(`/api/orders?vendorName=${vendorName}`,config)
+    const {data} = await axios.get(`${baseUrl}/api/orders?vendorName=${vendorName}`,config)
     //i'm gonna take a stab here and say that the third argument for axios is for setting header property
 
     dispatch({
@@ -301,7 +303,7 @@ export const listUnpaidOrders  = () => async (dispatch,getState)=> {
           Authorization:`Bearer ${userInfo.token}`
         }
       }
-      const {data} = await axios.get(`/api/orders/unpaidorders`,config)
+      const {data} = await axios.get(`${baseUrl}/api/orders/unpaidorders`,config)
       //i'm gonna take a stab here and say that the third argument for axios is for setting header property
   
       dispatch({
@@ -333,7 +335,7 @@ export const merchantApproveOrder  = (orderId,productId,updatedQty) => async (di
        Authorization:`Bearer ${userInfo.token}`
      }
    }
-   const {data} = await axios.put(`/api/orders`,{orderId,productId,updatedQty},config)
+   const {data} = await axios.put(`${baseUrl}/api/orders`,{orderId,productId,updatedQty},config)
    //i'm gonna take a stab here and say that the third argument for axios is for setting header property
 
    dispatch({
@@ -362,7 +364,7 @@ export const merchantLockOrder  = (order) => async (dispatch,getState)=> {
        Authorization:`Bearer ${userInfo.token}`
      }
    }
-   const {data} = await axios.post(`/api/orders`,order,config)
+   const {data} = await axios.post(`${baseUrl}/api/orders`,order,config)
    //i'm gonna take a stab here and say that the third argument for axios is for setting header property
 
    dispatch({

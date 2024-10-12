@@ -1,4 +1,6 @@
  import axios from 'axios'
+ import baseUrl from '../baseUrl'
+ 
  import {
          USER_LOGIN_REQUEST,
          USER_LOGIN_SUCCESS,
@@ -52,7 +54,7 @@ export const login = (email,password) => async(dispatch) =>{
         'Content-Type':'application/json'
       }
     }
-    const {data} = await axios.post('/api/users/login/',{email,password},config)
+    const {data} = await axios.post(`${baseUrl}/api/users/login/`,{email,password},config)
     /*does axios return more than one variable, this one that we're destructuring, and takin data?*/
 
     dispatch({
@@ -79,7 +81,7 @@ export const clientSaid = (clientMessage, clientId,clientName) => async(dispatch
         }
       }
 
-      const {data} = await axios.patch('api/users/clientMessage',{clientMessage,clientId,clientName},config)
+      const {data} = await axios.patch(`${baseUrl}/api/users/clientMessage`,{clientMessage,clientId,clientName},config)
       
       dispatch({type:USER_SEND_SUCCESS,
       payload:data})
@@ -102,7 +104,7 @@ export const adminSaid = (bossMessage, clientId,clientEmail,clientName) => async
       }
     }
     
-    const {data} = await axios.patch('/admin/user/:id/api/users/adminMessage',{bossMessage, clientId,clientEmail,clientName},config)
+    const {data} = await axios.patch(`${baseUrl}/admin/user/:id/api/users/adminMessage`,{bossMessage, clientId,clientEmail,clientName},config)
     
     dispatch({type:ADMIN_SEND_SUCCESS,
     payload:data})
@@ -125,7 +127,7 @@ export const answerVerify = (clientId, personalIdQuery,personalIdAnswer,orderTot
       }
     }
 
-    const {data} = await axios.post('api/users/verify',{clientId,personalIdQuery,personalIdAnswer,orderTotal,productIdArray,namesArray},config)
+    const {data} = await axios.post(`${baseUrl}/api/users/verify`,{clientId,personalIdQuery,personalIdAnswer,orderTotal,productIdArray,namesArray},config)
       
     /*can you send stuff in the second argument of your get request? - no, thats not the agreed upon convention */
     dispatch({type:USER_VERIFY_SUCCESS,
@@ -165,7 +167,7 @@ export const register = (name,email,nuban,password,momFirstName,shoeSize,closest
         'Content-Type':'application/json'
       }
     }
-    const {data} = await axios.post('/api/users',{name,email,nuban,password,momFirstName,shoeSize,closestFriend,childhoodStreet, firstEmployment,pickupAddress,isMerchant},config)
+    const {data} = await axios.post(`${baseUrl}/api/users`,{name,email,nuban,password,momFirstName,shoeSize,closestFriend,childhoodStreet, firstEmployment,pickupAddress,isMerchant},config)
     //i'm gonna take a stab here and say that the third argument for axios is for setting header property
 
     dispatch({
@@ -200,7 +202,7 @@ export const getUserDetails = (id) => async (dispatch,getState) => {
         Authorization:`Bearer ${userInfo.token}`
       }
     }
-    const {data} = await axios.get(`/api/users/${id}`,config)
+    const {data} = await axios.get(`${baseUrl}/api/users/${id}`,config)
     
 
     dispatch({
@@ -229,7 +231,7 @@ export const updateUserProfile  = (user /*the entire user object*/) => async(dis
         Authorization:`Bearer ${userInfo.token}`
       }
     }
-    const {data} = await axios.put(`/api/users/profile`,user,config)
+    const {data} = await axios.put(`${baseUrl}/api/users/profile`,user,config)
     //i'm gonna take a stab here and say that the third argument for axios is for setting header property
 
     dispatch({
@@ -259,7 +261,7 @@ export const updateUserNotes  = (user) => async(dispatch,getState) => {
        Authorization:`Bearer ${userInfo.token}`
      }
    }
-   const {data} = await axios.put(`/api/users/notes`,user,config)
+   const {data} = await axios.put(`${baseUrl}/api/users/notes`,user,config)
    //i'm gonna take a stab here and say that the third argument for axios is for setting header property
    
    dispatch({
@@ -296,7 +298,7 @@ export const listUsers  = () => async (dispatch,getState)=> {
         Authorization:`Bearer ${userInfo.token}`
       }
     }
-    const {data} = await axios.get(`/api/users`,config)
+    const {data} = await axios.get(`${baseUrl}/api/users`,config)
     //i'm gonna take a stab here and say that the third argument for axios is for setting header property
 
     dispatch({
@@ -325,7 +327,7 @@ export const deleteUser  = (id) => async (dispatch,getState)=> {
         Authorization:`Bearer ${userInfo.token}`
       }
     }
-    await axios.delete(`/api/users/${id}`,config)
+    await axios.delete(`${baseUrl}/api/users/${id}`,config)
     //i'm gonna take a stab here and say that the third argument for axios is for setting header property
 
     dispatch({
@@ -353,7 +355,7 @@ export const updateUser  = (user) => async (dispatch,getState)=> {
         Authorization:`Bearer ${userInfo.token}`
       }
     }
-    const{data} = await axios.put(`/api/users/${user._id}`, user,config)
+    const{data} = await axios.put(`${baseUrl}/api/users/${user._id}`, user,config)
     //i'm gonna take a stab here and say that the third argument for axios is for setting header property
 
     dispatch({  type: USER_UPDATE_SUCCESS})
